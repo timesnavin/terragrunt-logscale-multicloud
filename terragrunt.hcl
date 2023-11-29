@@ -7,9 +7,12 @@
 
 locals {
   backend = yamldecode(file(find_in_parent_folders("backend.yaml")))
+  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  tags = {
+    Owner = "ryan.faircloth"
+    Project "selfcloud"
+  }
 }
-
-
 
 remote_state {
   backend = "${local.backend.type}"
@@ -38,3 +41,20 @@ terraform {
   }
 }
 
+
+generate "provider" {
+  path      = "provider.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<-EOF
+    provider "aws" {
+        region = "${local.provider.aws.region}"
+        
+        default_tags {
+            tags = jsondecode(<<INNEREOF
+    ${local.tags}
+    INNEREOF
+    )
+        }
+    }
+EOF
+}
