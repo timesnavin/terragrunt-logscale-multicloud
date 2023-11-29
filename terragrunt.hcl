@@ -8,9 +8,9 @@
 locals {
   backend = yamldecode(file(find_in_parent_folders("backend.yaml")))
   provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  tags = {
+  aws_tags = {
     Owner = "ryan.faircloth"
-    Project "selfcloud"
+    Project = "selfcloud"
   }
 }
 
@@ -46,15 +46,21 @@ generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<-EOF
+
+    variable "aws_tags" {
+      type = map
+    }
     provider "aws" {
         region = "${local.provider.aws.region}"
         
         default_tags {
-            tags = jsondecode(<<INNEREOF
-    ${local.tags}
-    INNEREOF
-    )
+            tags = var.aws_tags
         }
     }
 EOF
+}
+
+
+inputs = {
+    provider_aws_tags = local.aws_tags
 }
