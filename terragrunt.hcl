@@ -6,10 +6,10 @@
 
 
 locals {
-  backend = yamldecode(file(find_in_parent_folders("backend.yaml")))
+  backend  = yamldecode(file(find_in_parent_folders("backend.yaml")))
   provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
   aws_tags = {
-    Owner = "ryan.faircloth"
+    Owner   = "ryan.faircloth"
     Project = "selfcloud"
   }
 }
@@ -62,5 +62,5 @@ EOF
 
 
 inputs = {
-    provider_aws_tags = local.aws_tags
+  provider_aws_tags = local.aws_tags
 }

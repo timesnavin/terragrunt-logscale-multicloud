@@ -27,15 +27,94 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  bucket_prefix = "cs-ls-ps-prod-ops"
+  bucket_prefix        = "cs-ls-ps-prod-ops"
   attach_public_policy = false
-  
+
+  attach_deny_insecure_transport_policy = true
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+  force_destroy           = false
+
+  server_side_encryption_configuration = {
+    rule = {
+      bucket_key_enabled = true
+    }
+  }
   versioning = {
-    enabled = true
+    status = true
+  }
+  intelligent_tiering = {
+    logscale = {
+      status = "Enabled"
+      filter = {
+        prefix = "/"
+      }
+      tiering = {
+        ARCHIVE_ACCESS = {
+          days = 90
+        }
+        DEEP_ARCHIVE_ACCESS = {
+          days = 180
+        }
+      }
+    }
   }
 
+  lifecycle_rule = [
+    {
+      id                                     = "default"
+      enabled                                = true
+      abort_incomplete_multipart_upload_days = 2
+      noncurrent_version_expiration = {
+        days = 7
+      }
+      expiration = {
+        days                         = 36500
+        expired_object_delete_marker = true
+      }
+
+    },
+    {
+      id      = "globalsnapshots"
+      enabled = true
+      filter = {
+        prefix = "globalsnapshots/"
+      }
+      abort_incomplete_multipart_upload_days = 2
+      noncurrent_version_expiration = {
+        days = 1
+      }
+      expiration = {
+        days                         = 3
+        expired_object_delete_marker = true
+      }
+
+    },
+    {
+      id      = "tmp"
+      enabled = true
+      filter = {
+        prefix = "tmp/"
+      }
+      abort_incomplete_multipart_upload_days = 2
+      noncurrent_version_expiration = {
+        days = 1
+      }
+      expiration = {
+        days                         = 3
+        expired_object_delete_marker = true
+      }
+
+    },
+
+  ]
+  attach_policy = true
+
   tags = {
-    Owner = "ryan.faircloth"
+    Owner   = "ryan.faircloth"
     Project = "selfcloud"
   }
 }
