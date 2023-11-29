@@ -28,11 +28,12 @@ locals {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
   bucket_prefix = "cs-ls-ps-prod-ops"
+  attach_public_policy = false
   
   versioning = {
     enabled = true
   }
-  
+
   tags = {
     Owner = "ryan.faircloth"
     Project = "selfcloud"
