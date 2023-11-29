@@ -27,12 +27,12 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  bucket = "cs-ls-ps-prod-ops"
-  acl    = "private"
-
+  bucket_prefix = "cs-ls-ps-prod-ops"
+  
   versioning = {
     enabled = true
   }
+  
   tags = {
     Owner = "ryan.faircloth"
     Project = "selfcloud"

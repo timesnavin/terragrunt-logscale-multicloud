@@ -17,13 +17,10 @@ include "root" {
 
 # Include the envcommon configuration for the component. The envcommon configuration contains settings that are common
 # for the component across all environments.
-include "envcommon" {
+include "module" {
   path   = "${dirname(find_in_parent_folders())}/_modules/aws/aws-bucket-logscale.hcl"
   expose = true
 }
-
-
-
 
 # ---------------------------------------------------------------------------------------------------------------------
 # We don't need to override any of the common parameters for this environment, so we don't specify any inputs.
