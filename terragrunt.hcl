@@ -29,18 +29,6 @@ remote_state {
   }
 }
 
-terraform {
-  extra_arguments "init_args" {
-    commands = [
-      "init"
-    ]
-
-    arguments = [
-      "-upgrade",
-    ]
-  }
-}
-
 
 generate "provider_aws" {
   path      = "provider_aws.tf"
