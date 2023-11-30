@@ -47,14 +47,14 @@ generate "provider" {
   if_exists = "overwrite_terragrunt"
   contents  = <<-EOF
 
-    variable "aws_tags" {
+    variable "provider_aws_tags" {
       type = map
     }
     provider "aws" {
         region = "${local.provider.aws.region}"
         
         default_tags {
-            tags = var.aws_tags
+            tags = var.provider_aws_tags
         }
     }
 EOF
