@@ -39,8 +39,11 @@ generate "provider_aws" {
     variable "provider_aws_tags" {
       type = map
     }
+    variable "provider_aws_region" {
+      type = map
+    }    
     provider "aws" {
-        region = "${local.provider.aws.region}"
+        region = var.provider_aws_region
         
         default_tags {
             tags = var.provider_aws_tags
@@ -88,6 +91,7 @@ generate "provider_gcp" {
 
 inputs = {
   provider_aws_tags = local.aws_tags
+  provider_aws_region = local.provider.type == "aws" ? local.provider.aws.region : "" 
   provider_project = local.provider.type == "google" ? local.provider.google.project_id : ""
   provider_region = local.provider.type == "google" ? local.provider.google.region : ""
 }
