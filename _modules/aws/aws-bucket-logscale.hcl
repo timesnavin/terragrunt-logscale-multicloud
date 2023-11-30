@@ -110,7 +110,7 @@ inputs = {
 
     },
 
-  ]
+  ] 
   attach_policy = true
 
   tags = {
