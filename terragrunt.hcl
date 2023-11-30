@@ -42,7 +42,7 @@ terraform {
 }
 
 
-generate "provider" {
+generate "provider_aws" {
   path      = "provider_aws.tf"
   if_exists = "overwrite_terragrunt"
   disable = local.provider.type == "aws" ? false  : true
@@ -61,7 +61,7 @@ generate "provider" {
 EOF
 }
 
-generate "provider" {
+generate "provider_azure" {
   path      = "provider_azure.tf"
   if_exists = "overwrite_terragrunt"
   disable = local.provider.type == "azure" ? false  : true
