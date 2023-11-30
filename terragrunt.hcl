@@ -88,6 +88,6 @@ generate "provider_gcp" {
 
 inputs = {
   provider_aws_tags = local.aws_tags
-  provider_project = local.provider.google.project_id
-  provider_region = local.provider.google.region
+  provider_project = local.provider.type == "google" ? local.provider.google.project_id : ""
+  provider_region = local.provider.type == "google" ? local.provider.google.region : ""
 }
