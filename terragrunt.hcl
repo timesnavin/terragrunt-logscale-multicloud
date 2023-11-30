@@ -62,6 +62,32 @@ generate "provider_azure" {
   EOF
 }
 
+generate "provider_gcp" {
+  path      = "provider_gcp.tf"
+  if_exists = "overwrite_terragrunt"
+  disable = local.provider.type == "google" ? false  : true
+  contents  = <<-EOF
+
+  variable "provider_project" {
+    type = map
+  }
+  variable "provider_region" {
+    type = map
+  }  
+  provider "google" {
+    project     = var.provider_project
+    region = provider_region
+  }
+  provider "google-beta" {
+    project     = var.provider_project
+    region = provider_region
+  }  
+  EOF
+}
+
+
 inputs = {
   provider_aws_tags = local.aws_tags
+  provider_project = local.provider.google.project_id
+  provider_region = local.provider.google.region
 }

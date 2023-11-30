@@ -30,7 +30,7 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  project_id = local.provider.gcp.projectid
+  project_id = local.provider.google.project_id
   activate_apis = [
     "artifactregistry.googleapis.com",
     "autoscaling.googleapis.com",

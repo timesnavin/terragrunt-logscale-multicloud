@@ -1,6 +1,4 @@
-type: gcp
-aws:
-  region: us-east-1
-azure:
-gcp:
-  projectid: logsr-life-production
+type: google
+google:
+  project_id: logsr-life-production
+  region: us-central1
