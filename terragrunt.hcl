@@ -45,6 +45,7 @@ terraform {
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
+  disable = local.provider.type == "aws" ? false  : true
   contents  = <<-EOF
 
     variable "provider_aws_tags" {
