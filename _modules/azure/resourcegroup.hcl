@@ -31,5 +31,8 @@ locals {
 inputs = {
   uniqueName = "us-ops"
   location   = "East US 2"
-  
+  tags = {
+    Owner = "ryan.faircloth"
+    Project = "selfcloud"
+  }
 }
