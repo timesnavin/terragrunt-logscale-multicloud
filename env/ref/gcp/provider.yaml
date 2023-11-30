@@ -1,0 +1,6 @@
+type: gcp
+aws:
+  region: us-east-1
+azure:
+gcp:
+  projectid: logsr-life-production
