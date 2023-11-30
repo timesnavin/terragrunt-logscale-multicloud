@@ -20,9 +20,6 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  gcp_vars   = read_terragrunt_config(find_in_parent_folders("gcp.hcl"))
-  project_id = local.gcp_vars.locals.project_id
-  region     = local.gcp_vars.locals.region
 
 }
 
