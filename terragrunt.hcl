@@ -40,7 +40,7 @@ generate "provider_aws" {
       type = map
     }
     variable "provider_aws_region" {
-      type = map
+      type = string
     }    
     provider "aws" {
         region = var.provider_aws_region
@@ -72,10 +72,10 @@ generate "provider_gcp" {
   contents  = <<-EOF
 
   variable "provider_project" {
-    type = map
+    type = string
   }
   variable "provider_region" {
-    type = map
+    type = string
   }  
   provider "google" {
     project     = var.provider_project
