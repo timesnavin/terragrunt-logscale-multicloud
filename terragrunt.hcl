@@ -43,7 +43,7 @@ terraform {
 
 
 generate "provider" {
-  path      = "provider.tf"
+  path      = "provider_aws.tf"
   if_exists = "overwrite_terragrunt"
   disable = local.provider.type == "aws" ? false  : true
   contents  = <<-EOF
@@ -61,6 +61,19 @@ generate "provider" {
 EOF
 }
 
+generate "provider" {
+  path      = "provider_azure.tf"
+  if_exists = "overwrite_terragrunt"
+  disable = local.provider.type == "azure" ? false  : true
+  contents  = <<-EOF
+
+  provider "azurerm" {
+    features {}
+    #subscription_id = "${local.subscription_id}"
+    #tenant_id = "${local.tenant_id}"      
+  }    
+  EOF
+}
 
 inputs = {
   provider_aws_tags = local.aws_tags
