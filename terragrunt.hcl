@@ -79,11 +79,11 @@ generate "provider_gcp" {
   }  
   provider "google" {
     project     = var.provider_project
-    region = provider_region
+    region = var.provider_region
   }
   provider "google-beta" {
     project     = var.provider_project
-    region = provider_region
+    region = var.provider_region
   }  
   EOF
 }
