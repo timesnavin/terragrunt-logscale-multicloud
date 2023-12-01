@@ -78,12 +78,12 @@ generate "provider_gcp" {
     type = string
   }  
   provider "google" {
-    credentials = file("env0_credential_configuration.json")
+    credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
     project     = var.provider_project
     region = var.provider_region
   }
   provider "google-beta" {
-    credentials = file("env0_credential_configuration.json")
+    credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
     project     = var.provider_project
     region = var.provider_region
   }  
