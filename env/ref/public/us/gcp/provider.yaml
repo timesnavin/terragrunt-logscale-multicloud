@@ -1,0 +1,4 @@
+type: google
+google:
+  project_id: logsr-life-production
+  region: us-central1
