@@ -8,10 +8,8 @@
 locals {
   backend  = yamldecode(file(find_in_parent_folders("backend.yaml")))
   provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  aws_tags = {
-    Owner   = "ryan.faircloth"
-    Project = "selfcloud"
-  }
+  metadata_common = yamldecode(file(find_in_parent_folders("metadata_common.yaml")))
+  
 }
 
 remote_state {
@@ -95,7 +93,7 @@ generate "provider_gcp" {
 
 
 inputs = {  
-  provider_aws_tags = local.aws_tags
+  provider_aws_tags = local.metadata_common
   provider_aws_region = local.provider.type == "aws" ? local.provider.aws.region : "" 
   provider_google_project = local.provider.type == "google" ? local.provider.google.project_id : ""
   provider_google_region = local.provider.type == "google" ? local.provider.google.region : ""
