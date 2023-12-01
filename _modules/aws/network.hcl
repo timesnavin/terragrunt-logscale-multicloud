@@ -40,7 +40,7 @@ inputs = {
   enable_vpn_gateway     = false
   single_nat_gateway     = true
   enable_dns_hostnames   = true
-  one_nat_gateway_per_az = false
+  one_nat_gateway_per_az = true
 
 
   enable_flow_log                      = true
