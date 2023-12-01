@@ -95,6 +95,7 @@ generate "provider_gcp" {
 inputs = {  
   provider_aws_tags = local.metadata_common
   provider_aws_region = local.provider.type == "aws" ? local.provider.aws.region : "" 
+  
   provider_google_project = local.provider.type == "google" ? local.provider.google.project_id : ""
   provider_google_region = local.provider.type == "google" ? local.provider.google.region : ""
   provider_google_credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
