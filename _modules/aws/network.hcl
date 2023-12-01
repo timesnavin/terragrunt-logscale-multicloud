@@ -65,4 +65,5 @@ inputs = {
     "karpenter.sh/discovery"                      = "eks"
   }
 
+  default_network_acl_ingress = [ { "action": "allow", "cidr_block": "0.0.0.0/0", "from_port": 443, "protocol": "tcp", "rule_no": 100, "to_port": 443 }, { "action": "allow", "from_port": 443, "ipv6_cidr_block": "::/0", "protocol": "tcp", "rule_no": 101, "to_port": 443 } ]
 }
