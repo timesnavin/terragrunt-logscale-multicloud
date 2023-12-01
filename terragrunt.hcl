@@ -71,29 +71,33 @@ generate "provider_gcp" {
   disable = local.provider.type == "google" ? false  : true
   contents  = <<-EOF
 
-  variable "provider_project" {
+  variable "provider_google_project" {
     type = string
   }
-  variable "provider_region" {
+  variable "provider_google_region" {
+    type = string
+  }
+  variable "provider_google_credentials" {
     type = string
   }  
   provider "google" {
-    credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
-    project     = var.provider_project
-    region = var.provider_region
+    credentials = var.provider_google_credentials
+    project     = var.provider_google_project
+    region = var.provider_google_region
   }
   provider "google-beta" {
-    credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
-    project     = var.provider_project
-    region = var.provider_region
+    credentials = var.provider_google_credentials
+    project     = var.provider_google_project
+    region = var.provider_google_region
   }  
   EOF
 }
 
 
-inputs = {
+inputs = {  
   provider_aws_tags = local.aws_tags
   provider_aws_region = local.provider.type == "aws" ? local.provider.aws.region : "" 
-  provider_project = local.provider.type == "google" ? local.provider.google.project_id : ""
-  provider_region = local.provider.type == "google" ? local.provider.google.region : ""
+  provider_google_project = local.provider.type == "google" ? local.provider.google.project_id : ""
+  provider_google_region = local.provider.type == "google" ? local.provider.google.region : ""
+  provider_google_credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
 }
