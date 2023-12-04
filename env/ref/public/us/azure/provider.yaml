@@ -4,3 +4,6 @@ aws:
 azure:
   prefix: ref
   region: us-central
+  tags:
+    Owner: ryan.faircloth
+    Project: selfcloud
