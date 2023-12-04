@@ -3,7 +3,7 @@ aws:
   region: us-east-1
 azure:
   prefix: ref
-  region: us-central
+  region: centralus
   tags:
     Owner: ryan.faircloth
     Project: selfcloud
