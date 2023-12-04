@@ -19,7 +19,8 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-
+ provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+ 
 }
 
 
@@ -29,10 +30,7 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  uniqueName = "us-ops"
-  location   = "East US 2"
-  tags = {
-    Owner = "ryan.faircloth"
-    Project = "selfcloud"
-  }
+  uniqueName = local.provider.azure.prefix
+  location   = local.provider.azure.region
+  tags = local.provider.azure.tags
 }

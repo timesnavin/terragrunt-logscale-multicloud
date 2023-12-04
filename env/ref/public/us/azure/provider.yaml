@@ -2,3 +2,5 @@ type: azure
 aws:
   region: us-east-1
 azure:
+  prefix: ref
+  region: us-central
