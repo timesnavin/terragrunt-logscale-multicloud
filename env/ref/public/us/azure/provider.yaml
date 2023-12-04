@@ -2,7 +2,7 @@ type: azure
 aws:
   region: us-east-1
 azure:
-  prefix: ref
+  prefix: ref-us-logscale
   region: centralus
   tags:
     Owner: ryan.faircloth
