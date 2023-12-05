@@ -36,7 +36,7 @@ dependency "resourceGroup" {
 inputs = {
   vnet_name = "${dependency.resourceGroup.outputs.resource_group_name}-${local.region.region}"
   resource_group_name = dependency.resourceGroup.outputs.resource_group_name
-  location   = local.region.region
+  resource_group_location   = local.region.region
   tags = local.provider.azure.tags
 
   use_for_each = true
