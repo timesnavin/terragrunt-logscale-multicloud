@@ -41,5 +41,5 @@ inputs = {
 
   use_for_each = true
 
-  address_spaces = locals.region.network.address_spaces
+  address_spaces = local.region.network.address_spaces
 }
