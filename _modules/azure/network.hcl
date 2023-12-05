@@ -25,7 +25,7 @@ locals {
 }
 
 dependency "resourceGroup" {
-  config_path = "${get_terragrunt_dir()}/../../resourcegroup/"
+  config_path = "${get_terragrunt_dir()}/../../../resourcegroup/"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
