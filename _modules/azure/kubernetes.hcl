@@ -54,8 +54,8 @@ inputs = {
   rbac_aad                          = true
   rbac_aad_azure_rbac_enabled       = true
 
-  vnet_subnet_id = "${dependency.network.outputs.vnet_id}/kubernetes"
-  pod_subnet_id  = "${dependency.network.outputs.vnet_id}/pods"
+  vnet_subnet_id = "${dependency.network.outputs.vnet_id}/subnets/kubernetes"
+  pod_subnet_id  = "${dependency.network.outputs.vnet_id}/subnets/pods"
 
   # Agents are used by the system this is where cluster privlidged pods will run
   agents_availability_zones    = [1, 2, 3]
