@@ -1,8 +1,9 @@
 region: centralus
 network:
   address_spaces: ["10.0.0.0/21"]
-  subnet_names: ["gateway", "services", "management", "kubernetes"]
-  subnet_prefixes: ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24", "10.0.4.0/22"]
+  subnet_names: ["gateway", "services", "management", "kubernetes", "pods"]
+  subnet_prefixes:
+    ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/22"]
 kubernetes:
   version: 1.27
   automatic_channel_upgrade: patch
