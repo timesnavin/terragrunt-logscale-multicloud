@@ -47,8 +47,8 @@ inputs = {
   kubernetes_version        = local.region.kubernetes.version
   automatic_channel_upgrade = local.region.kubernetes.automatic_channel_upgrade
 
-    vnet_subnet_id = "${dependency.network.outputs.vnet_id}/kubernetes"
-    pod_subnet_id= "${dependency.network.outputs.vnet_id}/pods"
+  vnet_subnet_id = "${dependency.network.outputs.vnet_id}/kubernetes"
+  pod_subnet_id  = "${dependency.network.outputs.vnet_id}/pods"
 
   # Agents are used by the system this is where cluster privlidged pods will run
   agents_availability_zones    = [1, 2, 3]
@@ -58,7 +58,7 @@ inputs = {
   only_critical_addons_enabled = local.region.kubernetes.only_critical_addons_enabled
 
 
-  
+
   auto_scaler_profile_enabled  = local.region.kubernetes.auto_scaler_profile_enabled
   auto_scaler_profile_expander = local.region.kubernetes.auto_scaler_profile_expander
 
