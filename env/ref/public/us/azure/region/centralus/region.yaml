@@ -10,7 +10,7 @@ kubernetes:
   agents:
     min_count: 1
     max_count: 6
-    size: Standard_D2pds_v5
+    size: standard_d2lds_v5
     only_critical_addons_enabled: true
   auto_scaler_profile_enabled: true
   auto_scaler_profile_expander: least-waste
