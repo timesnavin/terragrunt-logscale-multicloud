@@ -7,6 +7,7 @@ network:
 kubernetes:
   version: 1.27
   automatic_channel_upgrade: patch
+  sku_tier: Free
   agents:
     min_count: 1
     max_count: 6

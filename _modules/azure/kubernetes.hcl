@@ -47,20 +47,24 @@ inputs = {
   # Prefix is used to compute a cluster name should a cluster require replacement.
   prefix = "${dependency.resourceGroup.outputs.resource_group_name}-${local.region.region}"
 
-
+  sku_tier                        = local.region.kubernetes.sku_tier
   kubernetes_version              = local.region.kubernetes.version
   automatic_channel_upgrade       = local.region.kubernetes.automatic_channel_upgrade
   log_analytics_workspace_enabled = false
+  image_cleaner_enabled           = true
 
   role_based_access_control_enabled = true
   rbac_aad_managed                  = true
   rbac_aad                          = true
   rbac_aad_azure_rbac_enabled       = true
+  local_account_disabled            = true
+  workload_identity_enabled         = true
+  oidc_issuer_enabled               = true
 
-  vnet_subnet_id = "${dependency.network.outputs.vnet_id}/subnets/kubernetes"
-  network_plugin = "azure"
-  pod_subnet_id  = "${dependency.network.outputs.vnet_id}/subnets/pods"
-  net_profile_service_cidr = "172.16.0.0/16"
+  vnet_subnet_id             = "${dependency.network.outputs.vnet_id}/subnets/kubernetes"
+  network_plugin             = "azure"
+  pod_subnet_id              = "${dependency.network.outputs.vnet_id}/subnets/pods"
+  net_profile_service_cidr   = "172.16.0.0/16"
   net_profile_dns_service_ip = "172.16.0.2"
 
   # Agents are used by the system this is where cluster privlidged pods will run
@@ -69,9 +73,11 @@ inputs = {
   agegnts_max_count            = local.region.kubernetes.agents.max_count
   agents_size                  = local.region.kubernetes.agents.size
   only_critical_addons_enabled = local.region.kubernetes.agents.only_critical_addons_enabled
+  os_disk_type                 = "Ephemeral"
+  temporary_name_for_rotation  = "agents-rotation"
 
 
-
+  enable_auto_scaling          = true
   auto_scaler_profile_enabled  = local.region.kubernetes.auto_scaler_profile_enabled
   auto_scaler_profile_expander = local.region.kubernetes.auto_scaler_profile_expander
 
