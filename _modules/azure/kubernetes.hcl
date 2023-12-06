@@ -49,6 +49,10 @@ inputs = {
   automatic_channel_upgrade       = local.region.kubernetes.automatic_channel_upgrade
   log_analytics_workspace_enabled = false
 
+  role_based_access_control_enabled = true
+  rbac_aad_managed                  = true
+  rbac_aad                          = true
+  rbac_aad_azure_rbac_enabled       = true
 
   vnet_subnet_id = "${dependency.network.outputs.vnet_id}/kubernetes"
   pod_subnet_id  = "${dependency.network.outputs.vnet_id}/pods"
