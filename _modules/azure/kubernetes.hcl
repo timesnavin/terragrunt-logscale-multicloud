@@ -57,7 +57,7 @@ inputs = {
   vnet_subnet_id = "${dependency.network.outputs.vnet_id}/subnets/kubernetes"
   network_plugin = "azure"
   pod_subnet_id  = "${dependency.network.outputs.vnet_id}/subnets/pods"
-  service_cidr = "172.16.0.1/16"
+  net_profile_service_cidr = "172.16.0.1/16"
 
   # Agents are used by the system this is where cluster privlidged pods will run
   agents_availability_zones    = [1, 2, 3]
