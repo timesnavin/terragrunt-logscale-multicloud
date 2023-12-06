@@ -1,3 +1,5 @@
 region: eastus2
 network:
   address_spaces: ["10.0.8.0/21"]
+  subnet_names: ["gateway", "services", "management", "apps"]
+  subnet_prefixes: ["10.0.8.0/24", "10.0.9.0/24", "10.0.10.0/24", "10.0.12.0/22"]
