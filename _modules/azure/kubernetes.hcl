@@ -29,6 +29,9 @@ dependency "resourceGroup" {
 }
 dependency "network" {
   config_path = "${get_terragrunt_dir()}/../network/"
+  mock_outputs = {
+    vnet_id = "fake-vpc-id"
+  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
