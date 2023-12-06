@@ -38,7 +38,8 @@ dependency "network" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
 
-  resource_group_name = local.resource_group.name
+  resource_group_name = dependency.resourceGroup.outputs.resource_group_name
+  location            = local.region.region
 
   # Prefix is used to compute a cluster name should a cluster require replacement.
   prefix = "${dependency.resourceGroup.outputs.resource_group_name}-${local.region.region}"
