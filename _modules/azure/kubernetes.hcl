@@ -58,7 +58,7 @@ inputs = {
   agents_min_count             = local.region.kubernetes.agents.min_count
   agegnts_max_count            = local.region.kubernetes.agents.max_count
   agents_size                  = local.region.kubernetes.agents.size
-  only_critical_addons_enabled = local.region.kubernetes.only_critical_addons_enabled
+  only_critical_addons_enabled = local.region.kubernetes.agents.only_critical_addons_enabled
 
 
 
