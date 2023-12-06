@@ -1,4 +1,4 @@
-region: eastus2
+region: westus2
 
 # Documentation: Defines the network configuration for the region.
 network:
