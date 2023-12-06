@@ -42,4 +42,6 @@ inputs = {
   use_for_each = true
 
   address_spaces = local.region.network.address_spaces
+  subnet_names = local.region.network.subnet_names
+  subnet_prefixes = local.region.network.subnet_prefixes
 }
