@@ -78,7 +78,7 @@ inputs = {
   # Agents are used by the system this is where cluster privlidged pods will run
   agents_availability_zones    = [1, 2, 3]
   agents_min_count             = local.region.kubernetes.agents.min_count
-  agegnts_max_count            = local.region.kubernetes.agents.max_count
+  agents_max_count             = local.region.kubernetes.agents.max_count
   agents_size                  = local.region.kubernetes.agents.size
   only_critical_addons_enabled = local.region.kubernetes.agents.only_critical_addons_enabled
   os_disk_type                 = "Ephemeral"
