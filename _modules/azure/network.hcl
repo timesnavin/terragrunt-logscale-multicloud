@@ -19,9 +19,9 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
- provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
- region = yamldecode(file(find_in_parent_folders("region.yaml")))
- 
+  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
+
 }
 
 dependency "resourceGroup" {
@@ -34,14 +34,14 @@ dependency "resourceGroup" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  vnet_name = "${dependency.resourceGroup.outputs.resource_group_name}-${local.region.region}"
-  resource_group_name = dependency.resourceGroup.outputs.resource_group_name
-  resource_group_location   = local.region.region
-  tags = local.provider.azure.tags
+  vnet_name               = "${dependency.resourceGroup.outputs.resource_group_name}-${local.region.region}"
+  resource_group_name     = dependency.resourceGroup.outputs.resource_group_name
+  resource_group_location = local.region.region
+  tags                    = local.provider.azure.tags
 
   use_for_each = true
 
-  address_spaces = local.region.network.address_spaces
-  subnet_names = local.region.network.subnet_names
+  address_spaces  = local.region.network.address_spaces
+  subnet_names    = local.region.network.subnet_names
   subnet_prefixes = local.region.network.subnet_prefixes
 }

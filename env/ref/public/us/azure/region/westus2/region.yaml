@@ -1,5 +1,5 @@
 region: westus2
 network:
   address_spaces: ["10.0.16.0/21"]
-  subnet_names: ["gateway", "services", "management", "apps"]
+  subnet_names: ["gateway", "services", "management", "kubernetes"]
   subnet_prefixes: ["10.0.16.0/24", "10.0.17.0/24", "10.0.18.0/24", "10.0.20.0/22"]

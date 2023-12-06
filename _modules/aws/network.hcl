@@ -19,7 +19,7 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  foundation  = yamldecode(file(find_in_parent_folders("foundation.yaml")))
+  foundation = yamldecode(file(find_in_parent_folders("foundation.yaml")))
 }
 
 
@@ -56,14 +56,14 @@ inputs = {
   # private_subnet_ipv6_prefixes = [3, 4, 5]
 
   public_subnet_tags = {
-    "kubernetes.io/role/elb"                      = "1"
+    "kubernetes.io/role/elb" = "1"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/eks" = "shared"
-    "kubernetes.io/role/internal-elb"             = "1"
-    "karpenter.sh/discovery"                      = "eks"
+    "kubernetes.io/cluster/eks"       = "shared"
+    "kubernetes.io/role/internal-elb" = "1"
+    "karpenter.sh/discovery"          = "eks"
   }
 
-  default_network_acl_ingress = [ { "action": "allow", "cidr_block": "0.0.0.0/0", "from_port": 443, "protocol": "tcp", "rule_no": 100, "to_port": 443 }, { "action": "allow", "from_port": 443, "ipv6_cidr_block": "::/0", "protocol": "tcp", "rule_no": 101, "to_port": 443 } ]
+  default_network_acl_ingress = [{ "action" : "allow", "cidr_block" : "0.0.0.0/0", "from_port" : 443, "protocol" : "tcp", "rule_no" : 100, "to_port" : 443 }, { "action" : "allow", "from_port" : 443, "ipv6_cidr_block" : "::/0", "protocol" : "tcp", "rule_no" : 101, "to_port" : 443 }]
 }

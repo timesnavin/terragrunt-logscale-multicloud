@@ -6,10 +6,10 @@
 
 
 locals {
-  backend  = yamldecode(file(find_in_parent_folders("backend.yaml")))
-  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  backend         = yamldecode(file(find_in_parent_folders("backend.yaml")))
+  provider        = yamldecode(file(find_in_parent_folders("provider.yaml")))
   metadata_common = yamldecode(file(find_in_parent_folders("metadata_common.yaml")))
-  
+
 }
 
 remote_state {
@@ -31,7 +31,7 @@ remote_state {
 generate "provider_aws" {
   path      = "provider_aws.tf"
   if_exists = "overwrite_terragrunt"
-  disable = local.provider.type == "aws" ? false  : true
+  disable   = local.provider.type == "aws" ? false : true
   contents  = <<-EOF
 
     variable "provider_aws_tags" {
@@ -53,7 +53,7 @@ EOF
 generate "provider_azure" {
   path      = "provider_azure.tf"
   if_exists = "overwrite_terragrunt"
-  disable = local.provider.type == "azure" ? false  : true
+  disable   = local.provider.type == "azure" ? false : true
   contents  = <<-EOF
 
   provider "azurerm" {
@@ -66,7 +66,7 @@ generate "provider_azure" {
 generate "provider_gcp" {
   path      = "provider_gcp.tf"
   if_exists = "overwrite_terragrunt"
-  disable = local.provider.type == "google" ? false  : true
+  disable   = local.provider.type == "google" ? false : true
   contents  = <<-EOF
 
   variable "provider_google_project" {
@@ -92,11 +92,11 @@ generate "provider_gcp" {
 }
 
 
-inputs = {  
-  provider_aws_tags = local.metadata_common.tags
-  provider_aws_region = local.provider.type == "aws" ? local.provider.aws.region : "" 
+inputs = {
+  provider_aws_tags   = local.metadata_common.tags
+  provider_aws_region = local.provider.type == "aws" ? local.provider.aws.region : ""
 
-  provider_google_project = local.provider.type == "google" ? local.provider.google.project_id : ""
-  provider_google_region = local.provider.type == "google" ? local.provider.google.region : ""
+  provider_google_project     = local.provider.type == "google" ? local.provider.google.project_id : ""
+  provider_google_region      = local.provider.type == "google" ? local.provider.google.region : ""
   provider_google_credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
 }
