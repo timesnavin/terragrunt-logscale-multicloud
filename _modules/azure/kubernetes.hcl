@@ -85,7 +85,7 @@ inputs = {
   ]
   only_critical_addons_enabled = local.region.kubernetes.agents.only_critical_addons_enabled
   os_disk_type                 = "Ephemeral"
-  temporary_name_for_rotation  = "agents-rotation"
+  temporary_name_for_rotation  = "tempagents"
 
 
   enable_auto_scaling          = true
