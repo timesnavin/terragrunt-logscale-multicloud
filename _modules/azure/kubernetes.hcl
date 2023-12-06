@@ -45,17 +45,19 @@ inputs = {
   prefix = "${dependency.resourceGroup.outputs.resource_group_name}-${local.region.region}"
 
 
-  kubernetes_version        = local.region.kubernetes.version
-  automatic_channel_upgrade = local.region.kubernetes.automatic_channel_upgrade
+  kubernetes_version              = local.region.kubernetes.version
+  automatic_channel_upgrade       = local.region.kubernetes.automatic_channel_upgrade
+  log_analytics_workspace_enabled = false
+
 
   vnet_subnet_id = "${dependency.network.outputs.vnet_id}/kubernetes"
   pod_subnet_id  = "${dependency.network.outputs.vnet_id}/pods"
 
   # Agents are used by the system this is where cluster privlidged pods will run
   agents_availability_zones    = [1, 2, 3]
-  agents_min_count             = local.region.kubernetes.agents_min_count
-  agegnts_max_count            = local.region.kubernetes.agents_max_count
-  agents_size                  = local.region.kubernetes.agents_size
+  agents_min_count             = local.region.kubernetes.agents.min_count
+  agegnts_max_count            = local.region.kubernetes.agents.max_count
+  agents_size                  = local.region.kubernetes.agents.size
   only_critical_addons_enabled = local.region.kubernetes.only_critical_addons_enabled
 
 
