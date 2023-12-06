@@ -66,10 +66,10 @@ inputs = {
   pod_subnet_id              = "${dependency.network.outputs.vnet_id}/subnets/pods"
   net_profile_service_cidr   = "172.16.0.0/16"
   net_profile_dns_service_ip = "172.16.0.2"
-  network_contributor_role_assigned_subnet_ids = [
-    "${dependency.network.outputs.vnet_id}/subnets/kubernetes",
-    "${dependency.network.outputs.vnet_id}/subnets/pods"
-  ]
+  network_contributor_role_assigned_subnet_ids = {
+    kubernetes = "${dependency.network.outputs.vnet_id}/subnets/kubernetes"
+    pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
+  }
   # Agents are used by the system this is where cluster privlidged pods will run
   agents_availability_zones    = [1, 2, 3]
   agents_min_count             = local.region.kubernetes.agents.min_count
