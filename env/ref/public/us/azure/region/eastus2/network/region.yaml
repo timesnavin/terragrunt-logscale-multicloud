@@ -1,3 +1,0 @@
-region: centralus
-network:
-  address_spaces: ["10.0.0.0/16"]
