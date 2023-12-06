@@ -80,9 +80,6 @@ inputs = {
   agents_min_count             = local.region.kubernetes.agents.min_count
   agegnts_max_count            = local.region.kubernetes.agents.max_count
   agents_size                  = local.region.kubernetes.agents.size
-  agents_taints =[
-    "CriticalAddonsOnly=true:PreferNoSchedule"
-  ]
   only_critical_addons_enabled = local.region.kubernetes.agents.only_critical_addons_enabled
   os_disk_type                 = "Ephemeral"
   temporary_name_for_rotation  = "tempagents"
