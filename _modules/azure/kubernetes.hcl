@@ -66,14 +66,23 @@ inputs = {
   pod_subnet_id              = "${dependency.network.outputs.vnet_id}/subnets/pods"
   net_profile_service_cidr   = "172.16.0.0/16"
   net_profile_dns_service_ip = "172.16.0.2"
+
   network_contributor_role_assigned_subnet_ids = {
-    pods       = "${dependency.network.outputs.vnet_id}/subnets/pods"
+    pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
   }
+
+  ingress_application_gateway_enabled   = local.region.kubernetes.ingress_application_gateway_enabled
+  ingress_application_gateway_subnet_id = local.region.kubernetes.ingress_application_gateway_enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
+  ingress_application_gateway_subnet_id = local.region.kubernetes.ingress_application_gateway_enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
+
   # Agents are used by the system this is where cluster privlidged pods will run
   agents_availability_zones    = [1, 2, 3]
   agents_min_count             = local.region.kubernetes.agents.min_count
   agegnts_max_count            = local.region.kubernetes.agents.max_count
   agents_size                  = local.region.kubernetes.agents.size
+  agents_taints =[
+    "CriticalAddonsOnly=true:PreferNoSchedule"
+  ]
   only_critical_addons_enabled = local.region.kubernetes.agents.only_critical_addons_enabled
   os_disk_type                 = "Ephemeral"
   temporary_name_for_rotation  = "agents-rotation"
