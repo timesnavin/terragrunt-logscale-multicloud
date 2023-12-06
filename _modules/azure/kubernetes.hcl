@@ -71,9 +71,9 @@ inputs = {
     pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
   }
 
-  ingress_application_gateway_enabled   = local.region.kubernetes.ingress_application_gateway_enabled
-  ingress_application_gateway_subnet_id = local.region.kubernetes.ingress_application_gateway_enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
-  ingress_application_gateway_subnet_id = local.region.kubernetes.ingress_application_gateway_enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
+  ingress_application_gateway_enabled   = local.region.kubernetes.applicaion_gateway.enabled
+  ingress_application_gateway_subnet_id = local.region.kubernetes.applicaion_gateway.enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
+  ingress_application_gateway_subnet_id = local.region.kubernetes.applicaion_gateway.enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
 
   # Agents are used by the system this is where cluster privlidged pods will run
   agents_availability_zones    = [1, 2, 3]
