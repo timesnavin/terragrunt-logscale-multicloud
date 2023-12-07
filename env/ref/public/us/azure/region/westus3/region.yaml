@@ -15,7 +15,7 @@ kubernetes:
     only_critical_addons_enabled: false
   auto_scaler_profile_enabled: true
   auto_scaler_profile_expander: least-waste
-  applicaion_gateway:
+  application_gateway:
     enabled: true
   node_pools:
     - compute2:
@@ -26,7 +26,7 @@ kubernetes:
           name: compute2
           vm_size: standard_d2lds_v5
           zones: ["1", "2", "3"]
-      compute4:
+    - compute4:
         - enable_auto_scaling: true
           kubernetes_cluster_id: x
           max_count: 6
