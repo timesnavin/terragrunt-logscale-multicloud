@@ -69,9 +69,9 @@ inputs = {
   network_policy             = "azure"
 
   # Left for postarity this is buggy in the API instead we need a userdeffined identity and need to pre delegate
-  // network_contributor_role_assigned_subnet_ids = {
-  //   pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
-  // }
+  network_contributor_role_assigned_subnet_ids = {
+    pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
+  }
 
   ingress_application_gateway_enabled   = local.region.kubernetes.application_gateway.enabled
   ingress_application_gateway_subnet_id = local.region.kubernetes.application_gateway.enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
