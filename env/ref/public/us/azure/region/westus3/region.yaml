@@ -33,8 +33,8 @@ kubernetes:
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
       linux_os_config:
-        sysctl_configs:
-          fs_file_max: 8192
+        sysctl_config:
+          fs_file_max: 64000
       custom_ca_trust_enabled: false
       enable_host_encryption: true
       enable_node_public_ip: false
@@ -58,8 +58,8 @@ kubernetes:
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
       linux_os_config:
-        sysctl_configs:
-          fs_file_max: 8192
+        sysctl_config:
+          fs_file_max: 64000
       custom_ca_trust_enabled: false
       enable_host_encryption: true
       enable_node_public_ip: false
@@ -87,8 +87,8 @@ kubernetes:
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
       linux_os_config:
-        sysctl_configs:
-          fs_file_max: 16000
+        sysctl_config:
+          fs_file_max: 64000
       custom_ca_trust_enabled: false
       enable_host_encryption: true
       enable_node_public_ip: false
