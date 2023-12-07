@@ -45,6 +45,20 @@ inputs = {
   subnet_names    = local.region.network.subnet_names
   subnet_prefixes = local.region.network.subnet_prefixes
 
+subnet_delegation = {
+    pods = [
+      {
+        name = "akspods"
+        service_delegation = {
+          name = "Microsoft.ContainerService/managedClusters"
+          actions = [
+            "Microsoft.Network/virtualNetworks/subnets/action",
+          ]
+        }
+      }
+    ]
+  }
+
   // subnet_delegation = {
   //   pods = {
   //     "Microsoft.ContainerService.managedClusters" = {
