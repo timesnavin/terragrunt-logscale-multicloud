@@ -28,6 +28,9 @@ kubernetes:
       node_labels:
         computeClass: compute
         storageClass: network
+      node_taints: ["computeClass=compute:PreferNoSchedule"]
+      cpu_cfs_quota_enabled: true
+      cpu_manager_policy: static
     compute4:
       enable_auto_scaling: true
       max_count: 6
@@ -38,3 +41,6 @@ kubernetes:
       node_labels:
         computeClass: compute
         storageClass: network
+      node_taints: ["computeClass=compute:PreferNoSchedule"]
+      cpu_cfs_quota_enabled: true
+      cpu_manager_policy: static
