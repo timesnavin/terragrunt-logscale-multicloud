@@ -66,6 +66,7 @@ inputs = {
   pod_subnet_id              = "${dependency.network.outputs.vnet_id}/subnets/pods"
   net_profile_service_cidr   = "172.16.0.0/16"
   net_profile_dns_service_ip = "172.16.0.2"
+  network_policy = "azure"
 
   network_contributor_role_assigned_subnet_ids = {
     pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
