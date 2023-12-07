@@ -18,11 +18,11 @@ kubernetes:
   application_gateway:
     enabled: true
   node_pools:
-    compute2core:
+    wc2snx:
       enable_auto_scaling: true
       max_count: 6
       min_count: 0
-      name: compute2core
+      name: wc2snx
       vm_size: standard_d2lds_v5
       zones: ["1", "2", "3"]
       node_labels:
@@ -31,11 +31,14 @@ kubernetes:
       node_taints: ["computeClass=compute:PreferNoSchedule"]
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
-    compute4core:
+      linux_os_config:
+        sysctl_configs:
+          - fs_file_max: 8192
+    wc4snx:
       enable_auto_scaling: true
       max_count: 6
       min_count: 0
-      name: compute4core
+      name: wc4snx
       vm_size: standard_d4lds_v5
       zones: ["1", "2", "3"]
       node_labels:
@@ -44,16 +47,26 @@ kubernetes:
       node_taints: ["computeClass=compute:PreferNoSchedule"]
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
-    localnvme8core:
+      linux_os_config:
+        sysctl_configs:
+          - fs_file_max: 8192
+    wc8slnx:
       enable_auto_scaling: true
       max_count: 6
       min_count: 0
-      name: localnvme8core
+      name: wc8slnx
       vm_size: Standard_L8s_v3
       zones: ["1", "2", "3"]
       node_labels:
         computeClass: compute
         storageClass: local-nvme
-      node_taints: ["computeClass=compute:PreferNoSchedule","storageClass=local-nvme:PreferNoSchedule"]
+      node_taints:
+        [
+          "computeClass=compute:PreferNoSchedule",
+          "storageClass=local-nvme:PreferNoSchedule",
+        ]
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
+      linux_os_config:
+        sysctl_configs:
+          - fs_file_max: 16000
