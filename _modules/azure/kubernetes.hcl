@@ -68,9 +68,9 @@ inputs = {
   net_profile_dns_service_ip = "172.16.0.2"
   network_policy = "azure"
 
-  network_contributor_role_assigned_subnet_ids = {
-    pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
-  }
+  // network_contributor_role_assigned_subnet_ids = {
+  //   pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
+  // }
 
   ingress_application_gateway_enabled   = local.region.kubernetes.applicaion_gateway.enabled
   ingress_application_gateway_subnet_id = local.region.kubernetes.applicaion_gateway.enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
