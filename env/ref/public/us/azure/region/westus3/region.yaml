@@ -18,11 +18,11 @@ kubernetes:
   application_gateway:
     enabled: true
   node_pools:
-    compute2:
+    compute-2-core:
       enable_auto_scaling: true
       max_count: 6
       min_count: 0
-      name: compute2
+      name: compute-2-core
       vm_size: standard_d2lds_v5
       zones: ["1", "2", "3"]
       node_labels:
@@ -31,16 +31,29 @@ kubernetes:
       node_taints: ["computeClass=compute:PreferNoSchedule"]
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
-    compute4:
+    compute-4-core:
       enable_auto_scaling: true
       max_count: 6
       min_count: 0
-      name: compute4
+      name: compute-4-core
       vm_size: standard_d4lds_v5
       zones: ["1", "2", "3"]
       node_labels:
         computeClass: compute
         storageClass: network
       node_taints: ["computeClass=compute:PreferNoSchedule"]
+      cpu_cfs_quota_enabled: true
+      cpu_manager_policy: static
+    local-nvme-8-core:
+      enable_auto_scaling: true
+      max_count: 6
+      min_count: 0
+      name: local-nvme-8-core
+      vm_size: Standard_L8s_v3
+      zones: ["1", "2", "3"]
+      node_labels:
+        computeClass: compute
+        storageClass: local-nvme
+      node_taints: ["computeClass=compute:PreferNoSchedule","storageClass=local-nvme:PreferNoSchedule"]
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
