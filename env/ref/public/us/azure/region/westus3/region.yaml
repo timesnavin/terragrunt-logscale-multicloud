@@ -25,6 +25,9 @@ kubernetes:
       name: compute2
       vm_size: standard_d2lds_v5
       zones: ["1", "2", "3"]
+      node_labels:
+        computeClass: compute
+        storageClass: network
     compute4:
       enable_auto_scaling: true
       max_count: 6
@@ -32,3 +35,6 @@ kubernetes:
       name: compute4
       vm_size: standard_d4lds_v5
       zones: ["1", "2", "3"]
+      node_labels:
+        computeClass: compute
+        storageClass: network
