@@ -17,3 +17,14 @@ kubernetes:
   auto_scaler_profile_expander: least-waste
   applicaion_gateway:
     enabled: true
+  node_pools:
+    compute-2:
+      min_count: 1
+      max_count: 6
+      size: standard_d2lds_v5
+      zones: ["1", "2", "3"]
+    compute-4:
+      min_count: 1
+      max_count: 6
+      size: standard_d4lds_v5
+      zones: ["1", "2", "3"]

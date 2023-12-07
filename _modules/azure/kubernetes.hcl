@@ -68,6 +68,7 @@ inputs = {
   net_profile_dns_service_ip = "172.16.0.2"
   network_policy = "azure"
 
+  # Left for postarity this is buggy in the API instead we need a userdeffined identity and need to pre delegate
   // network_contributor_role_assigned_subnet_ids = {
   //   pods = "${dependency.network.outputs.vnet_id}/subnets/pods"
   // }
@@ -85,6 +86,7 @@ inputs = {
   os_disk_type                 = "Ephemeral"
   temporary_name_for_rotation  = "tempagents"
 
+  node_pools = local.region.kubernetes.node_pools
 
   enable_auto_scaling          = true
   auto_scaler_profile_enabled  = local.region.kubernetes.auto_scaler_profile_enabled
