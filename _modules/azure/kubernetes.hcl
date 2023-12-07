@@ -61,6 +61,8 @@ inputs = {
   workload_identity_enabled         = true
   oidc_issuer_enabled               = true
 
+  identity_ids = null
+
   vnet_subnet_id             = "${dependency.network.outputs.vnet_id}/subnets/kubernetes"
   network_plugin             = "azure"
   pod_subnet_id              = "${dependency.network.outputs.vnet_id}/subnets/pods"
