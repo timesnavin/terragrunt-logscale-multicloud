@@ -86,7 +86,14 @@ inputs = {
   os_disk_type                 = "Ephemeral"
   temporary_name_for_rotation  = "tempagents"
 
-  node_pools = local.region.kubernetes.node_pools
+  // node_pools = local.region.kubernetes.node_pools
+  node_pools = {
+    for key, value in local.region.kubernetes.node_pools :
+    key => merge(value, {
+      vnet_subnet_id = "${dependency.network.outputs.vnet_id}/subnets/kubernetes",
+      pod_subnet_id  = "${dependency.network.outputs.vnet_id}/subnets/pods"
+    })
+  }
 
   enable_auto_scaling          = true
   auto_scaler_profile_enabled  = local.region.kubernetes.auto_scaler_profile_enabled
