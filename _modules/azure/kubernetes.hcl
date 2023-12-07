@@ -66,7 +66,7 @@ inputs = {
   pod_subnet_id              = "${dependency.network.outputs.vnet_id}/subnets/pods"
   net_profile_service_cidr   = "172.16.0.0/16"
   net_profile_dns_service_ip = "172.16.0.2"
-  network_policy = "azure"
+  network_policy             = "azure"
 
   # Left for postarity this is buggy in the API instead we need a userdeffined identity and need to pre delegate
   // network_contributor_role_assigned_subnet_ids = {

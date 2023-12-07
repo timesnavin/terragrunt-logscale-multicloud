@@ -26,11 +26,13 @@ kubernetes:
       name: compute2
       vm_size: standard_d2lds_v5
       zones: ["1", "2", "3"]
-    compute4:
-      enable_auto_scaling: true
-      kubernetes_cluster_id: x
-      max_count: 6
-      min_count: 1
-      name: compute4
-      vm_size: standard_d4lds_v5
-      zones: ["1", "2", "3"]
+      pod_subnet_id: "${dependency.network.outputs.vnet_id}/subnets/pods"
+
+    # compute4:
+    #   enable_auto_scaling: true
+    #   kubernetes_cluster_id: x
+    #   max_count: 6
+    #   min_count: 1
+    #   name: compute4
+    #   vm_size: standard_d4lds_v5
+    #   zones: ["1", "2", "3"]
