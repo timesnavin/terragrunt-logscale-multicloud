@@ -20,6 +20,7 @@ kubernetes:
   node_pools:
     wc2snx:
       enable_auto_scaling: true
+      node_count: 0
       max_count: 6
       min_count: 0
       name: wc2snx
@@ -34,6 +35,15 @@ kubernetes:
       linux_os_config:
         sysctl_configs:
           - fs_file_max: 8192
+      custom_ca_trust_enabled: false
+      enable_host_encryption: true
+      enable_node_public_ip: false
+      fips_enabled: false
+      kubelet_disk_type: OS
+      max_pods: 20
+      os_disk_size_gb: 128
+      os_sku: "Ubuntu"
+
     wc4snx:
       enable_auto_scaling: true
       max_count: 6
@@ -50,6 +60,15 @@ kubernetes:
       linux_os_config:
         sysctl_configs:
           - fs_file_max: 8192
+      custom_ca_trust_enabled: false
+      enable_host_encryption: true
+      enable_node_public_ip: false
+      fips_enabled: false
+      kubelet_disk_type: OS
+      max_pods: 20
+      os_disk_size_gb: 128
+      os_sku: "Ubuntu"
+
     wc8slnx:
       enable_auto_scaling: true
       max_count: 6
@@ -70,3 +89,11 @@ kubernetes:
       linux_os_config:
         sysctl_configs:
           - fs_file_max: 16000
+      custom_ca_trust_enabled: false
+      enable_host_encryption: true
+      enable_node_public_ip: false
+      fips_enabled: false
+      kubelet_disk_type: OS
+      max_pods: 20
+      os_disk_size_gb: 128
+      os_sku: "Ubuntu"
