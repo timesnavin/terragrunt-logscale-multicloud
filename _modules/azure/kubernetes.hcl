@@ -78,6 +78,7 @@ inputs = {
   ingress_application_gateway_subnet_id = local.region.kubernetes.application_gateway.enabled == true ? "${dependency.network.outputs.vnet_id}/subnets/gateway" : null
 
   # Agents are used by the system this is where cluster privlidged pods will run
+  agents_pool_name             = "system"
   agents_availability_zones    = [1, 2, 3]
   agents_min_count             = local.region.kubernetes.agents.min_count
   agents_max_count             = local.region.kubernetes.agents.max_count
