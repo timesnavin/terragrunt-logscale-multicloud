@@ -33,6 +33,9 @@ kubernetes:
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
       linux_os_config:
+        transparent_huge_page_enabled: madvise
+        transparent_huge_page_defrag: defer+madvise
+        swap_file_size_mb: 0
         sysctl_config:
           fs_file_max: 64000
       custom_ca_trust_enabled: false
@@ -58,6 +61,9 @@ kubernetes:
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
       linux_os_config:
+        transparent_huge_page_enabled: madvise
+        transparent_huge_page_defrag: defer+madvise
+        swap_file_size_mb: 0
         sysctl_config:
           fs_file_max: 64000
       custom_ca_trust_enabled: false
@@ -87,6 +93,9 @@ kubernetes:
       cpu_cfs_quota_enabled: true
       cpu_manager_policy: static
       linux_os_config:
+        transparent_huge_page_enabled: madvise
+        transparent_huge_page_defrag: defer+madvise
+        swap_file_size_mb: 0
         sysctl_config:
           fs_file_max: 64000
       custom_ca_trust_enabled: false
