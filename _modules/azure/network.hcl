@@ -44,4 +44,18 @@ inputs = {
   address_spaces  = local.region.network.address_spaces
   subnet_names    = local.region.network.subnet_names
   subnet_prefixes = local.region.network.subnet_prefixes
+
+  subnet_delegation = {
+    pods = {
+      "Microsoft.ContainerService.managedClusters" = {
+        service_name = "Microsoft.ContainerService/managedClusters"
+        service_actions = [
+          "Microsoft.Network/virtualNetworks/subnets/join/action",
+          "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+          "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action",
+        ]
+      }
+    }
+  }
+
 }
