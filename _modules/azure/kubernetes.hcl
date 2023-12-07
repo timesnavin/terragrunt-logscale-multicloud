@@ -95,7 +95,7 @@ inputs = {
     key => merge(value, {
       vnet_subnet_id = "${dependency.network.outputs.vnet_id}/subnets/kubernetes",
       pod_subnet_id  = "${dependency.network.outputs.vnet_id}/subnets/pods"
-      tags = local.provider.azure.tags
+      tags           = local.provider.azure.tags
     })
   }
 
