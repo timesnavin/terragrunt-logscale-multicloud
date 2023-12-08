@@ -6,4 +6,4 @@ releases:
   - name: argo
     namespace: argo
     chart: argo/argo-cd
-    version: "5.50.1"
+    version: "5.51.6"
