@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "git::https://github.com/terraform-google-modules/terraform-google-project-factory.git?ref=14.2.0"
+  source = "git::https://github.com/terraform-google-modules/terraform-google-project-factory.git?ref=v14.2.0"
 }
 
 
