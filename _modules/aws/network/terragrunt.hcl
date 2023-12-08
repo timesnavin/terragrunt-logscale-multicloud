@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "git::https://github.com/Azure/terraform-azurerm-network.gits?ref=5.2.0"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc.git?ref=5.2.0"
 }
 
 

@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "tfr:///terraform-google-modules/network/google?version=6.0.1"
+  source = "git::https://github.com/terraform-google-modules/terraform-google-network.git?ref=6.0.1"
 }
 
 
