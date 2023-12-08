@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "tfr:///terraform-aws-modules/vpc/aws?version=5.2.0"
+  source = "terraform-aws-modules/vpc/aws?version=5.2.0"
 }
 
 
