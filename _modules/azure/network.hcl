@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "tfr:///Azure/network/azurerm?version=5.3.0"
+  source = "tfr:///Azure/network/azurerm?version=5.2.0"
 }
 
 
