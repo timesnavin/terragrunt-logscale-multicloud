@@ -6,7 +6,7 @@
   ],
   "terraform": {
     "fileMatch": [
-      "^_modules/.*\\.hcl$"
+      "_modules\\/.*\\.hcl$"
     ]
   }
 }
