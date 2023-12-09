@@ -24,9 +24,7 @@ locals {
 
 }
 
-dependency "resourceGroup" {
-  config_path = "${get_terragrunt_dir()}/../../../resourcegroup/"
-}
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
@@ -34,8 +32,8 @@ dependency "resourceGroup" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  vnet_name               = "${dependency.resourceGroup.outputs.resource_group_name}-${local.region.region}"
-  resource_group_name     = dependency.resourceGroup.outputs.resource_group_name
+  vnet_name               = local.provider.azure.resource_group_name
+  resource_group_name     = local.provider.azure.resource_group_name
   resource_group_location = local.region.region
   tags                    = local.provider.azure.tags
 

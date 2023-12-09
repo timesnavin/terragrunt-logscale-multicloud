@@ -24,9 +24,6 @@ locals {
 
 }
 
-dependency "resourceGroup" {
-  config_path = "${get_terragrunt_dir()}/../../../resourcegroup/"
-}
 dependency "network" {
   config_path = "${get_terragrunt_dir()}/../network/"
   mock_outputs = {
@@ -41,7 +38,7 @@ dependency "network" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
 
-  resource_group_name = dependency.resourceGroup.outputs.resource_group_name
+  resource_group_name = local.provider.azure.resource_group_name
   location            = local.region.region
 
   # Prefix is used to compute a cluster name should a cluster require replacement.
