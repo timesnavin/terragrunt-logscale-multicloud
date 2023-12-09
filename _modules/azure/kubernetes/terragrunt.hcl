@@ -42,7 +42,7 @@ inputs = {
   location            = local.region.region
 
   # Prefix is used to compute a cluster name should a cluster require replacement.
-  prefix = "${dependency.resourceGroup.outputs.resourceGroup}-${local.region.region}"
+  prefix = local.provider.azure.resourceGroup
 
   sku_tier                        = local.region.kubernetes.sku_tier
   kubernetes_version              = local.region.kubernetes.version
