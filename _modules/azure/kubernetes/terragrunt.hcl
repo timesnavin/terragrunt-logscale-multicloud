@@ -38,11 +38,11 @@ dependency "network" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
 
-  resource_group_name = local.provider.azure.resource_group_name
+  resource_group_name = local.provider.azure.resourceGroup
   location            = local.region.region
 
   # Prefix is used to compute a cluster name should a cluster require replacement.
-  prefix = "${dependency.resourceGroup.outputs.resource_group_name}-${local.region.region}"
+  prefix = "${dependency.resourceGroup.outputs.resourceGroup}-${local.region.region}"
 
   sku_tier                        = local.region.kubernetes.sku_tier
   kubernetes_version              = local.region.kubernetes.version

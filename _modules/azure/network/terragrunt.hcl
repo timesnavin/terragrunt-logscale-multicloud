@@ -32,8 +32,8 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  vnet_name               = local.provider.azure.resource_group_name
-  resource_group_name     = local.provider.azure.resource_group_name
+  vnet_name               = local.provider.azure.resourceGroup
+  resource_group_name     = local.provider.azure.resourceGroup
   resource_group_location = local.region.region
   tags                    = local.provider.azure.tags
 
