@@ -1,4 +1,4 @@
 type: google
 google:
-  project_id: logsr-life-production
+  project_id: cs-logscale-ps
   region: us-central1

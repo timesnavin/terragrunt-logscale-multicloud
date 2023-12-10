@@ -30,7 +30,8 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  project_id = local.provider.google.project_id
+  name = local.provider.google.project_id
+  disable_services_on_destroy = false
   // activate_apis = [
   //   "artifactregistry.googleapis.com",
   //   "autoscaling.googleapis.com",
