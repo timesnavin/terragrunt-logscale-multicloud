@@ -32,8 +32,8 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  name = local.provider.provider.name
-  cidr = local.provider.region.network.address_space
+  name = local.provider.name
+  cidr = local.region.network.address_space
 
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
   private_subnets = local.provider.region.network.private_subnets
