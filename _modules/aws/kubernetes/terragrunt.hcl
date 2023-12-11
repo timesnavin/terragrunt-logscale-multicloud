@@ -45,5 +45,7 @@ inputs = {
   }
   vpc_id                   = dependency.network.outputs.vpc_id
   subnet_ids               = dependency.network.outputs.private_subnets
+
+  aws_auth_roles = local.region.kubernetes.aws_auth_roles
   
 }

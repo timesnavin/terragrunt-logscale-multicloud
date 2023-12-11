@@ -6,3 +6,8 @@ network:
 kubernetes:
   version: 1.27
   pod_cidr:
+  aws_auth_roles:
+    - rolearn: arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write
+      username: cs-full-admins-write
+      groups:
+        - system:masters
