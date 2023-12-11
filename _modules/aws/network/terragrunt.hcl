@@ -20,8 +20,8 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   foundation = yamldecode(file(find_in_parent_folders("foundation.yaml")))
-  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
+  provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  region     = yamldecode(file(find_in_parent_folders("region.yaml")))
 
 }
 
@@ -32,7 +32,7 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  name = local.provider.region.name
+  name = local.provider.provider.name
   cidr = local.provider.region.network.address_space
 
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
