@@ -20,6 +20,9 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   foundation = yamldecode(file(find_in_parent_folders("foundation.yaml")))
+  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
+
 }
 
 
@@ -29,12 +32,12 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  name = "logscale-${local.foundation.name}"
-  cidr = "10.0.0.0/16"
+  name = local.provider.region.name
+  cidr = local.provider.region.network.address_space
 
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  private_subnets = ["10.0.0.0/20", "10.0.16.0/20", "10.0.32.0/20"]
-  public_subnets  = ["10.0.48.0/20", "10.0.64.0/20", "10.0.80.0/20"]
+  private_subnets = local.provider.region.network.private_subnets
+  public_subnets  = local.provider.region.network.public_subnets
 
   enable_nat_gateway     = true
   enable_vpn_gateway     = false
