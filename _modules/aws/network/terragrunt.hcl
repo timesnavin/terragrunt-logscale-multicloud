@@ -36,8 +36,8 @@ inputs = {
   cidr = local.region.network.address_space
 
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
-  private_subnets = local.provider.region.network.private_subnets
-  public_subnets  = local.provider.region.network.public_subnets
+  private_subnets = local.region.network.private_subnets
+  public_subnets  = local.region.network.public_subnets
 
   enable_nat_gateway     = true
   enable_vpn_gateway     = false
