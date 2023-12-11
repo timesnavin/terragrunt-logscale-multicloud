@@ -39,6 +39,10 @@ inputs = {
   cluster_version                = local.region.kubernetes,version
   cluster_endpoint_public_access = true
 
+  cluster_addons = {
+    kube-proxy = {}
+    vpc-cni    = {}
+  }
   vpc_id                   = dependency.network.outputs.vpc_id
   subnet_ids               = dependency.network.outputs.private_subnets
   
