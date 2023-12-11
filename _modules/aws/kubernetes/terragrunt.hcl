@@ -36,7 +36,7 @@ dependency "network" {
 inputs = {
   
   cluster_name                   = local.provider.aws.name
-  cluster_version                = local.region.kubernetes,version
+  cluster_version                = local.region.kubernetes.version
   cluster_endpoint_public_access = true
 
   cluster_addons = {
