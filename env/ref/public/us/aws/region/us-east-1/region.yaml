@@ -3,3 +3,6 @@ network:
   address_space: "10.0.0.0/20"
   private_subnets: ["10.0.0.0/23", "10.0.2.0/23", "10.0.4.0/23"]
   public_subnets: ["10.0.13.0/24", "10.0.14.0/24", "10.0.15.0/24"]
+kubernetes:
+  version: 1.27
+  pod_cidr:
