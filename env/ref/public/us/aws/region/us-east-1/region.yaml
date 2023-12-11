@@ -5,9 +5,10 @@ network:
   public_subnets: ["10.0.13.0/24", "10.0.14.0/24", "10.0.15.0/24"]
 kubernetes:
   version: 1.27
-  pod_cidr:
   aws_auth_roles:
     - rolearn: arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write
       username: cs-full-admins-write
       groups:
         - system:masters
+  aws_auth_accounts:
+    - 042445652404

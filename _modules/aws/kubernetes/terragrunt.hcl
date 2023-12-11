@@ -48,5 +48,5 @@ inputs = {
 
   manage_aws_auth_configmap = true
   aws_auth_roles = local.region.kubernetes.aws_auth_roles
-  
+  aws_auth_accounts = local.region.kubernetes.aws_auth_accounts
 }
