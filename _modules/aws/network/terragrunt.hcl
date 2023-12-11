@@ -32,7 +32,7 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  name = local.provider.name
+  name = local.provider.aws.name
   cidr = local.region.network.address_space
 
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
