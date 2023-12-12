@@ -49,4 +49,40 @@ inputs = {
   manage_aws_auth_configmap = true
   aws_auth_roles = local.region.kubernetes.aws_auth_roles
   aws_auth_accounts = local.region.kubernetes.aws_auth_accounts
+
+  # EKS Managed Node Group(s)
+  eks_managed_node_group_defaults = {
+    ami_type       = "AL2_x86_64"
+    instance_types = ["m6i.large", "m5.large", "m5n.large", "m5zn.large"]
+
+    attach_cluster_primary_security_group = true
+    vpc_security_group_ids                = [aws_security_group.additional.id]
+    iam_role_additional_policies = {
+      additional = aws_iam_policy.additional.arn
+    }
+  }
+
+  eks_managed_node_groups = {
+    blue = {}
+    green = {
+      min_size     = 1
+      max_size     = 3
+      desired_size = 1
+
+      instance_types = ["t3.large"]
+      capacity_type  = "SPOT"
+      // labels = {
+      //   Environment = "test"
+      //   GithubRepo  = "terraform-aws-eks"
+      //   GithubOrg   = "terraform-aws-modules"
+      // }
+
+
+      update_config = {
+        max_unavailable_percentage = 33 # or set `max_unavailable`
+      }
+
+      
+    }
+  }
 }
