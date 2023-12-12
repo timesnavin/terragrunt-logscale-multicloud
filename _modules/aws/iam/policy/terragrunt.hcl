@@ -33,7 +33,7 @@ locals {
 inputs = {
 
   name_prefix = local.provider.aws.name
-  path        = "${local.foundation.path_prefix}/"
+  path        = "${local.provider.aws.name}/"
 
   policy = local.policy
 
