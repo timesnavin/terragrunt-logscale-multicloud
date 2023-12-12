@@ -33,7 +33,7 @@ locals {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
 
-  name_prefix = local.provider.aws.name
+  name_prefix = local.policy_source
   path        = local.provider.aws.iam_path
 
   policy = local.policy
