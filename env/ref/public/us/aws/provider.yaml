@@ -2,6 +2,7 @@ type: aws
 aws:
   region: us-east-1
   name: ref-us-logscale
+  iamPath: ref/us/logscale/
   tags:
     Owner: ryan.faircloth
     Project: selfcloud
