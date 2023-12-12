@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-iam.git//modules/iam-policy?ref=v5.32.1"
 }
 
 
@@ -23,6 +23,7 @@ locals {
   provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
   region     = yamldecode(file(find_in_parent_folders("region.yaml")))
 
+  policy = file("${dirname(find_in_parent_folders())}/_modules/aws/iam/policy/ec2-describe.json")
 }
 
 dependency "network" {
@@ -35,32 +36,9 @@ dependency "network" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
 
-  cluster_name                   = local.provider.aws.name
-  cluster_version                = local.region.kubernetes.version
-  cluster_endpoint_public_access = true
+  name_prefix = local.provider.aws.name
+  path        = "${local.foundation.path_prefix}/"
 
-  cluster_addons = {
-    coredns = {
-      preserve    = true
-      most_recent = true
-
-      timeouts = {
-        create = "25m"
-        delete = "10m"
-      }
-    }
-    kube-proxy = {
-      most_recent = true
-    }
-    vpc-cni = {
-      most_recent = true
-    }
-  }
-  vpc_id     = dependency.network.outputs.vpc_id
-  subnet_ids = dependency.network.outputs.private_subnets
-
-  manage_aws_auth_configmap = true
-  aws_auth_roles            = local.region.kubernetes.aws_auth_roles
-  aws_auth_accounts         = local.region.kubernetes.aws_auth_accounts
+  policy = local.policy
 
 }
