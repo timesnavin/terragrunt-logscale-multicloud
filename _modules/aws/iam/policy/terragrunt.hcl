@@ -22,7 +22,8 @@ locals {
   foundation = yamldecode(file(find_in_parent_folders("foundation.yaml")))
   provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
 
-  policy = file("${dirname(find_in_parent_folders())}/_modules/aws/iam/policy/ec2-describe.json")
+  policy_source = basename(get_terragrunt_dir())
+  policy        = file("${dirname(find_in_parent_folders())}/_modules/aws/iam/policy/${local.policy_source}.json")
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
