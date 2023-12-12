@@ -21,7 +21,6 @@ terraform {
 locals {
   foundation = yamldecode(file(find_in_parent_folders("foundation.yaml")))
   provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region     = yamldecode(file(find_in_parent_folders("region.yaml")))
 
   policy = file("${dirname(find_in_parent_folders())}/_modules/aws/iam/policy/ec2-describe.json")
 }
