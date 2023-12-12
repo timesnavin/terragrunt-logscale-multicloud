@@ -25,9 +25,6 @@ locals {
   policy = file("${dirname(find_in_parent_folders())}/_modules/aws/iam/policy/ec2-describe.json")
 }
 
-dependency "network" {
-  config_path = "${get_terragrunt_dir()}/../network/"
-}
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
