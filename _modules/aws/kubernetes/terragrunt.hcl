@@ -76,16 +76,16 @@ inputs = {
   create_node_security_group    = false
 
   manage_aws_auth_configmap = true
-  aws_auth_roles = concate(
-    local.region.kubernetes.aws_auth_roles,
-    {
-      rolearn  = module.karpenter.role_arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups = [
-        "system:bootstrappers",
-        "system:nodes",
-      ]
-  })
+  // aws_auth_roles = concat(
+  //   local.region.kubernetes.aws_auth_roles,
+  //   {
+  //     rolearn  = module.karpenter.role_arn
+  //     username = "system:node:{{EC2PrivateDNSName}}"
+  //     groups = [
+  //       "system:bootstrappers",
+  //       "system:nodes",
+  //     ]
+  // })
 
   aws_auth_accounts = local.region.kubernetes.aws_auth_accounts
 
