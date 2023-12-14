@@ -42,6 +42,8 @@ data "aws_availability_zones" "available" {}
 data "aws_ecrpublic_authorization_token" "token" {
 
 }
+data "aws_caller_identity" "current" {}
+data "aws_organizations_organization" "current" {}
 
 locals {
 
@@ -131,6 +133,29 @@ module "eks" {
         "system:nodes",
       ]
     },
+    {
+      rolearn  = "arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write"
+      username = "admin-write"
+      groups = [
+        "system:masters",
+      ]
+    }
+  ]
+
+  aws_auth_users = [
+    {
+      userarn  = data.aws_caller_identity.current.arn
+      username = "admin-caller"
+      groups   = ["system:masters"]
+    },
+    {
+      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      username = "admin-aws-root"
+      groups   = ["system:masters"]
+    }
+  ]
+  aws_auth_accounts = [
+    data.aws_caller_identity.current.account_id
   ]
 
   fargate_profile_defaults = {
