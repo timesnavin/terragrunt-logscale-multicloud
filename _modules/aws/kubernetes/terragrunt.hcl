@@ -12,7 +12,7 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes/module/"
 }
 
 
@@ -36,7 +36,7 @@ dependency "network" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
 
-  iam_role_path =local.provider.aws.iam_path
-  subnet_ids = dependency.network.outputs.private_subnets
+  iam_role_path = local.provider.aws.iam_path
+  subnet_ids    = dependency.network.outputs.private_subnets
 
 }
