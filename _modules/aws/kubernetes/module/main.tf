@@ -44,15 +44,8 @@ data "aws_ecrpublic_authorization_token" "token" {
 }
 
 locals {
-  name            = "ex-${replace(basename(path.cwd), "_", "-")}"
-  cluster_version = "1.27"
-  region          = "eu-west-1"
-
-  #   vpc_cidr = "10.0.0.0/16"
-  #   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
-    Example    = local.name
     GithubRepo = "terraform-aws-eks"
     GithubOrg  = "terraform-aws-modules"
   }
@@ -66,8 +59,9 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.21.0"
 
-  cluster_name                   = local.name
-  cluster_version                = local.cluster_version
+  cluster_name    = var.cluster_name
+  cluster_version = var.cluster_version
+
   cluster_endpoint_public_access = true
 
   cluster_addons = {
