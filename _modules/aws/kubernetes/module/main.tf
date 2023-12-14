@@ -65,9 +65,23 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   cluster_addons = {
-    kube-proxy = {}
-    vpc-cni    = {}
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      #   most_recent              = true
+      #   before_compute           = true
+      #   service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+      #   configuration_values = jsonencode({
+      #     env = {
+      #       # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+      #       ENABLE_PREFIX_DELEGATION = "true"
+      #       WARM_PREFIX_TARGET       = "1"
+      #     }
+      #   })
+    }
     coredns = {
+      most_recent = true
       configuration_values = jsonencode({
         computeType = "Fargate"
         # Ensure that we fully utilize the minimum amount of resources that are supplied by
@@ -76,6 +90,10 @@ module "eks" {
         # components (kubelet, kube-proxy, and containerd). Fargate rounds up to the following
         # compute configuration that most closely matches the sum of vCPU and memory requests in
         # order to ensure pods always have the resources that they need to run.
+        podDisruptionBudget = {
+          enabled      = true
+          minAvailable = 1
+        }
         resources = {
           limits = {
             cpu = "0.25"
@@ -114,6 +132,12 @@ module "eks" {
       ]
     },
   ]
+
+  fargate_profile_defaults = {
+    iam_role_additional_policies = {
+      additional = aws_iam_policy.additional.arn
+    }
+  }
 
   fargate_profiles = {
     karpenter = {
@@ -306,3 +330,21 @@ resource "kubectl_manifest" "karpenter_example_deployment" {
 
 #   tags = local.tags
 # }
+
+
+resource "aws_iam_policy" "additional" {
+  name = "${var.cluster_name}-additional"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:Describe*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
