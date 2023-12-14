@@ -1,12 +1,3 @@
-provider "aws" {
-  region = local.region
-}
-
-provider "aws" {
-  region = "us-east-1"
-  alias  = "virginia"
-}
-
 provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
@@ -49,7 +40,7 @@ provider "kubectl" {
 
 data "aws_availability_zones" "available" {}
 data "aws_ecrpublic_authorization_token" "token" {
-  provider = aws.virginia
+
 }
 
 locals {
@@ -57,8 +48,8 @@ locals {
   cluster_version = "1.27"
   region          = "eu-west-1"
 
-  vpc_cidr = "10.0.0.0/16"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  #   vpc_cidr = "10.0.0.0/16"
+  #   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
   tags = {
     Example    = local.name
