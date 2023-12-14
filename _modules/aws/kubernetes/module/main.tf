@@ -183,13 +183,16 @@ module "eks" {
     default_node_group = {
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-      use_custom_launch_template = false
-      instance_types = [
-        "m7g.large"
-      ]
 
-      ami_type = "BOTTLEROCKET_ARM_64"
-      platform = "bottlerocket"
+      use_custom_launch_template = false
+
+      disk_size = 50
+      #   instance_types = [
+      #     "m7g.large"
+      #   ]
+
+      #   ami_type = "BOTTLEROCKET_ARM_64"
+      #   platform = "bottlerocket"
     }
   }
 
