@@ -119,8 +119,8 @@ module "eks" {
   control_plane_subnet_ids = var.control_plane_subnet_ids
 
   # Fargate profiles use the cluster primary security group so these are not utilized
-  create_cluster_security_group = false
-  create_node_security_group    = false
+  create_cluster_security_group = true
+  create_node_security_group    = true
   enable_irsa                   = true
 
   manage_aws_auth_configmap = true
