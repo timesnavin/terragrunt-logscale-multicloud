@@ -41,5 +41,5 @@ inputs = {
   iam_role_path = local.provider.aws.iam_path
   vpc_id        = dependency.network.outputs.vpc_id
   subnet_ids    = dependency.network.outputs.private_subnets
-
+  control_plane_ids = dependency.network.outputs.intra_subnets
 }

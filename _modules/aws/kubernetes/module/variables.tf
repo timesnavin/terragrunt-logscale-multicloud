@@ -36,4 +36,5 @@ variable "control_plane_subnet_ids" {
   description = "The control plane subnet IDs"
   type        = list(string)
   default     = null
+
 }
