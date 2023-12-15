@@ -69,7 +69,9 @@ inputs = {
     "karpenter.sh/discovery"          = local.provider.aws.name
   }
 
-  default_network_acl_ingress = [
+  // default_network_acl_ingress = 
+  public_dedicated_network_acl   = true
+  public_inbound_acl_rules  = [
     {
       "action" : "allow",
       "cidr_block" : "0.0.0.0/0",
@@ -94,4 +96,6 @@ inputs = {
     //   "to_port" : 443
     // }
   ]
+
+  private_dedicated_network_acl     = false
 }
