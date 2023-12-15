@@ -49,7 +49,7 @@ inputs = {
   enable_flow_log                      = true
   create_flow_log_cloudwatch_iam_role  = true
   create_flow_log_cloudwatch_log_group = true
-
+  flow_log_cloudwatch_log_group_retention_in_days = 1
   # enable_ipv6                     = true
   # assign_ipv6_address_on_creation = true
 
