@@ -133,24 +133,20 @@ module "eks" {
   enable_irsa = true
 
   manage_aws_auth_configmap = true
-  aws_auth_roles = [
+
+  aws_auth_roles = concat(
     # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
-    {
+    [{
       rolearn  = module.karpenter.role_arn
       username = "system:node:{{EC2PrivateDNSName}}"
       groups = [
         "system:bootstrappers",
         "system:nodes",
       ]
-    },
-    {
-      rolearn  = "arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write"
-      username = "admin-write"
-      groups = [
-        "system:masters",
-      ]
-    }
-  ]
+      }
+    ],
+    var.additional_aws_auth_roles
+  )
 
   aws_auth_users = [
     {
@@ -189,7 +185,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     # Default node group - as provided by AWS EKS
-        
+
     default_node_group = {
       # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service

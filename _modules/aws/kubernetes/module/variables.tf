@@ -20,6 +20,13 @@ variable "iam_role_path" {
 
 }
 
+variable "additional_aws_auth_roles" {
+  description = "Additional AWS IAM roles to add to the aws-auth configmap"
+  type        = list(any)
+  default     = []
+
+}
+
 variable "vpc_id" {
   description = "The VPC ID"
   type        = string

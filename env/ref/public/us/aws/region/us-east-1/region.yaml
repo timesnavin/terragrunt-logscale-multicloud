@@ -7,12 +7,8 @@ network:
 kubernetes:
   version: 1.27
   aws_auth_roles:
-    - rolearn: arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write
-      username: cs-full-admins-write
-      groups:
-        - system:masters
-    - rolearn: arn:aws:iam::042445652404:role/env0-ci
-      username: env0-ci
+    - rolearn: "arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write"
+      username: "admin-write"
       groups:
         - system:masters
   aws_auth_accounts:
