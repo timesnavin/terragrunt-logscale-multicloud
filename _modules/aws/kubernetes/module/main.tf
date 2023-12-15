@@ -71,16 +71,16 @@ module "eks" {
       most_recent = true
     }
     vpc-cni = {
-      #   most_recent              = true
-      #   before_compute           = true
-      #   service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
-      #   configuration_values = jsonencode({
-      #     env = {
-      #       # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-      #       ENABLE_PREFIX_DELEGATION = "true"
-      #       WARM_PREFIX_TARGET       = "1"
-      #     }
-      #   })
+      most_recent              = true
+      before_compute           = true
+      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+      configuration_values = jsonencode({
+        env = {
+          # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+          ENABLE_PREFIX_DELEGATION = "true"
+          WARM_PREFIX_TARGET       = "1"
+        }
+      })
     }
     coredns = {
       most_recent = true
@@ -344,38 +344,23 @@ resource "kubectl_manifest" "karpenter_example_deployment" {
   ]
 }
 
-# ################################################################################
-# # Supporting Resources
-# ################################################################################
+module "vpc_cni_irsa" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.32.1"
 
-# module "vpc" {
-#   source  = "terraform-aws-modules/vpc/aws"
-#   version = "~> 5.0"
+  role_name_prefix      = "VPC-CNI-IRSA"
+  attach_vpc_cni_policy = true
+  vpc_cni_enable_ipv4   = true
 
-#   name = local.name
-#   cidr = local.vpc_cidr
+  oidc_providers = {
+    main = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-node"]
+    }
+  }
 
-#   azs             = local.azs
-#   private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
-#   public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
-#   intra_subnets   = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 52)]
 
-#   enable_nat_gateway = true
-#   single_nat_gateway = true
-
-#   public_subnet_tags = {
-#     "kubernetes.io/role/elb" = 1
-#   }
-
-#   private_subnet_tags = {
-#     "kubernetes.io/role/internal-elb" = 1
-#     # Tags subnets for Karpenter auto-discovery
-#     "karpenter.sh/discovery" = local.name
-#   }
-
-#   tags = local.tags
-# }
-
+}
 
 resource "aws_iam_policy" "additional" {
   name = "${var.cluster_name}-additional"
