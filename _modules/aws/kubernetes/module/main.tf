@@ -121,7 +121,16 @@ module "eks" {
   # Fargate profiles use the cluster primary security group so these are not utilized
   create_cluster_security_group = true
   create_node_security_group    = true
-  enable_irsa                   = true
+
+  eks_managed_node_group_defaults = {
+    # We are using the IRSA created below for permissions
+    # However, we have to provision a new cluster with the policy attached FIRST
+    # before we can disable. Without this initial policy,
+    # the VPC CNI fails to assign IPs and nodes cannot join the new cluster
+    iam_role_attach_cni_policy = true
+  }
+
+  enable_irsa = true
 
   manage_aws_auth_configmap = true
   aws_auth_roles = [
@@ -196,6 +205,14 @@ module "eks" {
     }
   }
 
+  node_security_group_tags = {
+    # NOTE - if creating multiple security groups with this module, only tag the
+    # security group that Karpenter should utilize with the following tag
+    # (i.e. - at most, only one security group should have this tag in your account)
+    "karpenter.sh/discovery" = var.cluster_name
+    "aws-alb"                = true
+  }
+  create_cluster_primary_security_group_tags = false
 
   tags = merge(local.tags, {
     # NOTE - if creating multiple security groups with this module, only tag the
