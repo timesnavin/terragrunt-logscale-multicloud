@@ -24,6 +24,8 @@ resource "helm_release" "argocd" {
   chart      = "argo-cd"
   version    = "5.51.6"
 
+  wait = false
+
   values = [
     <<-EOT
     EOT
