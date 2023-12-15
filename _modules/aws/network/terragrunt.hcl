@@ -23,6 +23,100 @@ locals {
   provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
   region     = yamldecode(file(find_in_parent_folders("region.yaml")))
 
+
+
+  network_acls = {
+    default_inbound = [
+      {
+        rule_number = 900
+        rule_action = "allow"
+        from_port   = 1024
+        to_port     = 65535
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+      },
+    ]
+    default_outbound = [
+      {
+        rule_number = 900
+        rule_action = "allow"
+        from_port   = 32768
+        to_port     = 65535
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+      },
+    ]
+    public_inbound = [
+      {
+        rule_number = 100
+        rule_action = "allow"
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+      },
+      {
+        rule_number = 110
+        rule_action = "allow"
+        from_port   = 443
+        to_port     = 443
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+      },
+    ]
+    public_outbound = [
+      {
+        rule_number = 100
+        rule_action = "allow"
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+      },
+      {
+        rule_number = 110
+        rule_action = "allow"
+        from_port   = 443
+        to_port     = 443
+        protocol    = "tcp"
+        cidr_block  = "0.0.0.0/0"
+      },
+      {
+        rule_number = 120
+        rule_action = "allow"
+        from_port   = 1433
+        to_port     = 1433
+        protocol    = "tcp"
+        cidr_block  = "10.0.100.0/22"
+      },
+      {
+        rule_number = 130
+        rule_action = "allow"
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_block  = "10.0.100.0/22"
+      },
+      {
+        rule_number = 140
+        rule_action = "allow"
+        icmp_code   = -1
+        icmp_type   = 8
+        protocol    = "icmp"
+        cidr_block  = "10.0.0.0/22"
+      },
+      {
+        rule_number     = 150
+        rule_action     = "allow"
+        from_port       = 90
+        to_port         = 90
+        protocol        = "tcp"
+        ipv6_cidr_block = "::/0"
+      },
+    ]
+    elasticache_outbound = []
+  }
+
 }
 
 
@@ -70,32 +164,35 @@ inputs = {
   }
 
   // default_network_acl_ingress = 
-  public_dedicated_network_acl   = true
-  public_inbound_acl_rules  = [
-    {
-      "action" : "allow",
-      "cidr_block" : "0.0.0.0/0",
-      "protocol" : "tcp",
-      "rule_no" : 100,
-      "from_port" : 443,
-      "to_port" : 443
-    },
-    {
-      "action" : "allow",
-      "cidr_block" : "10.0.0.0/20",
-      "protocol" : "-1",
-      "rule_no" : 101,
-      "from_port" : 0,
-      "to_port" : 0
-     },    
-    // { "action" : "allow",
-    //   "ipv6_cidr_block" : "::/0",
-    //   "protocol" : "tcp",
-    //   "rule_no" : 200,
-    //   "from_port" : 443,
-    //   "to_port" : 443
-    // }
-  ]
+  public_dedicated_network_acl = true
+  public_inbound_acl_rules     = concat(local.network_acls["default_inbound"], local.network_acls["public_inbound"])
+  public_outbound_acl_rules    = concat(local.network_acls["default_outbound"], local.network_acls["public_outbound"])
 
-  private_dedicated_network_acl     = false
+  // public_inbound_acl_rules = [
+  //   {
+  //     "action" : "allow",
+  //     "cidr_block" : "0.0.0.0/0",
+  //     "protocol" : "tcp",
+  //     "rule_no" : 100,
+  //     "from_port" : 443,
+  //     "to_port" : 443
+  //   },
+  //   {
+  //     "action" : "allow",
+  //     "cidr_block" : "10.0.0.0/20",
+  //     "protocol" : "-1",
+  //     "rule_no" : 101,
+  //     "from_port" : 0,
+  //     "to_port" : 0
+  //   },
+  //   // { "action" : "allow",
+  //   //   "ipv6_cidr_block" : "::/0",
+  //   //   "protocol" : "tcp",
+  //   //   "rule_no" : 200,
+  //   //   "from_port" : 443,
+  //   //   "to_port" : 443
+  //   // }
+  // ]
+
+  private_dedicated_network_acl = false
 }
