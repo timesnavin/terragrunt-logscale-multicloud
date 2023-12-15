@@ -85,7 +85,7 @@ inputs = {
       "rule_no" : 101,
       "from_port" : 0,
       "to_port" : 0
-    // },    
+     },    
     // { "action" : "allow",
     //   "ipv6_cidr_block" : "::/0",
     //   "protocol" : "tcp",
