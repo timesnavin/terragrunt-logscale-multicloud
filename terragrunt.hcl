@@ -67,6 +67,17 @@ generate "provider_aws_eks_helm" {
     variable "provider_aws_eks_cluster_name" {
       type = string
     }
+    provider "kubernetes" {
+      host                   = var.provider_aws_eks_cluster_endpoint
+      cluster_ca_certificate = base64decode(var.provider_aws_eks_cluster_certificate_authority_data)
+
+      exec {
+        api_version = "client.authentication.k8s.io/v1beta1"
+        command     = "aws"
+        # This requires the awscli to be installed locally where Terraform is executed
+        args = ["eks", "get-token", "--cluster-name", var.provider_aws_eks_cluster_name]
+      }
+    }    
     provider "helm" {
       kubernetes {
         host                   = var.provider_aws_eks_cluster_endpoint
