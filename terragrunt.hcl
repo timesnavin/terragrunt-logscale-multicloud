@@ -67,6 +67,9 @@ generate "provider_aws_eks_helm" {
     variable "provider_aws_eks_cluster_name" {
       type = string
     }
+    variable "GITHUB_PAT" {
+      type = string
+    }
     provider "kubernetes" {
       host                   = var.provider_aws_eks_cluster_endpoint
       cluster_ca_certificate = base64decode(var.provider_aws_eks_cluster_certificate_authority_data)
@@ -90,6 +93,11 @@ generate "provider_aws_eks_helm" {
           args = ["eks", "get-token", "--cluster-name", var.provider_aws_eks_cluster_name]
         }
       }
+      registry {
+        url = "oci://ghcr.io"
+        username = "_PAT_"
+        password = var.GITHUB_PAT
+      }      
     }
 EOF
 }
