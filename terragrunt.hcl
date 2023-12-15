@@ -31,7 +31,7 @@ remote_state {
 generate "provider_aws" {
   path      = "provider_aws.tf"
   if_exists = "overwrite_terragrunt"
-  disable   = local.provider.type == "aws" ? false : true
+  disable   = local.provider.type == "aws" || local.provider.type == "eks" ? false : true
   contents  = <<-EOF
 
     variable "provider_aws_tags" {
@@ -46,6 +46,39 @@ generate "provider_aws" {
         default_tags {
             tags = var.provider_aws_tags
         }
+    }
+EOF
+}
+
+
+
+generate "provider_aws_eks_helm" {
+  path      = "provider_aws_eks_helm.tf"
+  if_exists = "overwrite_terragrunt"
+  disable   = local.provider.type == "eks" ? false : true
+  contents  = <<-EOF
+
+    variable "provider_aws_eks_cluster_endpoint" {
+      type = string
+    }
+    variable "provider_aws_eks_cluster_certificate_authority_data" {
+      type = string
+    }
+    variable "provider_aws_eks_cluster_name" {
+      type = string
+    }
+    provider "helm" {
+      kubernetes {
+        host                   = var.provider_aws_eks_cluster_endpoint
+        cluster_ca_certificate = base64decode(var.provider_aws_eks_cluster_certificate_authority_data)
+
+        exec {
+          api_version = "client.authentication.k8s.io/v1beta1"
+          command     = "aws"
+          # This requires the awscli to be installed locally where Terraform is executed
+          args = ["eks", "get-token", "--cluster-name", var.provider_aws_eks_cluster_name]
+        }
+      }
     }
 EOF
 }
@@ -94,7 +127,12 @@ generate "provider_gcp" {
 
 inputs = {
   provider_aws_tags   = local.metadata_common.tags
-  provider_aws_region = local.provider.type == "aws" ? local.provider.aws.region : ""
+  provider_aws_region = local.provider.type == "aws" || local.provider.type == "eks" ? local.provider.aws.region : ""
+
+  provider_aws_eks_cluster_endpoint                   = local.provider.type == "eks" ? dependency.kubernetes.outputs.cluster_endpoint : ""
+  provider_aws_eks_cluster_certificate_authority_data = local.provider.type == "eks" ? dependency.kubernetes.outputs.cluster_certificate_authority_data : ""
+  provider_aws_eks_cluster_name                       = local.provider.type == "eks" ? dependency.kubernetes.outputs.cluster_name : ""
+
 
   provider_google_project     = local.provider.type == "google" ? local.provider.google.project_id : ""
   provider_google_region      = local.provider.type == "google" ? local.provider.google.region : ""
