@@ -71,11 +71,9 @@ module "eks" {
       most_recent = true
     }
     vpc-cni = {
-      most_recent                 = true
-      before_compute              = true
-      service_account_role_arn    = module.vpc_cni_irsa.iam_role_arn
-      resolve_conflicts_on_create = "OVERWRITE"
-      resolve_conflicts_on_update = "OVERWRITE"
+      most_recent              = true
+      before_compute           = true
+      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
       configuration_values = jsonencode({
         env = {
           # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
@@ -94,8 +92,6 @@ module "eks" {
         # components (kubelet, kube-proxy, and containerd). Fargate rounds up to the following
         # compute configuration that most closely matches the sum of vCPU and memory requests in
         # order to ensure pods always have the resources that they need to run.
-        resolve_conflicts_on_create = "OVERWRITE"
-        resolve_conflicts_on_update = "OVERWRITE"
         podDisruptionBudget = {
           enabled      = true
           minAvailable = 1
