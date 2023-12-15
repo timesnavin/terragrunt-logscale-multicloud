@@ -38,8 +38,8 @@ inputs = {
   cluster_name    = local.provider.aws.name
   cluster_version = local.region.kubernetes.version
 
-  iam_role_path = local.provider.aws.iam_path
-  vpc_id        = dependency.network.outputs.vpc_id
-  subnet_ids    = dependency.network.outputs.private_subnets
+  iam_role_path     = local.provider.aws.iam_path
+  vpc_id            = dependency.network.outputs.vpc_id
+  subnet_ids        = dependency.network.outputs.private_subnets
   control_plane_ids = dependency.network.outputs.intra_subnets
 }

@@ -38,7 +38,7 @@ inputs = {
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
   private_subnets = local.region.network.private_subnets
   public_subnets  = local.region.network.public_subnets
-  intra_subnets  = local.region.network.intra_subnets
+  intra_subnets   = local.region.network.intra_subnets
 
   enable_nat_gateway     = true
   enable_vpn_gateway     = false
@@ -47,9 +47,9 @@ inputs = {
   one_nat_gateway_per_az = true
 
 
-  enable_flow_log                      = true
-  create_flow_log_cloudwatch_iam_role  = true
-  create_flow_log_cloudwatch_log_group = true
+  enable_flow_log                                 = true
+  create_flow_log_cloudwatch_iam_role             = true
+  create_flow_log_cloudwatch_log_group            = true
   flow_log_cloudwatch_log_group_retention_in_days = 1
   # enable_ipv6                     = true
   # assign_ipv6_address_on_creation = true
@@ -70,7 +70,28 @@ inputs = {
   }
 
   default_network_acl_ingress = [
-    { "action" : "allow", "cidr_block" : "0.0.0.0/0", "from_port" : 443, "protocol" : "tcp", "rule_no" : 100, "to_port" : 443 }, 
-    { "action" : "allow", "from_port" : 443, "ipv6_cidr_block" : "::/0", "protocol" : "tcp", "rule_no" : 101, "to_port" : 443 }
-    ]
+    {
+      "action" : "allow",
+      "cidr_block" : "0.0.0.0/0",
+      "protocol" : "tcp",
+      "rule_no" : 100,
+      "from_port" : 443,
+      "to_port" : 443
+    },
+    {
+      "action" : "allow",
+      "cidr_block" : "10.0.0.0/20",
+      "protocol" : "-1",
+      "rule_no" : 101,
+      "from_port" : 0,
+      "to_port" : 0
+    // },    
+    // { "action" : "allow",
+    //   "ipv6_cidr_block" : "::/0",
+    //   "protocol" : "tcp",
+    //   "rule_no" : 200,
+    //   "from_port" : 443,
+    //   "to_port" : 443
+    // }
+  ]
 }
