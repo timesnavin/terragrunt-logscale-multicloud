@@ -36,3 +36,4 @@ terraform.rc
 **/.terragrunt-cache
 **/.terraform.lock.hcl
 **/.terraform
+env0_credential_configuration.json
