@@ -27,7 +27,7 @@ locals {
 }
 
 dependency "kubernetes" {
-  config_path = "${get_terragrunt_dir()}/../kubernetes/"
+  config_path = "${get_terragrunt_dir()}/../../kubernetes/"
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
