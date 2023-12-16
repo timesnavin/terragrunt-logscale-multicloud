@@ -4,6 +4,6 @@ variable "zone_id" {
 }
 variable "records" {
   description = "The ID of the parent zone"
-
+  type        = any
 
 }
