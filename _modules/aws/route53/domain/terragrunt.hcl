@@ -21,8 +21,8 @@ terraform {
 locals {
   foundation = yamldecode(file(find_in_parent_folders("foundation.yaml")))
   provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region     = yamldecode(file(find_in_parent_folders("region.yaml")))
+  global     = yamldecode(file(find_in_parent_folders("global.yaml")))
 
 
-  domain_name = "${loca.region.partition}.${local.region.domain_name}"
+  domain_name = "${loca.global.partition}.${local.global.domain_name}"
 }
