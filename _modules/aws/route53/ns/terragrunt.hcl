@@ -16,6 +16,9 @@ terraform {
 
 dependency "zone" {
   config_path = "${get_terragrunt_dir()}/../zone/"
+    mock_outputs = {
+    name_servers = []
+  }
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # Locals are named constants that are reusable within the configuration.
