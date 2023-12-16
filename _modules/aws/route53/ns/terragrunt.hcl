@@ -17,7 +17,7 @@ terraform {
 dependency "zone" {
   config_path = "${get_terragrunt_dir()}/../zone/"
   mock_outputs = {
-    name_servers = []
+    name_servers = ["n1.example.com", "n2.example.com"]
   }
 }
 # ---------------------------------------------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ locals {
 inputs = {
   zone_id = "${local.global.dns.parent_zone}"
   records = [{
-    name    = local.global.partition
+    name    = "${local.global.partition}.${local.global.domain_name}"
     type    = "NS"
     ttl     = 600
     records = dependency.zone.outputs.name_servers
