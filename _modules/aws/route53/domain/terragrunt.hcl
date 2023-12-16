@@ -26,7 +26,7 @@ locals {
 }
 
 
-inputs {
+inputs = {
     zone_name = "${local.global.partition}.${local.global.domain_name}"
   parent_zone_id   = "${local.global.dns.parent_zone}"
 
