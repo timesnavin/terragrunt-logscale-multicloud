@@ -1,4 +1,5 @@
 partition: us
+domain_name: ref.logsr.life
 region: us-east-1
 network:
   address_space: "10.0.0.0/20"
