@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/route53/domain/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/route53/zone/module/"
 }
 
 
