@@ -3,8 +3,8 @@ module "zone" {
   version = "2.11.0"
 
   zones = {
-    "${var.domain_name}" = {
-      comment = "Zone for ${var.domain_name}"
+    "${var.zone_name}" = {
+      comment = "Zone for ${var.zone_name}"
     }
   }
 }

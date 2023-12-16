@@ -1,3 +1,5 @@
 partition: us
 domain_name: ref.logsr.life
 region: us-east-1
+dns:
+  parent_zone: Z09015383ULOCOMEMV6ZO
