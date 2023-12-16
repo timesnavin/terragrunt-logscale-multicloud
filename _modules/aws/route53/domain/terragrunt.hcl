@@ -24,5 +24,5 @@ locals {
   global     = yamldecode(file(find_in_parent_folders("global.yaml")))
 
 
-  domain_name = "${local.global.partition}.${local.global.domain_name}"
+  zone_name = "${local.global.partition}.${local.global.domain_name}"
 }
