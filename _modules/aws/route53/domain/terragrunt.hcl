@@ -23,8 +23,11 @@ locals {
   provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
   global     = yamldecode(file(find_in_parent_folders("global.yaml")))
 
+}
 
-  zone_name = "${local.global.partition}.${local.global.domain_name}"
+
+inputs {
+    zone_name = "${local.global.partition}.${local.global.domain_name}"
   parent_zone_id   = "${local.global.dns.parent_zone}"
 
 }
