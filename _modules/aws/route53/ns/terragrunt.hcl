@@ -15,7 +15,7 @@ terraform {
 }
 
 dependency "zone" {
-  config_path = "${get_terragrunt_dir()}/../domain/"
+  config_path = "${get_terragrunt_dir()}/../zone/"
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # Locals are named constants that are reusable within the configuration.
