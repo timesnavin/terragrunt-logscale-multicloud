@@ -314,7 +314,6 @@ resource "kubectl_manifest" "karpenter_default_arm_node_pool" {
         cpu: 1000
       disruption:
         consolidationPolicy: WhenUnderutilized
-        consolidateAfter: 300s
   YAML
 
   depends_on = [
@@ -363,7 +362,6 @@ resource "kubectl_manifest" "karpenter_default_intel_node_pool" {
         cpu: 1000
       disruption:
         consolidationPolicy: WhenUnderutilized
-        consolidateAfter: 300s
   YAML
 
   depends_on = [
