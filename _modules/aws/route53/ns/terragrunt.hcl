@@ -32,7 +32,7 @@ locals {
 
 
 inputs = {
-  zone_id = dependency.zone.outputs.zone_id["${local.global.domain_name}"]
+  zone_id = local.global.dns.parent_zone_id
   records = [{
     name    = "${local.global.partition}"
     type    = "NS"
