@@ -34,10 +34,10 @@ locals {
 inputs = {
   zone_id = "${local.global.dns.parent_zone}"
   records = [{
-    name    = "${local.global.partition}.${local.global.domain_name}"
+    name    = "${local.global.partition}"
     type    = "NS"
     ttl     = 600
-    records = dependency.zone.outputs.name_servers
+    records = dependency.zone.outputs.route53_zone_name_servers["${local.global.partition}.${local.global.domain_name}"]
 
   }]
 
