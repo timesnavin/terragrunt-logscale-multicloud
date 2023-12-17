@@ -3,7 +3,7 @@ resource "helm_release" "external-dns" {
   create_namespace = true
 
   name       = "external-dns"
-  repository = "oci://registry-1.docker.io/bitnamicharts/external-dns"
+  repository = "oci://registry-1.docker.io/bitnamicharts"
   chart      = "external-dns"
   version    = "6.28.6"
 
