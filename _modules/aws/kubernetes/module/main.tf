@@ -274,7 +274,7 @@ resource "kubectl_manifest" "karpenter_node_class" {
   ]
 }
 
-resource "kubectl_manifest" "karpenter_default_node_pool" {
+resource "kubectl_manifest" "karpenter_default_arm_node_pool" {
   yaml_body = <<-YAML
     apiVersion: karpenter.sh/v1beta1
     kind: NodePool
@@ -323,7 +323,7 @@ resource "kubectl_manifest" "karpenter_default_node_pool" {
 }
 
 
-resource "kubectl_manifest" "karpenter_default_node_pool" {
+resource "kubectl_manifest" "karpenter_default_intel_node_pool" {
   yaml_body = <<-YAML
     apiVersion: karpenter.sh/v1beta1
     kind: NodePool
