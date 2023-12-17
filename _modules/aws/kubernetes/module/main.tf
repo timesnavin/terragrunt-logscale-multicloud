@@ -274,18 +274,27 @@ resource "kubectl_manifest" "karpenter_node_class" {
   ]
 }
 
-resource "kubectl_manifest" "karpenter_node_pool" {
+resource "kubectl_manifest" "karpenter_default_node_pool" {
   yaml_body = <<-YAML
     apiVersion: karpenter.sh/v1beta1
     kind: NodePool
     metadata:
-      name: default
+      name: default-arm64
     spec:
       template:
+        metadata:
+          # Labels are arbitrary key-values that are applied to all nodes
+          labels:
+            computeType: "compute"
+            storageType: "network"
+            durabilityType: "spot"
         spec:
           nodeClassRef:
             name: default
           requirements:
+            - key: karpenter.sh/capacity-type
+              operator: In
+              values: ["spot"]          
             - key: "karpenter.k8s.aws/instance-category"
               operator: In
               values: ["c", "m", "r"]
@@ -295,14 +304,17 @@ resource "kubectl_manifest" "karpenter_node_pool" {
             - key: "karpenter.k8s.aws/instance-hypervisor"
               operator: In
               values: ["nitro"]
+            - key: "kubernetes.io/arch"
+              operator: In
+              values: ["arm64"]              
             - key: "karpenter.k8s.aws/instance-generation"
               operator: Gt
               values: ["2"]
       limits:
         cpu: 1000
       disruption:
-        consolidationPolicy: WhenEmpty
-        consolidateAfter: 30s
+        consolidationPolicy: WhenUnderutilized
+        consolidateAfter: 300s
   YAML
 
   depends_on = [
@@ -310,6 +322,54 @@ resource "kubectl_manifest" "karpenter_node_pool" {
   ]
 }
 
+
+resource "kubectl_manifest" "karpenter_default_node_pool" {
+  yaml_body = <<-YAML
+    apiVersion: karpenter.sh/v1beta1
+    kind: NodePool
+    metadata:
+      name: default-amd64
+    spec:
+      template:
+        metadata:
+          # Labels are arbitrary key-values that are applied to all nodes
+          labels:
+            computeType: "compute"
+            storageType: "network"
+            durabilityType: "spot"
+        spec:
+          nodeClassRef:
+            name: default
+          requirements:
+            - key: karpenter.sh/capacity-type
+              operator: In
+              values: ["spot"]          
+            - key: "karpenter.k8s.aws/instance-category"
+              operator: In
+              values: ["c", "m", "r"]
+            - key: "karpenter.k8s.aws/instance-cpu"
+              operator: In
+              values: ["4", "8", "16", "32"]
+            - key: "karpenter.k8s.aws/instance-hypervisor"
+              operator: In
+              values: ["nitro"]
+            - key: "kubernetes.io/arch"
+              operator: In
+              values: ["amd64"]              
+            - key: "karpenter.k8s.aws/instance-generation"
+              operator: Gt
+              values: ["2"]
+      limits:
+        cpu: 1000
+      disruption:
+        consolidationPolicy: WhenUnderutilized
+        consolidateAfter: 300s
+  YAML
+
+  depends_on = [
+    kubectl_manifest.karpenter_node_class
+  ]
+}
 
 module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
