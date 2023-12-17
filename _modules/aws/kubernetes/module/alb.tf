@@ -35,12 +35,14 @@ resource "helm_release" "alb" {
 
   values = [
     <<-EOT
-clusterName: ${var.cluster_name}
+clusterName: ${module.eks.cluster_name}
 region: ${var.cluster_region} 
 vpcId: ${var.vpc_id}
 serviceAccount:
-    create: false
+    #create: false
     name: aws-load-balancer-controller
+    annotations:
+        eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}    
 resources:
   limits:
     cpu: 100m
