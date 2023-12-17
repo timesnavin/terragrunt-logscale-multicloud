@@ -37,7 +37,7 @@ inputs = {
     name    = "${local.global.partition}"
     type    = "NS"
     ttl     = 600
-    records = dependency.zone.outputs.route53_zone_name_servers["${local.global.partition}.${local.global.domain_name}"]
+    records = dependency.zone.outputs.name_servers["${local.global.partition}.${local.global.domain_name}"]
 
   }]
 
