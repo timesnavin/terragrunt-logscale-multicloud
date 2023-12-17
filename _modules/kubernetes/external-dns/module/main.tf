@@ -1,43 +1,19 @@
-resource "helm_release" "argocd" {
-  namespace        = "argocd"
+resource "helm_release" "external-dns" {
+  namespace        = "external-dns"
   create_namespace = true
 
-  name       = "argocd"
-  repository = "oci://ghcr.io/argoproj/argo-helm"
-  chart      = "argo-cd"
-  version    = "5.51.6"
+  name       = "external-dns"
+  repository = "oci://registry-1.docker.io/bitnamicharts/external-dns"
+  chart      = "external-dns"
+  version    = "6.28.6"
 
   wait = false
 
   values = [
     <<-EOT
-redis-ha:
-  enabled: true
-
-controller:
-  replicas: 1
-
-server:
-  ingress:
-    enabled: true
-    # hosts:
-    #   - host: argocd.example.com
-    #     paths: ["/"]
-    # tls:
-    #   - hosts:
-    #       - argocd.example.com
-    #     secretName: argocd-tls
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-
-repoServer:
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-
-applicationSet:
-  replicas: 2    
+    provider: aws
+    replicaCount: 2
+    podAntiAffinityPreset: hard
     EOT
   ]
 }
