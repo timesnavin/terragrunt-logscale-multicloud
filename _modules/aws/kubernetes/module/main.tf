@@ -19,7 +19,7 @@
 #       api_version = "client.authentication.k8s.io/v1beta1"
 #       command     = "aws"
 #       # This requires the awscli to be installed locally where Terraform is executed
-#       args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+#       args = ["eks", "get-token", "--cluster-name", module.eks.cluster_namve]
 #     }
 #   }
 # }
@@ -120,6 +120,13 @@ module "eks" {
   vpc_id                   = var.vpc_id
   subnet_ids               = var.subnet_ids
   control_plane_subnet_ids = var.control_plane_subnet_ids
+
+  # External encryption key
+  create_kms_key = false
+  cluster_encryption_config = {
+    resources        = ["secrets"]
+    provider_key_arn = module.kms.key_arn
+  }
 
   # Fargate profiles use the cluster primary security group so these are not utilized
   create_cluster_security_group = true
