@@ -78,9 +78,12 @@ module "eks" {
       # before_compute = true
       service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
       configuration_values = jsonencode({
-        enableCloudWatchLogs = "true"
-        healthProbeBindAddr  = "8163"
-        metricsBindAddr      = "8162"
+        nodeAgent = {
+
+          enableCloudWatchLogs = "true"
+          healthProbeBindAddr  = "8163"
+          metricsBindAddr      = "8162"
+        }
         # env = {
         #   # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
         #   ENABLE_PREFIX_DELEGATION = "true"
