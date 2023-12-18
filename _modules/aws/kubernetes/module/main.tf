@@ -88,7 +88,7 @@ module "eks" {
     coredns = {
       most_recent = true
       configuration_values = jsonencode({
-        computeType = "Fargate"
+        # computeType = "Fargate"
         # Ensure that we fully utilize the minimum amount of resources that are supplied by
         # Fargate https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html
         # Fargate adds 256 MB to each pod's memory reservation for the required Kubernetes
@@ -125,16 +125,9 @@ module "eks" {
   create_cluster_security_group = true
   create_node_security_group    = true
 
-  eks_managed_node_group_defaults = {
-    # We are using the IRSA created below for permissions
-    # However, we have to provision a new cluster with the policy attached FIRST
-    # before we can disable. Without this initial policy,
-    # the VPC CNI fails to assign IPs and nodes cannot join the new cluster
-    iam_role_attach_cni_policy = true
-  }
 
-  enable_irsa               = true
-  create_aws_auth_configmap = true
+  enable_irsa = true
+  # create_aws_auth_configmap = true
   manage_aws_auth_configmap = true
 
   aws_auth_roles = concat(
@@ -167,27 +160,60 @@ module "eks" {
     data.aws_caller_identity.current.account_id
   ]
 
-  fargate_profile_defaults = {
-    iam_role_additional_policies = {
-      additional = aws_iam_policy.additional.arn
-    }
+  # fargate_profile_defaults = {
+  #   iam_role_additional_policies = {
+  #     additional = aws_iam_policy.additional.arn
+  #   }
+  # }
+
+  # fargate_profiles = {
+
+  #   karpenter = {
+  #     selectors = [
+  #       { namespace = "karpenter" }
+  #     ]
+  #   }
+
+  #   kube-system = {
+  #     selectors = [
+  #       { namespace = "kube-system" }
+  #     ]
+  #   }
+  # }
+
+  eks_managed_node_group_defaults = {
+    # We are using the IRSA created below for permissions
+    # However, we have to provision a new cluster with the policy attached FIRST
+    # before we can disable. Without this initial policy,
+    # the VPC CNI fails to assign IPs and nodes cannot join the new cluster
+    iam_role_attach_cni_policy = true
   }
 
-  fargate_profiles = {
+  eks_managed_node_groups = {
+    # Default node group - as provided by AWS EKS
+    default_node_group = {
 
-    karpenter = {
-      selectors = [
-        { namespace = "karpenter" }
-      ]
+      # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
+      # so we need to disable it to use the default template provided by the AWS EKS managed node group service
+      use_custom_launch_template = false
+
+      ami_type = "BOTTLEROCKET_x86_64"
+      platform = "bottlerocket"
     }
 
-    kube-system = {
-      selectors = [
-        { namespace = "kube-system" }
-      ]
+    # Adds to the AWS provided user data
+    bottlerocket_add = {
+      ami_type = "BOTTLEROCKET_x86_64"
+      platform = "bottlerocket"
+
+      # This will get added to what AWS provides
+      bootstrap_extra_args = <<-EOT
+        # extra args added
+        [settings.kernel]
+        lockdown = "integrity"
+      EOT
     }
   }
-
 
   node_security_group_tags = {
     # NOTE - if creating multiple security groups with this module, only tag the
