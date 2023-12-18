@@ -206,7 +206,7 @@ module "eks" {
         {
           key    = "CriticalAddonsOnly"
           value  = "true"
-          effect = "PreferNoSchedule"
+          effect = "PREFER_NO_SCHEDULE"
         }
       ]
 
