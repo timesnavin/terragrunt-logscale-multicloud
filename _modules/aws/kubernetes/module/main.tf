@@ -133,8 +133,8 @@ module "eks" {
     iam_role_attach_cni_policy = true
   }
 
-  enable_irsa = true
-
+  enable_irsa               = true
+  create_aws_auth_configmap = true
   manage_aws_auth_configmap = true
 
   aws_auth_roles = concat(
