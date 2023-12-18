@@ -72,7 +72,7 @@ module "eks" {
     }
     vpc-cni = {
       most_recent    = true
-      before_compute = true
+      # before_compute = true
       //service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
       configuration_values = jsonencode({
         enableCloudWatchLogs = "true"
@@ -200,7 +200,7 @@ module "eks" {
   eks_managed_node_groups = {
 
     # Default node group - as provided by AWS EKS
-    
+
     system = {
       min_size     = 3
       max_size     = 7
