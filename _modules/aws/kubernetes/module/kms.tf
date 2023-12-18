@@ -1,6 +1,6 @@
 module "kms" {
   source  = "terraform-aws-modules/kms/aws"
-  version = "1.5"
+  version = "2.1"
 
   aliases               = ["eks/${var.cluster_name}-ck"]
   description           = "${var.cluster_name} cluster encryption key"
