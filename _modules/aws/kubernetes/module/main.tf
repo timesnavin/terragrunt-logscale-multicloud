@@ -71,8 +71,8 @@ module "eks" {
       most_recent = true
     }
     vpc-cni = {
-      most_recent              = true
-      before_compute           = true
+      most_recent    = true
+      before_compute = true
       //service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
       configuration_values = jsonencode({
         enableCloudWatchLogs = "true"
@@ -150,7 +150,7 @@ module "eks" {
   #   ],
   #   var.additional_aws_auth_roles
   # )
-  aws_auth_roles =  var.additional_aws_auth_roles
+  aws_auth_roles = var.additional_aws_auth_roles
 
   aws_auth_users = [
     {
@@ -198,7 +198,9 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
+
     # Default node group - as provided by AWS EKS
+    
     system = {
       min_size     = 3
       max_size     = 7
@@ -222,21 +224,8 @@ module "eks" {
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false
 
-      ami_type = "BOTTLEROCKET_x86_64"
+      ami_type = "BOTTLEROCKET_ARM_64"
       platform = "bottlerocket"
-    }
-
-    # Adds to the AWS provided user data
-    bottlerocket_add = {
-      ami_type = "BOTTLEROCKET_x86_64"
-      platform = "bottlerocket"
-
-      # This will get added to what AWS provides
-      bootstrap_extra_args = <<-EOT
-        # extra args added
-        [settings.kernel]
-        lockdown = "integrity"
-      EOT
     }
   }
 
