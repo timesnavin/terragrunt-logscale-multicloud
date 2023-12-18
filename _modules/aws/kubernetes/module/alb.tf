@@ -14,7 +14,6 @@ module "iam_eks_role_alb" {
     }
   }
 
-  depends_on = [helm_release.alb]
 }
 
 
