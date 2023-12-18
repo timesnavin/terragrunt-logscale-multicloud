@@ -66,56 +66,58 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  # cluster_addons = {
-  #   kube-proxy = {
-  #     most_recent = true
-  #   }
-  #   vpc-cni = {
-  #     most_recent    = true
-  #     # before_compute = true
-  #     //service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
-  #     configuration_values = jsonencode({
-  #       enableCloudWatchLogs = "true"
-  #       healthProbeBindAddr  = "8163"
-  #       metricsBindAddr      = "8162"
-  #       # env = {
-  #       #   # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-  #       #   ENABLE_PREFIX_DELEGATION = "true"
-  #       #   WARM_PREFIX_TARGET       = "1"
-  #       # }
-  #     })
-  #   }
-  #   coredns = {
-  #     most_recent = true
-  #     configuration_values = jsonencode({
-  #       # computeType = "Fargate"
-  #       # Ensure that we fully utilize the minimum amount of resources that are supplied by
-  #       # Fargate https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html
-  #       # Fargate adds 256 MB to each pod's memory reservation for the required Kubernetes
-  #       # components (kubelet, kube-proxy, and containerd). Fargate rounds up to the following
-  #       # compute configuration that most closely matches the sum of vCPU and memory requests in
-  #       # order to ensure pods always have the resources that they need to run.
-  #       podDisruptionBudget = {
-  #         enabled      = true
-  #         minAvailable = 1
-  #       }
-  #       resources = {
-  #         limits = {
-  #           cpu = "0.25"
-  #           # We are targeting the smallest Task size of 512Mb, so we subtract 256Mb from the
-  #           # request/limit to ensure we can fit within that task
-  #           memory = "256M"
-  #         }
-  #         requests = {
-  #           cpu = "0.25"
-  #           # We are targeting the smallest Task size of 512Mb, so we subtract 256Mb from the
-  #           # request/limit to ensure we can fit within that task
-  #           memory = "256M"
-  #         }
-  #       }
-  #     })
-  #   }
-  # }
+  cluster_addons = {
+    kube-proxy = {
+      most_recent = true
+    }
+
+    #   vpc-cni = {
+    #     most_recent    = true
+    #     # before_compute = true
+    #     //service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+    #     configuration_values = jsonencode({
+    #       enableCloudWatchLogs = "true"
+    #       healthProbeBindAddr  = "8163"
+    #       metricsBindAddr      = "8162"
+    #       # env = {
+    #       #   # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+    #       #   ENABLE_PREFIX_DELEGATION = "true"
+    #       #   WARM_PREFIX_TARGET       = "1"
+    #       # }
+    #     })
+    #   }
+
+    coredns = {
+      most_recent = true
+      configuration_values = jsonencode({
+        # computeType = "Fargate"
+        # Ensure that we fully utilize the minimum amount of resources that are supplied by
+        # Fargate https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html
+        # Fargate adds 256 MB to each pod's memory reservation for the required Kubernetes
+        # components (kubelet, kube-proxy, and containerd). Fargate rounds up to the following
+        # compute configuration that most closely matches the sum of vCPU and memory requests in
+        # order to ensure pods always have the resources that they need to run.
+        podDisruptionBudget = {
+          enabled      = true
+          minAvailable = 1
+        }
+        resources = {
+          limits = {
+            cpu = "0.25"
+            # We are targeting the smallest Task size of 512Mb, so we subtract 256Mb from the
+            # request/limit to ensure we can fit within that task
+            memory = "256M"
+          }
+          requests = {
+            cpu = "0.25"
+            # We are targeting the smallest Task size of 512Mb, so we subtract 256Mb from the
+            # request/limit to ensure we can fit within that task
+            memory = "256M"
+          }
+        }
+      })
+    }
+  }
 
   vpc_id                   = var.vpc_id
   subnet_ids               = var.subnet_ids
@@ -150,7 +152,6 @@ module "eks" {
     ],
     var.additional_aws_auth_roles
   )
-  //aws_auth_roles = var.additional_aws_auth_roles
 
   aws_auth_users = [
     {
