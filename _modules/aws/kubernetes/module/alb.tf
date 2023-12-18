@@ -42,7 +42,7 @@ serviceAccount:
     #create: false
     name: aws-load-balancer-controller
     annotations:
-        eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}    
+        eks.amazonaws.com/role-arn: ${module.iam_eks_role_alb.irsa_arn}    
 resources:
   limits:
     cpu: 100m
