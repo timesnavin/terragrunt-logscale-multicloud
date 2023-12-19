@@ -27,20 +27,20 @@ locals {
 
   network_acls = {
     default_inbound = [
-      // {
-      //   rule_number = 800
-      //   rule_action = "allow"
-      //   from_port   = 0
-      //   to_port     = 65535
-      //   protocol    = "-1"
-      //   cidr_block  = "10.0.0.0/20"
-      // },
+      {
+        rule_number = 800
+        rule_action = "allow"
+        from_port   = 0
+        to_port     = 65535
+        protocol    = "-1"
+        cidr_block  = "10.0.0.0/20"
+      },
     ]
     default_outbound = [
       {
         rule_number = 900
         rule_action = "allow"
-        from_port   = 32768
+        from_port   = 0
         to_port     = 65535
         protocol    = "tcp"
         cidr_block  = "0.0.0.0/0"
@@ -48,7 +48,7 @@ locals {
       {
         rule_number = 901
         rule_action = "allow"
-        from_port   = 32768
+        from_port   = 0
         to_port     = 65535
         protocol    = "udp"
         cidr_block  = "0.0.0.0/0"
