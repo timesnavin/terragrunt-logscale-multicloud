@@ -29,8 +29,8 @@ output "cluster_name" {
 
 output "cluster_oidc_provider_arn" {
   description = "The ARN of the OIDC Provider if `enable_irsa = true`"
-  value       = module.eks.cluster_oidc_provider_arn
-  
+  value       = module.eks.oidc_provider_arn
+
 }
 
 output "cluster_oidc_issuer_url" {
