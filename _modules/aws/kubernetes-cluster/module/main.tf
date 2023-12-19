@@ -113,7 +113,6 @@ module "eks" {
           enabled      = true
           minAvailable = 2
         }
-        priorityClassName = "system-cluster-critical"
         topologySpreadConstraints = [
           {
             maxSkew: 1
