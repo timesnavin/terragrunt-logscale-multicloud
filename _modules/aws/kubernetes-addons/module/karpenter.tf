@@ -31,12 +31,23 @@ resource "helm_release" "karpenter" {
 
 }
 
+resource "random_string" "seed" {
+  length  = 4
+  special = false
+  numeric = false
+  upper   = false
+  keepers = [
+    var.karpenter_role_name,
+    var.eks_cluster_name
+  ]
+
+}
 resource "kubectl_manifest" "karpenter_node_class" {
   yaml_body = <<-YAML
     apiVersion: karpenter.k8s.aws/v1beta1
     kind: EC2NodeClass
     metadata:
-      name: default
+      name: default-${random_string.seed.result}
     spec:
       amiFamily: AL2
       role: ${var.karpenter_role_name}
@@ -71,7 +82,7 @@ resource "kubectl_manifest" "karpenter_default_arm_node_pool" {
             durabilityType: "spot"
         spec:
           nodeClassRef:
-            name: default
+            name: default-${random_string.seed.result}
           requirements:
             - key: karpenter.sh/capacity-type
               operator: In
@@ -119,7 +130,7 @@ resource "kubectl_manifest" "karpenter_default_intel_node_pool" {
             durabilityType: "spot"
         spec:
           nodeClassRef:
-            name: default
+            name: default-${random_string.seed.result}
           requirements:
             - key: karpenter.sh/capacity-type
               operator: In
