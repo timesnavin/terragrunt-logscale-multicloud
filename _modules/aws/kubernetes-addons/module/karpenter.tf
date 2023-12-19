@@ -64,6 +64,9 @@ resource "kubectl_manifest" "karpenter_node_class" {
   depends_on = [
     helm_release.karpenter
   ]
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "kubectl_manifest" "karpenter_default_arm_node_pool" {
@@ -111,6 +114,12 @@ resource "kubectl_manifest" "karpenter_default_arm_node_pool" {
   depends_on = [
     kubectl_manifest.karpenter_node_class
   ]
+  lifecycle {
+    replace_triggered_by = [
+      kubectl_manifest.karpenter_node_class
+    ]
+    create_before_destroy = true
+  }
 }
 
 
@@ -159,4 +168,10 @@ resource "kubectl_manifest" "karpenter_default_intel_node_pool" {
   depends_on = [
     kubectl_manifest.karpenter_node_class
   ]
+  lifecycle {
+    replace_triggered_by = [
+      kubectl_manifest.karpenter_node_class
+    ]
+    create_before_destroy = true
+  }
 }
