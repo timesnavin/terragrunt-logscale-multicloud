@@ -31,6 +31,16 @@ dependency "network" {
 }
 dependency "kubernetes_cluster" {
   config_path = "${get_terragrunt_dir()}/../kubernetes-cluster/"
+    mock_outputs = {
+    eks_cluster_name = "foo"
+    eks_cluster_endpoint = "https:/foo"
+    eks_cluster_certificate_authority_data = ""
+    eks_cluster_oidc_provider_arn = "arn::foo"
+    eks_cluster_oidc_provider_arn  = "oidc://"
+    karpenter_irsa_arn = "arn://"
+    karpenter_queue_name = "sqs://q"
+    karpenter_role_name = "role"
+  }
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
