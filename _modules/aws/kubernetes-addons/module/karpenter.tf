@@ -20,12 +20,12 @@ resource "helm_release" "karpenter" {
   values = [
     <<-EOT
     settings:
-      clusterName: ${module.eks.cluster_name}
-      clusterEndpoint: ${module.eks.cluster_endpoint}
-      interruptionQueueName: ${module.karpenter.queue_name}
+      clusterName: ${var.eks_cluster_name}
+      clusterEndpoint: ${var.eks_cluster_endpoint}
+      interruptionQueueName: ${var.karpenter_queue_name}
     serviceAccount:
       annotations:
-        eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn} 
+        eks.amazonaws.com/role-arn: ${var.karpenter_irsa_arn} 
     EOT
   ]
 
@@ -39,15 +39,15 @@ resource "kubectl_manifest" "karpenter_node_class" {
       name: default
     spec:
       amiFamily: AL2
-      role: ${module.karpenter.role_name}
+      role: ${var.karpenter_role_name}
       subnetSelectorTerms:
         - tags:
-            karpenter.sh/discovery: ${module.eks.cluster_name}
+            karpenter.sh/discovery: ${var.eks_cluster_name}
       securityGroupSelectorTerms:
         - tags:
-            karpenter.sh/discovery: ${module.eks.cluster_name}
+            karpenter.sh/discovery: ${var.eks_cluster_name}
       tags:
-        karpenter.sh/discovery: ${module.eks.cluster_name}
+        karpenter.sh/discovery: ${var.eks_cluster_name}
   YAML
 
   depends_on = [

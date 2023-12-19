@@ -12,7 +12,7 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes-addons/module/"
 }
 
 
@@ -29,19 +29,21 @@ locals {
 dependency "network" {
   config_path = "${get_terragrunt_dir()}/../network/"
 }
+dependency "kubernetes_cluster" {
+  config_path = "${get_terragrunt_dir()}/../kubernetes-cluster/"
+}
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  cluster_name    = local.provider.aws.name
-  cluster_version = local.region.kubernetes.version
-
-  iam_role_path     = local.provider.aws.iam_path
-  vpc_id            = dependency.network.outputs.vpc_id
-  subnet_ids        = dependency.network.outputs.private_subnets
-  control_plane_ids = dependency.network.outputs.intra_subnets
-
-  additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
+  eks_cluster_name    = dependency.kubernetes_cluster.outputs.cluster_name
+  eks_cluster_endpoint= dependency.kubernetes_cluster.outputs.cluster_endpoint
+  eks_cluster_certificate_authority_data= dependency.kubernetes_cluster.outputs.cluster_certificate_authority_data
+  
+  karpenter_irsa_arn=dependency.kubernetes_cluster.outputs.karpenter_irsa_arn 
+  karpenter_queue_name=dependency.kubernetes_cluster.outputs.karpenter_queue_name
+  karpenter_role_name= dependency.kubernetes_cluster.outputs.karpenter_role_name
+  
 }
