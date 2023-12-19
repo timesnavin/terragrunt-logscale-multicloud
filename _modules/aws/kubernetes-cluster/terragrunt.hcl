@@ -12,7 +12,7 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes-cluster/module/"
 }
 
 
