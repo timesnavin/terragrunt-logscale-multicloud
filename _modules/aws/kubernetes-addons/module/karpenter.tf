@@ -36,10 +36,10 @@ resource "random_string" "seed" {
   special = false
   numeric = false
   upper   = false
-  keepers = [
-    var.karpenter_role_name,
-    var.eks_cluster_name
-  ]
+  keepers = {
+    karpenter_role_name = var.karpenter_role_name
+    eks_cluster_name    = var.eks_cluster_name
+  }
 
 }
 resource "kubectl_manifest" "karpenter_node_class" {
