@@ -99,7 +99,7 @@ module "eks" {
 
     coredns = {
       # most_recent = true
-      addon_version = "v1.10.1-eksbuild.5"
+      addon_version = "v1.10.1-eksbuild.6"
       configuration_values = jsonencode({
         replicaCount = 3
         # computeType = "Fargate"
@@ -111,17 +111,47 @@ module "eks" {
         # order to ensure pods always have the resources that they need to run.
         podDisruptionBudget = {
           enabled      = true
-          minAvailable = 1
+          minAvailable = 2
         }
+        priorityClassName = "system-cluster-critical"
+        topologySpreadConstraints = [
+          {
+            maxSkew: 1
+            topologyKey: "kubernetes.io/hostname"
+            whenUnsatisfiable: "DoNotSchedule"
+            labelSelector: {
+              matchLabels: {
+                "k8s-app": "kube-dns"
+              }
+            }
+            matchLabelKeys: [
+              "pod-template-hash"
+            ]
+          },
+          {
+            maxSkew: 1
+            topologyKey: "topology.kubernetes.io/zone"
+            whenUnsatisfiable: "ScheduleAnyway"
+            labelSelector: {
+              matchLabels: {
+                "k8s-app": "kube-dns"
+              }
+            }
+            matchLabelKeys: [
+              "pod-template-hash"
+            ]
+          }            
+        ]
+
         resources = {
           limits = {
-            cpu = "0.25"
+            cpu = "1"
             # We are targeting the smallest Task size of 512Mb, so we subtract 256Mb from the
             # request/limit to ensure we can fit within that task
             memory = "256M"
           }
           requests = {
-            cpu = "0.25"
+            cpu = "1"
             # We are targeting the smallest Task size of 512Mb, so we subtract 256Mb from the
             # request/limit to ensure we can fit within that task
             memory = "256M"
