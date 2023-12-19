@@ -71,15 +71,17 @@ module "eks" {
     kube-proxy = {
       enabled        = true
       before_compute = true
-      most_recent    = true
+      # most_recent    = true
+      addon_version = "v1.27.6-eksbuild.2"
     }
 
     vpc-cni = {
-      enabled                  = true
-      most_recent              = true
+      enabled = true
+      # most_recent              = true
       before_compute           = true
       resolve_conflicts        = "OVERWRITE"
       service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
+      addon_version            = "v1.15.4-eksbuild.1"
       configuration_values = jsonencode({
         nodeAgent = {
 
@@ -96,8 +98,10 @@ module "eks" {
     }
 
     coredns = {
-      most_recent = true
+      # most_recent = true
+      addon_version = "v1.10.1-eksbuild.5"
       configuration_values = jsonencode({
+        replicaCount = 3
         # computeType = "Fargate"
         # Ensure that we fully utilize the minimum amount of resources that are supplied by
         # Fargate https://docs.aws.amazon.com/eks/latest/userguide/fargate-pod-configuration.html
