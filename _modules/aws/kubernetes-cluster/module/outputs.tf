@@ -27,6 +27,12 @@ output "cluster_name" {
   value       = module.eks.cluster_name
 }
 
+output "cluster_oidc_provider_arn" {
+  description = "The ARN of the OIDC Provider if `enable_irsa = true`"
+  value       = module.eks.cluster_oidc_provider_arn
+  
+}
+
 output "cluster_oidc_issuer_url" {
   description = "The URL on the EKS cluster for the OpenID Connect identity provider"
   value       = module.eks.cluster_oidc_issuer_url

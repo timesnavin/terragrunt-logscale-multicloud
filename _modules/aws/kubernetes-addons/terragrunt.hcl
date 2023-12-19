@@ -38,12 +38,13 @@ dependency "kubernetes_cluster" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  eks_cluster_name    = dependency.kubernetes_cluster.outputs.cluster_name
-  eks_cluster_endpoint= dependency.kubernetes_cluster.outputs.cluster_endpoint
-  eks_cluster_certificate_authority_data= dependency.kubernetes_cluster.outputs.cluster_certificate_authority_data
-  
-  karpenter_irsa_arn=dependency.kubernetes_cluster.outputs.karpenter_irsa_arn 
-  karpenter_queue_name=dependency.kubernetes_cluster.outputs.karpenter_queue_name
-  karpenter_role_name= dependency.kubernetes_cluster.outputs.karpenter_role_name
-  
+  eks_cluster_name                       = dependency.kubernetes_cluster.outputs.cluster_name
+  eks_cluster_endpoint                   = dependency.kubernetes_cluster.outputs.cluster_endpoint
+  eks_cluster_certificate_authority_data = dependency.kubernetes_cluster.outputs.cluster_certificate_authority_data
+  eks_cluster_oidc_provider_arn          = dependency.kubernetes_cluster.outputs.cluster_oidc_provider_arn
+
+  karpenter_irsa_arn   = dependency.kubernetes_cluster.outputs.karpenter_irsa_arn
+  karpenter_queue_name = dependency.kubernetes_cluster.outputs.karpenter_queue_name
+  karpenter_role_name  = dependency.kubernetes_cluster.outputs.karpenter_role_name
+
 }

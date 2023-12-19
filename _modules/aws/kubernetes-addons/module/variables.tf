@@ -12,6 +12,9 @@ variable "eks_cluster_name" {
 
 }
 
+variable "eks_cluster_oidc_provider_arn" {
+  
+}
 variable "karpenter_irsa_arn" {
 
 }
