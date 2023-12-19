@@ -3,7 +3,7 @@ module "iam_eks_role_alb" {
   version = "5.33.0"
 
   role_name_prefix = "alb-controller"
-  role_path        = "/${var.eks_cluster_name}}/"
+  role_path        = "/${var.eks_cluster_name}}"
 
   attach_load_balancer_controller_policy = true
 
