@@ -72,7 +72,7 @@ module "eks" {
       enabled        = true
       before_compute = true
       # most_recent    = true
-      addon_version = "v1.27.6-eksbuild.2"
+      addon_version = "v1.28.4-eksbuild.1"
     }
 
     vpc-cni = {
