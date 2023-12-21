@@ -21,6 +21,8 @@ server:
   autoscaling:
     enabled: true
     minReplicas: 2
+  ingress:
+    enabled: true
 
 repoServer:
   autoscaling:
