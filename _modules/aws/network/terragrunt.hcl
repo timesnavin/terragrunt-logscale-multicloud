@@ -173,8 +173,8 @@ inputs = {
 
   // default_network_acl_ingress = 
   public_dedicated_network_acl = true
-  public_inbound_acl_rules     = concat(local.network_acls["default_inbound"], local.network_acls["public_inbound"])
-  public_outbound_acl_rules    = concat(local.network_acls["default_outbound"], local.network_acls["public_outbound"])
+  // public_inbound_acl_rules     = concat(local.network_acls["default_inbound"], local.network_acls["public_inbound"])
+  // public_outbound_acl_rules    = concat(local.network_acls["default_outbound"], local.network_acls["public_outbound"])
 
   // public_inbound_acl_rules = [
   //   {
@@ -202,5 +202,5 @@ inputs = {
   //   // }
   // ]
 
-  private_dedicated_network_acl = false
+  private_dedicated_network_acl = true
 }
