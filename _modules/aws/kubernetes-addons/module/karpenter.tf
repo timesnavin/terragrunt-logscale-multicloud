@@ -29,6 +29,12 @@ resource "helm_release" "karpenter" {
     EOT
   ]
 
+  lifecycle {
+    ignore_changes = [
+      data.aws_ecrpublic_authorization_token.token.password
+    ]
+  }
+
 }
 
 resource "random_string" "seed" {
