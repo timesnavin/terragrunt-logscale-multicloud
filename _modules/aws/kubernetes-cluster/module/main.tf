@@ -115,31 +115,31 @@ module "eks" {
         }
         topologySpreadConstraints = [
           {
-            maxSkew: 1
-            topologyKey: "kubernetes.io/hostname"
-            whenUnsatisfiable: "DoNotSchedule"
-            labelSelector: {
-              matchLabels: {
-                "k8s-app": "kube-dns"
+            maxSkew : 1
+            topologyKey : "kubernetes.io/hostname"
+            whenUnsatisfiable : "DoNotSchedule"
+            labelSelector : {
+              matchLabels : {
+                "k8s-app" : "kube-dns"
               }
             }
-            matchLabelKeys: [
+            matchLabelKeys : [
               "pod-template-hash"
             ]
           },
           {
-            maxSkew: 1
-            topologyKey: "topology.kubernetes.io/zone"
-            whenUnsatisfiable: "ScheduleAnyway"
-            labelSelector: {
-              matchLabels: {
-                "k8s-app": "kube-dns"
+            maxSkew : 1
+            topologyKey : "topology.kubernetes.io/zone"
+            whenUnsatisfiable : "ScheduleAnyway"
+            labelSelector : {
+              matchLabels : {
+                "k8s-app" : "kube-dns"
               }
             }
-            matchLabelKeys: [
+            matchLabelKeys : [
               "pod-template-hash"
             ]
-          }            
+          }
         ]
 
         resources = {
@@ -216,20 +216,14 @@ module "eks" {
   #   }
   # }
 
-  # fargate_profiles = {
+  fargate_profiles = {
 
-  #   karpenter = {
-  #     selectors = [
-  #       { namespace = "karpenter" }
-  #     ]
-  #   }
-
-  #   kube-system = {
-  #     selectors = [
-  #       { namespace = "kube-system" }
-  #     ]
-  #   }
-  # }
+    karpenter = {
+      selectors = [
+        { namespace = "karpenter" }
+      ]
+    }
+  }
 
   eks_managed_node_group_defaults = {
     # We are using the IRSA created below for permissions
