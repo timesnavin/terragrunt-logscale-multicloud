@@ -27,6 +27,9 @@ locals {
 }
 
 dependency "kubernetes" {
+  config_path = "${get_terragrunt_dir()}/../../kubernetes-cluster/"
+}
+dependency "kubernetes_addons" {
   config_path = "${get_terragrunt_dir()}/../../kubernetes/"
   skip_outputs = true
 }
