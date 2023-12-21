@@ -6,7 +6,10 @@ module "kms" {
   description           = "${var.cluster_name} cluster encryption key"
   enable_default_policy = true
   key_owners = [
-    data.aws_caller_identity.current.arn,
-    "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+    concat(
+      ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"] ,
+      var.additional_kms_owners
+    )
+    
   ]
 }
