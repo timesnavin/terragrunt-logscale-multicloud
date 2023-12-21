@@ -28,6 +28,7 @@ locals {
 
 dependency "kubernetes" {
   config_path = "${get_terragrunt_dir()}/../../kubernetes/"
+  skip_outputs = true
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
