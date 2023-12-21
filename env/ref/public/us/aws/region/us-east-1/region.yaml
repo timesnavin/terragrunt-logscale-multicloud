@@ -13,5 +13,9 @@ kubernetes:
       username: "admin-write"
       groups:
         - system:masters
+    - rolearn: "arn:aws:iam::042445652404:role/env0-ci"
+      username: "env-0"
+      groups:
+        - system:masters
   aws_auth_accounts:
     - 042445652404
