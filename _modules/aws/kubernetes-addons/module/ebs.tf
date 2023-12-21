@@ -14,7 +14,7 @@ resource "kubernetes_storage_class" "gp2-ext4" {
 
 resource "kubernetes_storage_class" "gp3-ext4" {
   metadata {
-    name = "aws-ebs-gp2-ext4"
+    name = "aws-ebs-gp3-ext4"
   }
   storage_provisioner    = "ebs.csi.aws.com"
   reclaim_policy         = "Delete"
