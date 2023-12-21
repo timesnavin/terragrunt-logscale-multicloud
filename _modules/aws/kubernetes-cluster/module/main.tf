@@ -165,7 +165,7 @@ module "eks" {
       # before_compute           = true
       resolve_conflicts        = "OVERWRITE"
       service_account_role_arn = module.iam_eks_role_ebs.iam_role_arn
-      addon_version            = "v6.3.2-eksbuild.1"
+      addon_version            = "v1.26.0-eksbuild.1"
       configuration_values = jsonencode({
         nodeAgent = {
 
