@@ -166,19 +166,19 @@ module "eks" {
       resolve_conflicts        = "OVERWRITE"
       service_account_role_arn = module.iam_eks_role_ebs.iam_role_arn
       addon_version            = "v1.26.0-eksbuild.1"
-      configuration_values = jsonencode({
-        nodeAgent = {
+      # configuration_values = jsonencode({
+      #   nodeAgent = {
 
-          enableCloudWatchLogs = "true"
-          healthProbeBindAddr  = "8163"
-          metricsBindAddr      = "8162"
-        }
-        # env = {
-        #   # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
-        #   ENABLE_PREFIX_DELEGATION = "true"
-        #   WARM_PREFIX_TARGET       = "1"
-        # }
-      })
+      #     enableCloudWatchLogs = "true"
+      #     healthProbeBindAddr  = "8163"
+      #     metricsBindAddr      = "8162"
+      #   }
+      #   # env = {
+      #   #   # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
+      #   #   ENABLE_PREFIX_DELEGATION = "true"
+      #   #   WARM_PREFIX_TARGET       = "1"
+      #   # }
+      # })
     }
   }
 
