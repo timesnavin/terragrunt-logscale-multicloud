@@ -3,13 +3,13 @@ module "iam_eks_role_ebs" {
   version = "5.33.0"
 
   role_name_prefix = "ebs-controller"
-  role_path        = "/${var.eks_cluster_name}/"
+  role_path        = "/${module.eks.cluster_name}/"
 
   attach_ebs_csi_policy = true
 
   oidc_providers = {
     main = {
-      provider_arn               = var.eks_cluster_oidc_provider_arn
+      provider_arn               = module.eks.oidc_provider_arn
       namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
     }
   }
