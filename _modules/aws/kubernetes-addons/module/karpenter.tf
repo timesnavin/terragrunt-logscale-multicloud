@@ -31,7 +31,7 @@ resource "helm_release" "karpenter" {
 
   lifecycle {
     ignore_changes = [
-      data.aws_ecrpublic_authorization_token.token.password
+      repository_password
     ]
   }
 
