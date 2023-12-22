@@ -39,5 +39,7 @@ dependency "kubernetes_addons" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
+  region = local.region.region
+  domain_name = "${local.region.partition}.${local.region.domain_name}"
 
 }

@@ -23,6 +23,8 @@ server:
     minReplicas: 2
   ingress:
     enabled: true
+    hosts:
+      - argocd.${var.region}.${var.domain_name}
     annotations:
       alb.ingress.kubernetes.io/scheme: internet-facing
     ingressClassName: alb
