@@ -24,3 +24,9 @@ variable "karpenter_queue_name" {
 variable "karpenter_role_name" {
   
 }
+
+variable "domain_name" {
+  type        = string
+  description = "(optional) describe your variable"
+
+}
