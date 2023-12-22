@@ -12,8 +12,8 @@ resource "helm_release" "karpenter" {
 
   name                = "karpenter"
   repository          = "oci://public.ecr.aws/karpenter"
-  repository_username = data.aws_ecrpublic_authorization_token.token.user_name
-  repository_password = data.aws_ecrpublic_authorization_token.token.password
+  # repository_username = data.aws_ecrpublic_authorization_token.token.user_name
+  # repository_password = data.aws_ecrpublic_authorization_token.token.password
   chart               = "karpenter"
   version             = "v0.33.0"
 
@@ -29,11 +29,11 @@ resource "helm_release" "karpenter" {
     EOT
   ]
 
-  lifecycle {
-    ignore_changes = [
-      repository_password
-    ]
-  }
+  # lifecycle {
+  #   ignore_changes = [
+  #     repository_password
+  #   ]
+  # }
 
 }
 
