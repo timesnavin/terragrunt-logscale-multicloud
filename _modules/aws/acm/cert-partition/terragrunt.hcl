@@ -32,4 +32,3 @@ inputs = {
   parent_zone_id = dependency.partition_zone.outputs.zone_id
   child_domain   = local.partition.name
 }
-}

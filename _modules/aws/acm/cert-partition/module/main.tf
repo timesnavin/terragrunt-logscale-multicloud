@@ -14,4 +14,6 @@ module "acm" {
 
   wait_for_validation = false
 
+  key_algorithm = "EC_secp384r1"
+
 }
