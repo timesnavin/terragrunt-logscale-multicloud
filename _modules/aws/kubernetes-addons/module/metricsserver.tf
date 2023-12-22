@@ -9,11 +9,11 @@ resource "helm_release" "metricsserver" {
   chart   = "metrics-serve"
   version = "v3.11.0"
 
-  #   values = [
-  #     <<-EOT
-  #     settings:
-  #     EOT
-  #   ]
+  values = [
+    <<-EOT
+      replicas: 2
+      EOT
+  ]
 
 
 }
