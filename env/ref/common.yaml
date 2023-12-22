@@ -2,6 +2,7 @@ cloud:
   tags:
     owner: ryan.faircloth
     project: selfcloud
+    partition: ref
 kubernetes:
   labels:
     owner: ryan.faircloth
