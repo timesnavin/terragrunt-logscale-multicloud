@@ -25,10 +25,14 @@ server:
     enabled: true
     hosts:
       - argocd.${var.domain_name_region}
+    tls:
+      hosts:
+      - argocd.${var.domain_name_region}
     annotations:
       alb.ingress.kubernetes.io/scheme: internet-facing
       link.argocd.argoproj.io/external-link: argocd.${var.domain_name_region}
       alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/ssl-redirect: 1
     ingressClassName: alb
 
 repoServer:
