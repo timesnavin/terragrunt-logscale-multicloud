@@ -8,7 +8,7 @@
 locals {
   backend  = yamldecode(file(find_in_parent_folders("backend.yaml")))
   common   = yamldecode(file(find_in_parent_folders("common.yaml")))
-  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
 }
 
 remote_state {
@@ -30,7 +30,7 @@ remote_state {
 generate "provider_aws" {
   path      = "provider_aws.tf"
   if_exists = "overwrite_terragrunt"
-  disable   = local.provider.type == "aws" || local.provider.type == "eks" ? false : true
+  disable   = local.platform.type == "aws" || local.platform.type == "eks" ? false : true
   contents  = <<-EOF
 
     variable "provider_aws_tags" {
@@ -54,7 +54,7 @@ EOF
 generate "provider_aws_eks_helm" {
   path      = "provider_aws_eks_helm.tf"
   if_exists = "overwrite_terragrunt"
-  disable   = local.provider.type == "eks" ? false : true
+  disable   = local.platform.type == "eks" ? false : true
   contents  = <<-EOF
 
     variable "provider_aws_eks_cluster_endpoint" {
@@ -104,7 +104,7 @@ EOF
 generate "provider_azure" {
   path      = "provider_azure.tf"
   if_exists = "overwrite_terragrunt"
-  disable   = local.provider.type == "azure" ? false : true
+  disable   = local.platform.type == "azure" ? false : true
   contents  = <<-EOF
 
   provider "azurerm" {
@@ -117,7 +117,7 @@ generate "provider_azure" {
 generate "provider_gcp" {
   path      = "provider_gcp.tf"
   if_exists = "overwrite_terragrunt"
-  disable   = local.provider.type == "google" ? false : true
+  disable   = local.platform.type == "google" ? false : true
   contents  = <<-EOF
 
   variable "provider_google_project" {
@@ -145,14 +145,14 @@ generate "provider_gcp" {
 
 inputs = {
   provider_aws_tags   = local.common.cloud.tags
-  provider_aws_region = local.provider.type == "aws" || local.provider.type == "eks" ? local.provider.aws.region : ""
+  provider_aws_region = local.platform.type == "aws" || local.platform.type == "eks" ? local.platform.aws.region : ""
 
-  provider_aws_eks_cluster_endpoint                   = local.provider.type == "eks" ? dependency.kubernetes.outputs.cluster_endpoint : ""
-  provider_aws_eks_cluster_certificate_authority_data = local.provider.type == "eks" ? dependency.kubernetes.outputs.cluster_certificate_authority_data : ""
-  provider_aws_eks_cluster_name                       = local.provider.type == "eks" ? dependency.kubernetes.outputs.cluster_name : ""
+  provider_aws_eks_cluster_endpoint                   = local.platform.type == "eks" ? dependency.kubernetes.outputs.cluster_endpoint : ""
+  provider_aws_eks_cluster_certificate_authority_data = local.platform.type == "eks" ? dependency.kubernetes.outputs.cluster_certificate_authority_data : ""
+  provider_aws_eks_cluster_name                       = local.platform.type == "eks" ? dependency.kubernetes.outputs.cluster_name : ""
 
 
-  provider_google_project     = local.provider.type == "google" ? local.provider.google.project_id : ""
-  provider_google_region      = local.provider.type == "google" ? local.provider.google.region : ""
+  provider_google_project     = local.platform.type == "google" ? local.platform.google.project_id : ""
+  provider_google_region      = local.platform.type == "google" ? local.platform.google.region : ""
   provider_google_credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
 }
