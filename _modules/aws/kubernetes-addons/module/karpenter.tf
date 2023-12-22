@@ -10,12 +10,12 @@ resource "helm_release" "karpenter" {
   namespace        = "karpenter"
   create_namespace = true
 
-  name                = "karpenter"
-  repository          = "oci://public.ecr.aws/karpenter"
+  name       = "karpenter"
+  repository = "oci://public.ecr.aws/karpenter"
   # repository_username = data.aws_ecrpublic_authorization_token.token.user_name
   # repository_password = data.aws_ecrpublic_authorization_token.token.password
-  chart               = "karpenter"
-  version             = "v0.33.1"
+  chart   = "karpenter"
+  version = "v0.33.1"
 
   values = [
     <<-EOT
@@ -48,8 +48,8 @@ resource "random_string" "seed" {
   }
 
 }
-resource "kubectl_manifest" "karpenter_node_class" {
-  yaml_body = <<-YAML
+resource "kubernetes_manifest" "karpenter_node_class" {
+  manifest = yamldecode(<<-YAML
     apiVersion: karpenter.k8s.aws/v1beta1
     kind: EC2NodeClass
     metadata:
@@ -66,6 +66,7 @@ resource "kubectl_manifest" "karpenter_node_class" {
       tags:
         karpenter.sh/discovery: ${var.eks_cluster_name}
   YAML
+  )
 
   depends_on = [
     helm_release.karpenter
@@ -75,8 +76,8 @@ resource "kubectl_manifest" "karpenter_node_class" {
   }
 }
 
-resource "kubectl_manifest" "karpenter_default_arm_node_pool" {
-  yaml_body = <<-YAML
+resource "kubernetes_manifest" "karpenter_default_arm_node_pool" {
+  manifest = yamldecode(<<-YAML
     apiVersion: karpenter.sh/v1beta1
     kind: NodePool
     metadata:
@@ -116,21 +117,22 @@ resource "kubectl_manifest" "karpenter_default_arm_node_pool" {
       disruption:
         consolidationPolicy: WhenUnderutilized
   YAML
+  )
 
   depends_on = [
-    kubectl_manifest.karpenter_node_class
+    kubernetes_manifest.karpenter_node_class
   ]
   lifecycle {
     replace_triggered_by = [
-      kubectl_manifest.karpenter_node_class
+      kubernetes_manifest.karpenter_node_class
     ]
     create_before_destroy = true
   }
 }
 
 
-resource "kubectl_manifest" "karpenter_default_intel_node_pool" {
-  yaml_body = <<-YAML
+resource "kubernetes_manifest" "karpenter_default_intel_node_pool" {
+  manifest = yamldecode(<<-YAML
     apiVersion: karpenter.sh/v1beta1
     kind: NodePool
     metadata:
@@ -170,13 +172,13 @@ resource "kubectl_manifest" "karpenter_default_intel_node_pool" {
       disruption:
         consolidationPolicy: WhenUnderutilized
   YAML
-
+  )
   depends_on = [
-    kubectl_manifest.karpenter_node_class
+    kubernetes_manifest.karpenter_node_class
   ]
   lifecycle {
     replace_triggered_by = [
-      kubectl_manifest.karpenter_node_class
+      kubernetes_manifest.karpenter_node_class
     ]
     create_before_destroy = true
   }
