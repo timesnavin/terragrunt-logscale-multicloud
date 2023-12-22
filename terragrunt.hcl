@@ -6,9 +6,9 @@
 
 
 locals {
-  backend         = yamldecode(file(find_in_parent_folders("backend.yaml")))
-  common        = yamldecode(file(find_in_parent_folders("common.yaml")))
-  provider        = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  backend  = yamldecode(file(find_in_parent_folders("backend.yaml")))
+  common   = yamldecode(file(find_in_parent_folders("common.yaml")))
+  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
 }
 
 remote_state {
