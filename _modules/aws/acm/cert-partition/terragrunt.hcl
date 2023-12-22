@@ -22,9 +22,12 @@ locals {
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
 }
 
+dependency "partition_zone" {
+   config_path = "${get_terragrunt_dir()}/../../../../shared/zone/"
+}
+
 
 inputs = {
   parent_domain  = local.partition.dns.parent_domain
   parent_zone_id = local.partition.dns.parent_zoneid
-  child_domain   = local.partition.name
-}
+  child_domain   = dependency.partition_zone.outputs.zone_id
