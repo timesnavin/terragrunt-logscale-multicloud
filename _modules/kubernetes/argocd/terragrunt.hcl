@@ -45,7 +45,6 @@ dependency "region_zone" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  region      = local.region.name
   domain_name_platform = dependency.partition_zone.outputs.zone_name
   domain_name_region = dependency.region_zone.outputs.zone_name
 

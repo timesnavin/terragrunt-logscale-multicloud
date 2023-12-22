@@ -24,10 +24,10 @@ server:
   ingress:
     enabled: true
     hosts:
-      - argocd.${var.region}.${var.domain_name}
+      - argocd.${var.domain_name_region}
     annotations:
       alb.ingress.kubernetes.io/scheme: internet-facing
-      link.argocd.argoproj.io/external-link: argocd.${var.region}.${var.domain_name}
+      link.argocd.argoproj.io/external-link: argocd.${var.domain_name_region}
       alb.ingress.kubernetes.io/target-type: ip
     ingressClassName: alb
 
