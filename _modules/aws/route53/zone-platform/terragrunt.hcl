@@ -23,7 +23,7 @@ locals {
 }
 
 dependency "partition_zone" {
-   config_path = "${get_terragrunt_dir()}/../../shared/zone/"
+   config_path = "${get_terragrunt_dir()}/../../../shared/zone/"
 }
 
 inputs = {
