@@ -26,7 +26,6 @@ server:
     hosts:
       - argocd.${var.domain_name_region}
     tls:
-      hosts:
       - argocd.${var.domain_name_region}
     annotations:
       alb.ingress.kubernetes.io/scheme: internet-facing
