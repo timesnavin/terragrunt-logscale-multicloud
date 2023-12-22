@@ -111,8 +111,8 @@ module "eks" {
         # compute configuration that most closely matches the sum of vCPU and memory requests in
         # order to ensure pods always have the resources that they need to run.
         podDisruptionBudget = {
-          enabled      = true
-          minAvailable = 2
+          enabled        = true
+          maxUnavailable = 1
         }
         topologySpreadConstraints = [
           {
