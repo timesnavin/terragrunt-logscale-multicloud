@@ -34,6 +34,9 @@ resource "helm_release" "external-dns" {
     provider: aws
     replicaCount: 2
     podAntiAffinityPreset: hard
+    podSecurityContext:
+      fsGroup: 65534
+      runAsUser: 0
     serviceAccount:
       name: external-dns
       annotations:
