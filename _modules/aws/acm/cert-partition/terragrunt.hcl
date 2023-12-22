@@ -31,3 +31,4 @@ inputs = {
   parent_domain  = local.partition.dns.parent_domain
   parent_zone_id = local.partition.dns.parent_zoneid
   child_domain   = dependency.partition_zone.outputs.zone_id
+}
