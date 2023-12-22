@@ -1,24 +1,19 @@
-module "zone" {
-  source  = "terraform-aws-modules/route53/aws//modules/zones"
-  version = "2.11.0"
+module "acm" {
+  source  = "terraform-aws-modules/acm/aws"
+  version = "5.0.0"
 
-  zones = {
-    "${var.child_domain}.${var.parent_domain}" = {
-      comment = "Zone for partition ${var.child_domain}.${var.parent_domain}"
-    }
-  }
-}
+  domain_name = "${var.child_domain}.${var.parent_domain}"
+  zone_id     = var.parent_zone_id
 
+  validation_method = "DNS"
 
-module "delegation_records" {
-  source  = "terraform-aws-modules/route53/aws//modules/records"
-  version = "2.11.0"
+  subject_alternative_names = [
+    "*.${var.child_domain}.${var.parent_domain}",
+    "${var.child_domain}.${var.parent_domain}",
+  ]
 
-  zone_id = var.parent_zone_id
-  records = [{
-    name    = var.child_domain
-    type    = "NS"
-    ttl     = 600
-    records = module.zone.route53_zone_name_servers["${var.child_domain}.${var.parent_domain}"]
-  }]
+  wait_for_validation = false
+
+  key_algorithm = "EC_secp384r1"
+
 }

@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/route53/zone-platform/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/acm/cert-partition/module/"
 }
 
 
@@ -22,12 +22,13 @@ locals {
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
 }
 
-dependency "partition_zone" {
-   config_path = "${get_terragrunt_dir()}/../../../../shared/zone/"
+dependency "platform_zone" {
+   config_path = "${get_terragrunt_dir()}/../../zone"
 }
+
 
 inputs = {
   parent_domain  = dependency.partition_zone.outputs.zone_name
-  parent_zone_id = dependency.partition_zone.outputs.zone_id
+  parent_zone_id = dependency.platform_zone.outputs.zone_id
   child_domain   = "aws"
 }
