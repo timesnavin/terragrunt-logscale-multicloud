@@ -19,6 +19,6 @@ module "delegation_records" {
     name    = var.child_domain
     type    = "NS"
     ttl     = 600
-    records = module.zone.outputs.route53_zone_name_servers[var.zone_name]
+    records = module.zone.outputs.route53_zone_name_servers["${var.child_domain}.${var.parent_domain}"]
   }]
 }
