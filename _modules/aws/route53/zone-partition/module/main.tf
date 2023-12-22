@@ -10,7 +10,7 @@ module "zone" {
 }
 
 
-module "zone" {
+module "ns" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "2.11.0"
 
