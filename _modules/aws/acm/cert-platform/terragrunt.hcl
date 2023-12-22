@@ -20,6 +20,7 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
 }
 
 dependency "platform_zone" {
@@ -30,5 +31,5 @@ dependency "platform_zone" {
 inputs = {
   parent_domain  = dependency.platform_zone.outputs.zone_name
   parent_zone_id = dependency.platform_zone.outputs.zone_id
-  child_domain   = "aws"
+  child_domain   = local.platform.type
 }

@@ -29,5 +29,5 @@ dependency "partition_zone" {
 inputs = {
   parent_domain  = dependency.partition_zone.outputs.zone_name
   parent_zone_id = dependency.partition_zone.outputs.zone_id
-  child_domain   = "aws"
+  child_domain   = local.platform.type
 }
