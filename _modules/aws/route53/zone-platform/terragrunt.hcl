@@ -20,6 +20,7 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
 }
 
 dependency "partition_zone" {
