@@ -1,6 +1,6 @@
 module "acm" {
   source  = "terraform-aws-modules/acm/aws"
-  version = "~> 4.0"
+  version = "5.0.0"
 
   domain_name = "${var.child_domain}.${var.parent_domain}"
   zone_id     = var.parent_zone_id
