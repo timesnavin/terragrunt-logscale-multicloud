@@ -9,6 +9,7 @@ locals {
   backend  = yamldecode(file(find_in_parent_folders("backend.yaml")))
   common   = yamldecode(file(find_in_parent_folders("common.yaml")))
   platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
+  kubernetes = yamldecode(file(find_in_parent_folders("kubernetes.yaml")))
 }
 
 remote_state {
@@ -30,7 +31,7 @@ remote_state {
 generate "provider_aws" {
   path      = "provider_aws.tf"
   if_exists = "overwrite_terragrunt"
-  disable   = local.platform.type == "aws" || local.platform.type == "eks" ? false : true
+  disable   = local.platform.type == "aws" ? false : true
   contents  = <<-EOF
 
     variable "provider_aws_tags" {
@@ -54,7 +55,7 @@ EOF
 generate "provider_aws_eks_helm" {
   path      = "provider_aws_eks_helm.tf"
   if_exists = "overwrite_terragrunt"
-  disable   = local.platform.type == "eks" ? false : true
+  disable   = local.kubernetes.type == "eks" ? false : true
   contents  = <<-EOF
 
     variable "provider_aws_eks_cluster_endpoint" {
