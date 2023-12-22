@@ -21,5 +21,4 @@ module "zone" {
     ttl     = 600
     records = module.zone.outputs.route53_zone_name_servers[var.zone_name]
   }]
-
 }
