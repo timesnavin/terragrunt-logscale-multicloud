@@ -163,10 +163,11 @@ inputs = {
 
   public_subnet_tags = {
     "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/cluster/${local.provider.aws.name}"       = "shared"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/eks"       = "shared"
+    "kubernetes.io/cluster/${local.provider.aws.name}"       = "shared"
     "kubernetes.io/role/internal-elb" = "1"
     "karpenter.sh/discovery"          = local.provider.aws.name
   }

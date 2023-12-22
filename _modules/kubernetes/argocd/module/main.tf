@@ -23,6 +23,9 @@ server:
     minReplicas: 2
   ingress:
     enabled: true
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+    ingressClassName: alb
 
 repoServer:
   autoscaling:
