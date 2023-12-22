@@ -166,7 +166,7 @@ inputs = {
   private_subnet_tags = {
     "kubernetes.io/cluster/${local.partion.name}-${local.region.name}" = "shared"
     "kubernetes.io/role/internal-elb"                  = "1"
-    "karpenter.sh/discovery"                           = ${local.partion.name}-${local.region.name}
+    "karpenter.sh/discovery"                           = "${local.partion.name}-${local.region.name}"
   }
 
   // default_network_acl_ingress = 
