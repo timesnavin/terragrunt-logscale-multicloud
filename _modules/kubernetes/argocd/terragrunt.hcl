@@ -34,7 +34,7 @@ dependency "kubernetes_addons" {
 }
 
 dependency "partition_zone" {
-   config_path = "${get_terragrunt_dir()}/../../../shared/zone/"
+   config_path = "${get_terragrunt_dir()}/../../../../shared/zone/"
 }
 dependency "region_zone" {
    config_path = "${get_terragrunt_dir()}/../../zone/"
