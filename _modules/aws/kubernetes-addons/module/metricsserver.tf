@@ -6,7 +6,7 @@ resource "helm_release" "metricsserver" {
   repository = "https://kubernetes-sigs.github.io/metrics-server"
   # repository_username = data.aws_ecrpublic_authorization_token.token.user_name
   # repository_password = data.aws_ecrpublic_authorization_token.token.password
-  chart   = "metrics-serve"
+  chart   = "metrics-server"
   version = "v3.11.0"
 
   values = [
