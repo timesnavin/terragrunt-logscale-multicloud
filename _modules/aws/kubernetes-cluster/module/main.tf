@@ -99,7 +99,8 @@ module "eks" {
 
     coredns = {
       # most_recent = true
-      addon_version = "v1.10.1-eksbuild.6"
+      addon_version     = "v1.10.1-eksbuild.6"
+      resolve_conflicts = "OVERWRITE"
       configuration_values = jsonencode({
         replicaCount = 3
         # computeType = "Fargate"
