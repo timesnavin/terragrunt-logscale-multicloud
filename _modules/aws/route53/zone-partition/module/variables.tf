@@ -1,8 +1,10 @@
-variable "zone_name" {
-  description = "The name of the zone"
+variable "parent_domain" {
+  type        = string
+  description = "(optional) describe your variable"
 }
-
 variable "parent_zone_id" {
-  description = "The ID of the parent zone"
+
+}
+variable "child_domain" {
 
 }

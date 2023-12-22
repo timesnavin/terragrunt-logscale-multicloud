@@ -19,11 +19,12 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  partition     = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
 }
 
 
 inputs = {
-  zone_name      = "${local.partition.name}.${local.partition.dns.parent_domain}"
-  parent_zone_id = "${local.partition.dns.parent_zoneid}"
+  parent_domain  = local.partition.dns.parent_domain
+  parent_zone_id = local.partition.dns.parent_zoneid
+  child_domain   = local.partition.name
 }
