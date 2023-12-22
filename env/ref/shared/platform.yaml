@@ -1,4 +1,4 @@
 type: aws
 aws:
   region: us-east-1
-  iam_path: "/loglabs/ref"
+  iam_path: "/loglabs/ref/"

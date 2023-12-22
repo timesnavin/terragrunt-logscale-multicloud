@@ -19,11 +19,8 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  foundation = yamldecode(file(find_in_parent_folders("foundation.yaml")))
-  provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  partition     = yamldecode(file(find_in_parent_folders("partition.yaml")))
   region     = yamldecode(file(find_in_parent_folders("region.yaml")))
-
-
 
   network_acls = {
     default_inbound = [
@@ -134,7 +131,7 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  name = local.provider.aws.name
+  name = "${local.partion.name}-${local.region.name}"
   cidr = local.region.network.address_space
 
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
@@ -163,13 +160,13 @@ inputs = {
 
   public_subnet_tags = {
     "kubernetes.io/role/elb"                           = "1"
-    "kubernetes.io/cluster/${local.provider.aws.name}" = "shared"
+    "kubernetes.io/cluster/${local.partion.name}-${local.region.name}" = "shared"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${local.provider.aws.name}" = "shared"
+    "kubernetes.io/cluster/${local.partion.name}-${local.region.name}" = "shared"
     "kubernetes.io/role/internal-elb"                  = "1"
-    "karpenter.sh/discovery"                           = local.provider.aws.name
+    "karpenter.sh/discovery"                           = ${local.partion.name}-${local.region.name}
   }
 
   // default_network_acl_ingress = 
