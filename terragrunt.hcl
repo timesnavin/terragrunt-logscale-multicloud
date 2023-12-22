@@ -7,9 +7,8 @@
 
 locals {
   backend         = yamldecode(file(find_in_parent_folders("backend.yaml")))
+  common        = yamldecode(file(find_in_parent_folders("common.yaml")))
   provider        = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  metadata_common = yamldecode(file(find_in_parent_folders("metadata_common.yaml")))
-
 }
 
 remote_state {
@@ -145,7 +144,7 @@ generate "provider_gcp" {
 
 
 inputs = {
-  provider_aws_tags   = local.metadata_common.tags
+  provider_aws_tags   = local.common.cloud.tags
   provider_aws_region = local.provider.type == "aws" || local.provider.type == "eks" ? local.provider.aws.region : ""
 
   provider_aws_eks_cluster_endpoint                   = local.provider.type == "eks" ? dependency.kubernetes.outputs.cluster_endpoint : ""

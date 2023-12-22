@@ -1,0 +1,8 @@
+cloud:
+  tags:
+    owner: ryan.faircloth
+    project: selfcloud
+kubernetes:
+  labels:
+    owner: ryan.faircloth
+    project: selfcloud

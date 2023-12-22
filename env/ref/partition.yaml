@@ -1,0 +1,5 @@
+name: ref
+dns:
+  parent_domain: loglabs.net
+  parent_zoneid: Z04803742CLP7FODUSPB1
+  ttl: 300
