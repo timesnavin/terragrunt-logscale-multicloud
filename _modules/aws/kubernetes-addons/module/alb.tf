@@ -30,7 +30,7 @@ resource "helm_release" "alb" {
   chart      = "aws-load-balancer-controller"
   version    = "1.6.2"
 
-  
+
 
   values = [
     <<-EOT
@@ -50,4 +50,3 @@ resources:
     EOT
   ]
 }
-
