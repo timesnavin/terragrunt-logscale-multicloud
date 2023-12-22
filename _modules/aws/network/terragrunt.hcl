@@ -162,14 +162,14 @@ inputs = {
   # private_subnet_ipv6_prefixes = [3, 4, 5]
 
   public_subnet_tags = {
-    "kubernetes.io/role/elb" = "1"
-    "kubernetes.io/cluster/${local.provider.aws.name}"       = "shared"
+    "kubernetes.io/role/elb"                           = "1"
+    "kubernetes.io/cluster/${local.provider.aws.name}" = "shared"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${local.provider.aws.name}"       = "shared"
-    "kubernetes.io/role/internal-elb" = "1"
-    "karpenter.sh/discovery"          = local.provider.aws.name
+    "kubernetes.io/cluster/${local.provider.aws.name}" = "shared"
+    "kubernetes.io/role/internal-elb"                  = "1"
+    "karpenter.sh/discovery"                           = local.provider.aws.name
   }
 
   // default_network_acl_ingress = 
