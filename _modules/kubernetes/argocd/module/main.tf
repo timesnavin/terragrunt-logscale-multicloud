@@ -28,6 +28,7 @@ server:
     annotations:
       alb.ingress.kubernetes.io/scheme: internet-facing
       link.argocd.argoproj.io/external-link: argocd.${var.region}.${var.domain_name}
+      alb.ingress.kubernetes.io/target-type: ip
     ingressClassName: alb
 
 repoServer:
