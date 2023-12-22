@@ -1,9 +1,0 @@
-type: azure
-aws:
-  region: us-east-1
-azure:
-  resourceGroup: ref-us-logscale
-  region: westus3
-  tags:
-    Owner: ryan.faircloth
-    Project: selfcloud
