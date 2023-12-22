@@ -131,7 +131,7 @@ locals {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  name = "${local.partion.name}-${local.region.name}"
+  name = "${local.partition.name}-${local.region.name}"
   cidr = local.region.network.address_space
 
   azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
@@ -160,13 +160,13 @@ inputs = {
 
   public_subnet_tags = {
     "kubernetes.io/role/elb"                           = "1"
-    "kubernetes.io/cluster/${local.partion.name}-${local.region.name}" = "shared"
+    "kubernetes.io/cluster/${local.partition.name}-${local.region.name}" = "shared"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/cluster/${local.partion.name}-${local.region.name}" = "shared"
+    "kubernetes.io/cluster/${local.partition.name}-${local.region.name}" = "shared"
     "kubernetes.io/role/internal-elb"                  = "1"
-    "karpenter.sh/discovery"                           = "${local.partion.name}-${local.region.name}"
+    "karpenter.sh/discovery"                           = "${local.partition.name}-${local.region.name}"
   }
 
   // default_network_acl_ingress = 
