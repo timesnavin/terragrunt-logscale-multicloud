@@ -12,6 +12,19 @@ resource "helm_release" "keycloak_operator" {
   values = [
     <<-EOT
 replicaCount: 1    
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/os
+          operator: In
+          values:
+          - linux    
+        - key: kubernetes.io/arch
+          operator: In
+          values:
+          - amd64
     EOT
   ]
 }
