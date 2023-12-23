@@ -38,6 +38,14 @@ dependency "kubernetes_cluster" {
     karpenter_role_name                = "role"
   }
 }
+
+dependency "partition_zone" {
+   config_path = "${get_terragrunt_dir()}/../../../../../shared/zone/"
+}
+dependency "region_zone" {
+   config_path = "${get_terragrunt_dir()}/../../zone/"
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -52,5 +60,7 @@ inputs = {
   karpenter_irsa_arn   = dependency.kubernetes_cluster.outputs.karpenter_irsa_arn
   karpenter_queue_name = dependency.kubernetes_cluster.outputs.karpenter_queue_name
   karpenter_role_name  = dependency.kubernetes_cluster.outputs.karpenter_role_name
+
+  domain_name_region = dependency.region_zone.outputs.zone_name
 
 }
