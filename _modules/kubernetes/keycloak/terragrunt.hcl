@@ -26,10 +26,10 @@ locals {
 }
 
 dependency "kubernetes" {
-  config_path = "${get_terragrunt_dir()}/../../../regions/${local.region.region}/kubernetes-cluster/"
+  config_path = "${get_terragrunt_dir()}/../../../regions/${local.region.name}/kubernetes-cluster/"
 }
 dependency "kubernetes_addons" {
-  config_path  = "${get_terragrunt_dir()}/../../../regions/${local.region.region}/kubernetes-addons/"
+  config_path  = "${get_terragrunt_dir()}/../../../regions/${local.region.name}/kubernetes-addons/"
   skip_outputs = true
 }
 
