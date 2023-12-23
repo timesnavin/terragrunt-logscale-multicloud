@@ -18,6 +18,8 @@ controller:
   replicas: 1
 
 server:
+  extraArgs:
+  - --insecure
   autoscaling:
     enabled: true
     minReplicas: 2
