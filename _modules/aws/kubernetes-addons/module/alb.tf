@@ -10,7 +10,7 @@ module "iam_eks_role_alb" {
   oidc_providers = {
     main = {
       provider_arn               = var.eks_cluster_oidc_provider_arn
-      namespace_service_accounts = ["awslb-controller:aws-load-balancer-controller"]
+      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
     }
   }
 
@@ -21,7 +21,7 @@ module "iam_eks_role_alb" {
 resource "helm_release" "alb" {
 
 
-  namespace        = "awslb-controller"
+  namespace        = "kube-system"
   create_namespace = true
 
 
