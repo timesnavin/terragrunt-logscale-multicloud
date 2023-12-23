@@ -11,7 +11,14 @@ resource "helm_release" "keycloak_operator" {
 
   values = [
     <<-EOT
-replicaCount: 1    
+replicaCount: 1
+resources:
+  limits:
+    cpu: 1
+    memory: 256Mi
+  requests:
+    cpu: .25
+    memory: 128Mi
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
