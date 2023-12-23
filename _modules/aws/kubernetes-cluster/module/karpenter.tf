@@ -5,8 +5,8 @@ module "karpenter" {
 
   cluster_name           = module.eks.cluster_name
   irsa_oidc_provider_arn = module.eks.oidc_provider_arn
-  irsa_namespace_service_accounts = ["karpenter:karpenter"]
-  
+  irsa_namespace_service_accounts = ["kube-system:karpenter"]
+
   iam_role_path = "/${module.eks.cluster_name}/"
 
   # In v0.32.0/v1beta1, Karpenter now creates the IAM instance profile

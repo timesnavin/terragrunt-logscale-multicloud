@@ -7,7 +7,7 @@
 
 
 resource "helm_release" "karpenter" {
-  namespace        = "karpenter"
+  namespace        = "kube-system"
   create_namespace = true
 
   name       = "karpenter"
@@ -89,13 +89,13 @@ resource "kubernetes_manifest" "karpenter_default_arm_node_pool" {
           labels:
             computeType: "compute"
             storageType: "network"
-            durabilityType: "spot"
+            durabilityType: "provisioned"
         spec:
           nodeClassRef:
             name: default-${random_string.seed.result}
           requirements:
             - key: karpenter.sh/capacity-type
-              operator: In
+              operator: NotIn
               values: ["spot"]          
             - key: "karpenter.k8s.aws/instance-category"
               operator: In
@@ -144,13 +144,13 @@ resource "kubernetes_manifest" "karpenter_default_intel_node_pool" {
           labels:
             computeType: "compute"
             storageType: "network"
-            durabilityType: "spot"
+            durabilityType: "provioned"
         spec:
           nodeClassRef:
             name: default-${random_string.seed.result}
           requirements:
             - key: karpenter.sh/capacity-type
-              operator: In
+              operator: NotIn
               values: ["spot"]          
             - key: "karpenter.k8s.aws/instance-category"
               operator: In
