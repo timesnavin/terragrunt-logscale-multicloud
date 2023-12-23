@@ -8,7 +8,7 @@
 
 resource "helm_release" "karpenter" {
   namespace        = "kube-system"
-  create_namespace = true
+  # create_namespace = true
 
   name       = "karpenter"
   repository = "oci://public.ecr.aws/karpenter"
