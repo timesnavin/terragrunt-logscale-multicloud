@@ -6,36 +6,36 @@
 
 
 
-resource "helm_release" "karpenter" {
-  namespace        = "kube-system"
-  # create_namespace = true
+# resource "helm_release" "karpenter" {
+#   namespace        = "kube-system"
+#   # create_namespace = true
 
-  name       = "karpenter"
-  repository = "oci://public.ecr.aws/karpenter"
-  # repository_username = data.aws_ecrpublic_authorization_token.token.user_name
-  # repository_password = data.aws_ecrpublic_authorization_token.token.password
-  chart   = "karpenter"
-  version = "v0.33.1"
+#   name       = "karpenter"
+#   repository = "oci://public.ecr.aws/karpenter"
+#   # repository_username = data.aws_ecrpublic_authorization_token.token.user_name
+#   # repository_password = data.aws_ecrpublic_authorization_token.token.password
+#   chart   = "karpenter"
+#   version = "v0.33.1"
 
-  values = [
-    <<-EOT
-    settings:
-      clusterName: ${var.eks_cluster_name}
-      clusterEndpoint: ${var.eks_cluster_endpoint}
-      interruptionQueueName: ${var.karpenter_queue_name}
-    serviceAccount:
-      annotations:
-        eks.amazonaws.com/role-arn: ${var.karpenter_irsa_arn} 
-    EOT
-  ]
+#   values = [
+#     <<-EOT
+#     settings:
+#       clusterName: ${var.eks_cluster_name}
+#       clusterEndpoint: ${var.eks_cluster_endpoint}
+#       interruptionQueueName: ${var.karpenter_queue_name}
+#     serviceAccount:
+#       annotations:
+#         eks.amazonaws.com/role-arn: ${var.karpenter_irsa_arn} 
+#     EOT
+#   ]
 
-  # lifecycle {
-  #   ignore_changes = [
-  #     repository_password
-  #   ]
-  # }
+#   # lifecycle {
+#   #   ignore_changes = [
+#   #     repository_password
+#   #   ]
+#   # }
 
-}
+# }
 
 resource "random_string" "seed" {
   length  = 4
