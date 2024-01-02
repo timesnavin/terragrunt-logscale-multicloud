@@ -12,8 +12,7 @@ resource "kubectl_manifest" "olm_crds" {
 }
 
 resource "kubernetes_namespace" "olm" {
-  depends_on = [ time_sleep.olm_wait_destory ]
-
+  
   metadata {
     annotations = {
       name = "olm"
@@ -23,8 +22,7 @@ resource "kubernetes_namespace" "olm" {
 }
 
 resource "kubernetes_namespace" "operators" {
-  depends_on = [ time_sleep.olm_wait_destory ]
-
+  
   metadata {
     annotations = {
       name = "operators"
