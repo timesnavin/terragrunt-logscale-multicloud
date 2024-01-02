@@ -23,9 +23,6 @@ locals {
 
 }
 
-dependency "network" {
-  config_path = "${get_terragrunt_dir()}/../network/"
-}
 dependency "kubernetes_cluster" {
   config_path = "${get_terragrunt_dir()}/../kubernetes-cluster/"
   mock_outputs = {
