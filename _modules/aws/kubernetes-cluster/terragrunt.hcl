@@ -31,7 +31,7 @@ dependency "network" {
     name              = "foo"
     vpc_id            = "vpc-1234568"
     private_subnets        = []
-    control_plane_ids = []
+    intra_subnets = []
   }
 
 }
