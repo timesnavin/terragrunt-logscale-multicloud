@@ -3,6 +3,6 @@ data "kubectl_file_documents" "olm_crds" {
 }
 
 resource "kubernetes_manifest" "olm_crds" {
-    for_each  = data.kubectl_file_documents.docs.manifests
+    for_each  = data.kubectl_file_documents.olm_crds.manifests
     manifest = yamldecode(each.value)
 }
