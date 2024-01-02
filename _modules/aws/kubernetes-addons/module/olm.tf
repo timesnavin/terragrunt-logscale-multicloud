@@ -17,10 +17,10 @@ resource "kubernetes_namespace" "olm" {
     annotations = {
       name = "olm"
     }
-
     name = "olm"
   }
 }
+
 resource "kubernetes_namespace" "operators" {
   depends_on = [ time_sleep.olm_wait_destory ]
 
@@ -28,7 +28,6 @@ resource "kubernetes_namespace" "operators" {
     annotations = {
       name = "operators"
     }
-
     name = "operators"
   }
 }

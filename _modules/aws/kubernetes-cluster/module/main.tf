@@ -267,7 +267,7 @@ module "eks" {
       max_size     = 7
       desired_size = 3
 
-      instance_types = ["m7g.large", "m6g.large"]
+      instance_types = ["m7i-flex.large"]
       labels = {
         computeClass = "general"
         storageClass = "network"
@@ -285,7 +285,7 @@ module "eks" {
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       use_custom_launch_template = false
 
-      ami_type = "BOTTLEROCKET_ARM_64"
+      ami_type = "BOTTLEROCKET_x86_64"
       platform = "bottlerocket"
     }
   }
