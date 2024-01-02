@@ -27,7 +27,7 @@ dependency "kubernetes_cluster" {
   config_path = "${get_terragrunt_dir()}/../kubernetes-cluster/"
   mock_outputs = {
     cluster_name                       = "foo"
-    cluster_endpoint                   = "https:/foo"
+    // cluster_endpoint                   = "https:/foo"
     cluster_certificate_authority_data = ""
     cluster_oidc_provider_arn          = "arn::foo"
     karpenter_irsa_arn                 = "arn://"
