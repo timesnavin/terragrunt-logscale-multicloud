@@ -36,12 +36,7 @@ dependency "kubernetes_cluster" {
   }
 }
 
-dependency "partition_zone" {
-  config_path = "${get_terragrunt_dir()}/../../../../shared/zone/"
-  mock_outputs = {
-    zone_name = "example.com"
-  }
-}
+
 dependency "region_zone" {
   config_path = "${get_terragrunt_dir()}/../zone/"
   mock_outputs = {
