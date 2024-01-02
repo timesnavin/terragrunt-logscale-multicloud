@@ -1,14 +1,14 @@
 
-resource "kubernetes_namespace" "cert-manager" {
-  depends_on = [ time_sleep.olm_wait_destory ]
+# resource "kubernetes_namespace" "cert-manager" {
+#   depends_on = [ time_sleep.olm_wait_destory ]
 
-  metadata {
-    annotations = {
-      name = "cert-manager"
-    }
-    name = "cert-manager"
-  }
-}
+#   metadata {
+#     annotations = {
+#       name = "cert-manager"
+#     }
+#     name = "cert-manager"
+#   }
+# }
 
 
 module "iam_eks_role_crtmgmr" {
