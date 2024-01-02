@@ -6,9 +6,9 @@
 
 
 locals {
-  backend  = yamldecode(file(find_in_parent_folders("backend.yaml")))
-  common   = yamldecode(file(find_in_parent_folders("common.yaml")))
-  platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
+  backend    = yamldecode(file(find_in_parent_folders("backend.yaml")))
+  common     = yamldecode(file(find_in_parent_folders("common.yaml")))
+  platform   = yamldecode(file(find_in_parent_folders("platform.yaml")))
   kubernetes = yamldecode(file(find_in_parent_folders("kubernetes.yaml")))
 }
 

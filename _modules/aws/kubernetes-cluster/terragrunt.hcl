@@ -20,8 +20,8 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region     = yamldecode(file(find_in_parent_folders("region.yaml")))
+  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
 
 }
 

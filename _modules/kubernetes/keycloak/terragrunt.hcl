@@ -20,7 +20,7 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  global     = yamldecode(file(find_in_parent_folders("global.yaml")))
+  global = yamldecode(file(find_in_parent_folders("global.yaml")))
 
 }
 

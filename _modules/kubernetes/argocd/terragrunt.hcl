@@ -20,8 +20,8 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  provider   = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region     = yamldecode(file(find_in_parent_folders("region.yaml")))
+  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
 
 }
 
@@ -34,10 +34,10 @@ dependency "kubernetes_addons" {
 }
 
 dependency "partition_zone" {
-   config_path = "${get_terragrunt_dir()}/../../../../../shared/zone/"
+  config_path = "${get_terragrunt_dir()}/../../../../../shared/zone/"
 }
 dependency "region_zone" {
-   config_path = "${get_terragrunt_dir()}/../../zone/"
+  config_path = "${get_terragrunt_dir()}/../../zone/"
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
@@ -46,6 +46,6 @@ dependency "region_zone" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
   domain_name_platform = dependency.partition_zone.outputs.zone_name
-  domain_name_region = dependency.region_zone.outputs.zone_name
+  domain_name_region   = dependency.region_zone.outputs.zone_name
 
 }

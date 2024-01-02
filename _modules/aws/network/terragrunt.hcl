@@ -19,8 +19,8 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  partition     = yamldecode(file(find_in_parent_folders("partition.yaml")))
-  region     = yamldecode(file(find_in_parent_folders("region.yaml")))
+  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
 
   network_acls = {
     default_inbound = [
@@ -159,14 +159,14 @@ inputs = {
   # private_subnet_ipv6_prefixes = [3, 4, 5]
 
   public_subnet_tags = {
-    "kubernetes.io/role/elb"                           = "1"
+    "kubernetes.io/role/elb"                                             = "1"
     "kubernetes.io/cluster/${local.partition.name}-${local.region.name}" = "shared"
   }
 
   private_subnet_tags = {
     "kubernetes.io/cluster/${local.partition.name}-${local.region.name}" = "shared"
-    "kubernetes.io/role/internal-elb"                  = "1"
-    "karpenter.sh/discovery"                           = "${local.partition.name}-${local.region.name}"
+    "kubernetes.io/role/internal-elb"                                    = "1"
+    "karpenter.sh/discovery"                                             = "${local.partition.name}-${local.region.name}"
   }
 
   // default_network_acl_ingress = 
