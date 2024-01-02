@@ -27,6 +27,12 @@ locals {
 
 dependency "network" {
   config_path = "${get_terragrunt_dir()}/../network/"
+  mock_outputs = {
+    vpc_id            = "vpc-1234568"
+    subnet_ids        = []
+    control_plane_ids = []
+  }
+
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
