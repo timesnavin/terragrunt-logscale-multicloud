@@ -5,9 +5,10 @@ data "kubectl_file_documents" "olm" {
     content = file("manifests/olm/olm.yaml")
 }
 
-resource "kubernetes_manifest" "olm_crds" {
+
+resource "kubectl_manifest" "olm_crds" {
     for_each  = data.kubectl_file_documents.olm_crds.manifests
-    manifest = yamldecode(each.value)
+    yaml_body = each.value
 }
 
 resource "kubernetes_namespace" "olm" {
@@ -32,12 +33,13 @@ resource "kubernetes_namespace" "operators" {
   }
 }
 
-resource "kubernetes_manifest" "olm" {
-    depends_on = [ kubernetes_manifest.olm_crds , kubernetes_namespace.olm, kubernetes_namespace.operators]
+resource "kubectl_manifest" "olm" {
+    depends_on = [ kubectl_manifest.olm_crds , kubernetes_namespace.olm, kubernetes_namespace.operators]
     for_each  = data.kubectl_file_documents.olm.manifests
-    manifest = yamldecode(each.value)
+    yaml_body = each.value
 }
 
 resource "time_sleep" "olm_wait_destory" {
-  destroy_duration = "60s"
+    depends_on = [ kubectl_manifest.olm ]
+    destroy_duration = "60s"
 }
