@@ -1,3 +1,7 @@
+resource "time_sleep" "argo_wait_destory" {
+  destroy_duration = "60s"
+}
+
 # resource "helm_release" "argocd" {
 #   namespace        = "argocd"
 #   create_namespace = true
