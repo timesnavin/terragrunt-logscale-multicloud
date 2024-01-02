@@ -1,3 +1,16 @@
+
+resource "kubernetes_namespace" "cert-manager" {
+  depends_on = [ time_sleep.olm_wait_destory ]
+
+  metadata {
+    annotations = {
+      name = "cert-manager"
+    }
+    name = "cert-manager"
+  }
+}
+
+
 module "iam_eks_role_crtmgmr" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.33.0"
