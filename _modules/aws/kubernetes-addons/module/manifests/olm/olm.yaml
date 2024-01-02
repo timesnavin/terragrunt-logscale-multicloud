@@ -279,6 +279,7 @@ spec:
                 app: packageserver
             template:
               metadata:
+                creationTimestamp: null
                 labels:
                   app: packageserver
               spec:
