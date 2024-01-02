@@ -25,6 +25,11 @@ locals {
 
 dependency "platform_zone" {
   config_path = "${get_terragrunt_dir()}/../../zone"
+  mock_outputs = {
+    zone_name = "example.com"
+    zone_id   = "A123456789"
+  }
+
 }
 
 
