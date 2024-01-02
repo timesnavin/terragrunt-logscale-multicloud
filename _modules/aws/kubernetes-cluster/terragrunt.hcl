@@ -28,10 +28,10 @@ locals {
 dependency "network" {
   config_path = "${get_terragrunt_dir()}/../network/"
   mock_outputs = {
-    name              = "foo"
-    vpc_id            = "vpc-1234568"
-    private_subnets        = []
-    intra_subnets = []
+    name            = "foo"
+    vpc_id          = "vpc-1234568"
+    private_subnets = []
+    intra_subnets   = []
   }
 
 }
