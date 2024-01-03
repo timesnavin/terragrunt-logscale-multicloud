@@ -12,7 +12,7 @@
 # }
 
 # resource "kubernetes_namespace" "olm" {
-  
+
 #   metadata {
 #     annotations = {
 #       name = "olm"
@@ -22,7 +22,7 @@
 # }
 
 # resource "kubernetes_namespace" "operators" {
-  
+
 #   metadata {
 #     annotations = {
 #       name = "operators"

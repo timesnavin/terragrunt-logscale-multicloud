@@ -29,7 +29,7 @@ variable "additional_kms_owners" {
   description = "Additional AWS IAM roles to add to the kms key"
   type        = list(any)
   default     = []
-  
+
 }
 
 variable "vpc_id" {
