@@ -5,7 +5,7 @@ resource "random_string" "seed" {
   numeric = false
   upper   = false
   keepers = {
-    karpenter_role_name = module.eks_blueprints_addons.karpenter.role_name
+    karpenter_role_name =  module.eks_blueprints_addons.karpenter.iam_role_name
     eks_cluster_name    = module.eks.cluster_name
   }
 
@@ -18,8 +18,8 @@ resource "kubernetes_manifest" "karpenter_node_class" {
     metadata:
       name: default-${random_string.seed.result}
     spec:
-      amiFamily: AL2
-      role: ${ module.eks_blueprints_addons.karpenter.role_name}
+      amiFamily: Bottlerocket
+      role: ${  module.eks_blueprints_addons.karpenter.iam_role_name}
       subnetSelectorTerms:
         - tags:
             karpenter.sh/discovery: ${module.eks.cluster_name}
