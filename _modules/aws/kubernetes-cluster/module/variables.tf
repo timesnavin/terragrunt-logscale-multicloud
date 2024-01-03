@@ -50,3 +50,11 @@ variable "control_plane_subnet_ids" {
   default     = null
 
 }
+
+
+variable "GITHUB_PAT" {
+  description = "The PAT"
+  type        = string
+  default     = ""
+  
+}
