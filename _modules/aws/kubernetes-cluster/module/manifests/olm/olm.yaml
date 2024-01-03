@@ -148,29 +148,7 @@ spec:
                     operator: In
                     values:
                       - amd64
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - olm-operator
-                  - key: app.kubernetes.io/component
-                    operator: In
-                    values:
-                      - catalog-operator
-              topologyKey: "kubernetes.io/hostname"
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: olm-operator
-              app.kubernetes.io/component: catalog-operator
-          matchLabelKeys:
-            - pod-template-hash
+
       priorityClassName: system-cluster-critical
       containers:
         - name: catalog-operator
@@ -353,8 +331,44 @@ spec:
                   app.kubernetes.io/version: 0.26.0
               spec:
                 serviceAccountName: olm-operator-serviceaccount
-                nodeSelector:
-                  kubernetes.io/os: linux
+                affinity:
+                  nodeAffinity:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      nodeSelectorTerms:
+                        - matchExpressions:
+                            - key: topology.kubernetes.io/os
+                              operator: In
+                              values:
+                                - linux
+                        - matchExpressions:
+                            - key: topology.kubernetes.io/arch
+                              operator: In
+                              values:
+                                - amd64
+                  podAntiAffinity:
+                    requiredDuringSchedulingIgnoredDuringExecution:
+                      - labelSelector:
+                          matchExpressions:
+                            - key: app.kubernetes.io/name
+                              operator: In
+                              values:
+                                - olm-operator
+                            - key: app.kubernetes.io/component
+                              operator: In
+                              values:
+                                - packageserver
+                        topologyKey: "kubernetes.io/hostname"
+                topologySpreadConstraints:
+                  - maxSkew: 1
+                    topologyKey: topology.kubernetes.io/zone
+                    whenUnsatisfiable: DoNotSchedule
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/name: olm-operator
+                        app.kubernetes.io/component: packageserver
+                    matchLabelKeys:
+                      - pod-template-hash                                
+                priorityClassName: system-cluster-critical
                 containers:
                   - name: packageserver
                     command:
