@@ -27,7 +27,7 @@ module "eks" {
       before_compute           = true
       resolve_conflicts        = "OVERWRITE"
       service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
-      addon_version            = "v1.15.4-eksbuild.1"
+      addon_version            = "v1.16.0-eksbuild.1"
       configuration_values = jsonencode({
         nodeAgent = {
 
@@ -136,7 +136,7 @@ module "eks" {
       # before_compute           = true
       resolve_conflicts        = "OVERWRITE"
       service_account_role_arn = module.iam_eks_role_efs.iam_role_arn
-      addon_version            = "v1.7.1-eksbuild.1"
+      addon_version            = "v1.7.2-eksbuild.1"
       # configuration_values = jsonencode({
       #   nodeAgent = {
 
