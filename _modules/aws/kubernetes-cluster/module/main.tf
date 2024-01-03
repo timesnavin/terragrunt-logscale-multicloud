@@ -9,6 +9,9 @@ provider "kubernetes" {
     args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
   }
 }
+data "aws_ecrpublic_authorization_token" "public_token" {
+  # provider = aws.virginia
+}
 
 provider "helm" {
   kubernetes {
@@ -27,6 +30,11 @@ provider "helm" {
     username = "_PAT_"
     password = var.GITHUB_PAT
   }
+  registry {
+    url      = "oci://public.ecr.aws"
+    password = data.aws_ecrpublic_authorization_token.public_token.password
+    username = data.aws_ecrpublic_authorization_token.public_token.user_name
+  }
 }
 
 provider "kubectl" {
@@ -44,9 +52,6 @@ provider "kubectl" {
 
 
 data "aws_availability_zones" "available" {}
-data "aws_ecrpublic_authorization_token" "token" {
-
-}
 data "aws_caller_identity" "current" {}
 data "aws_organizations_organization" "current" {}
 
