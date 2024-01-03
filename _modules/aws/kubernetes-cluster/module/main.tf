@@ -22,6 +22,11 @@ provider "helm" {
       args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
     }
   }
+  registry {
+    url      = "oci://ghcr.io"
+    username = "_PAT_"
+    password = var.GITHUB_PAT
+  }
 }
 
 provider "kubectl" {

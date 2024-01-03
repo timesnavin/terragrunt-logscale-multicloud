@@ -34,7 +34,7 @@ module "eks_blueprints_addons" {
 
   enable_fargate_fluentbit = true
   fargate_fluentbit = {
-    flb_log_cw = true
+    flb_log_cw        = true
     retention_in_days = 3
   }
 }
