@@ -12,6 +12,7 @@ resource "kubectl_manifest" "olm_crds" {
 }
 
 resource "kubernetes_namespace" "olm" {
+  depends_on = [module.eks]
 
   metadata {
     annotations = {
@@ -22,6 +23,7 @@ resource "kubernetes_namespace" "olm" {
 }
 
 resource "kubernetes_namespace" "operators" {
+  depends_on = [module.eks]
 
   metadata {
     annotations = {
