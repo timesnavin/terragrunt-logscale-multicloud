@@ -35,20 +35,40 @@ metadata:
   name: olm-operator
   namespace: olm
   labels:
-    app: olm-operator
+    app.kubernetes.io/name: olm-operator
+    app.kubernetes.io/component: olm-operator
+    app.kubernetes.io/version: 0.26.0
 spec:
   strategy:
     type: RollingUpdate
   replicas: 1
   selector:
     matchLabels:
-      app: olm-operator
+      app.kubernetes.io/name: olm-operator
+      app.kubernetes.io/component: olm-operator
   template:
     metadata:
       labels:
-        app: olm-operator
+        app.kubernetes.io/name: olm-operator
+        app.kubernetes.io/component: olm-operator
+        app.kubernetes.io/version: 0.26.0
     spec:
       serviceAccountName: olm-operator-serviceaccount
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+              - matchExpressions:
+                  - key: topology.kubernetes.io/arch
+                    operator: In
+                    values:
+                      - amd64
+      priorityClassName: system-cluster-critical
       containers:
         - name: olm-operator
           command:
@@ -85,8 +105,9 @@ spec:
             requests:
               cpu: 10m
               memory: 160Mi
-      nodeSelector:
-        kubernetes.io/os: linux
+            limits:
+              cpu: 1
+              memory: 256Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -94,20 +115,40 @@ metadata:
   name: catalog-operator
   namespace: olm
   labels:
-    app: catalog-operator
+    app.kubernetes.io/name: olm-operator
+    app.kubernetes.io/component: catalog-operator
+    app.kubernetes.io/version: 0.26.0
 spec:
   strategy:
     type: RollingUpdate
   replicas: 1
   selector:
     matchLabels:
-      app: catalog-operator
+      app.kubernetes.io/name: olm-operator
+      app.kubernetes.io/component: catalog-operator
   template:
     metadata:
       labels:
-        app: catalog-operator
+        app.kubernetes.io/name: olm-operator
+        app.kubernetes.io/component: catalog-operator
+        app.kubernetes.io/version: 0.26.0
     spec:
       serviceAccountName: olm-operator-serviceaccount
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: topology.kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+              - matchExpressions:
+                  - key: topology.kubernetes.io/arch
+                    operator: In
+                    values:
+                      - amd64
+      priorityClassName: system-cluster-critical
       containers:
         - name: catalog-operator
           command:
@@ -138,8 +179,10 @@ spec:
             requests:
               cpu: 10m
               memory: 80Mi
-      nodeSelector:
-        kubernetes.io/os: linux
+            limits:
+              cpu: 1
+              memory: 256Mi
+
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -276,12 +319,15 @@ spec:
             replicas: 2
             selector:
               matchLabels:
-                app: packageserver
+                app.kubernetes.io/name: olm-operator
+                app.kubernetes.io/component: packageserver
             template:
               metadata:
                 creationTimestamp: null
                 labels:
-                  app: packageserver
+                  app.kubernetes.io/name: olm-operator
+                  app.kubernetes.io/component: packageserver
+                  app.kubernetes.io/version: 0.26.0
               spec:
                 serviceAccountName: olm-operator-serviceaccount
                 nodeSelector:
