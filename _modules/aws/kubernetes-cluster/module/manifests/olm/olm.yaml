@@ -68,6 +68,9 @@ spec:
                     operator: In
                     values:
                       - amd64
+      tolerations:
+        - key: "CriticalAddonsOnly"
+          operator: "Exists"
       priorityClassName: system-cluster-critical
       containers:
         - name: olm-operator
@@ -148,7 +151,9 @@ spec:
                     operator: In
                     values:
                       - amd64
-
+      tolerations:
+        - key: "CriticalAddonsOnly"
+          operator: "Exists"
       priorityClassName: system-cluster-critical
       containers:
         - name: catalog-operator
@@ -367,7 +372,10 @@ spec:
                         app.kubernetes.io/name: olm-operator
                         app.kubernetes.io/component: packageserver
                     matchLabelKeys:
-                      - pod-template-hash                                
+                      - pod-template-hash
+                tolerations:
+                  - key: "CriticalAddonsOnly"
+                    operator: "Exists"
                 priorityClassName: system-cluster-critical
                 containers:
                   - name: packageserver
