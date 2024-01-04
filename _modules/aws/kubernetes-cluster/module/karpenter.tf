@@ -70,7 +70,7 @@ resource "kubectl_manifest" "karpenter_compute_arm_node_pool" {
 apiVersion: karpenter.sh/v1beta1
 kind: NodePool
 metadata:
-name: compute-net-arm64
+  name: compute-net-arm64
 spec:
   template:
     metadata:
