@@ -38,7 +38,7 @@ module "eks_blueprints_addons" {
     flb_log_cw = true
   }
   fargate_fluentbit_cw_log_group = {
-    name     = "/aws/eks/${module.eks.cluster_name}/fargate"
+    name     = "/fargate/${module.eks.cluster_name}"
     retention       = 3
   }
 }
