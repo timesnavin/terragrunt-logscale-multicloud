@@ -33,6 +33,7 @@ module "eks_blueprints_addons" {
   #   enable_cert_manager                    = true
   #   cert_manager_route53_hosted_zone_arns  = ["arn:aws:route53:::hostedzone/XXXXXXXXXXXXX"]
 
+  enable_aws_for_fluentbit = true
   enable_fargate_fluentbit = true
   fargate_fluentbit = {
     flb_log_cw = true
