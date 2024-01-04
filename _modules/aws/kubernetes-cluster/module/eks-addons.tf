@@ -21,6 +21,9 @@ module "eks_blueprints_addons" {
     kube-proxy = {
       most_recent = true
     }
+    eks-pod-identity-agent = {
+      most_recent = true
+    }
   }
 
   enable_aws_load_balancer_controller = true
