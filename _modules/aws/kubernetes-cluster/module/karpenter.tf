@@ -19,7 +19,7 @@ resource "kubernetes_manifest" "karpenter_node_class" {
       name: default-${random_string.seed.result}
     spec:
       amiFamily: Bottlerocket
-      role: ${  module.eks_blueprints_addons.karpenter.iam_role_name}
+      role: ${module.eks_blueprints_addons.karpenter.iam_role_name}
       subnetSelectorTerms:
         - tags:
             karpenter.sh/discovery: ${module.eks.cluster_name}
