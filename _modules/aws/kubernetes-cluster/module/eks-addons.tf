@@ -42,7 +42,7 @@ module "eks_blueprints_addons" {
       namespace        = "karpenter"
       create_namespace = true
       chart            = "karpenter"
-      chart_version    = "0.33.1"
+      chart_version    = "0.33.0"
       repository       = "oci://public.ecr.aws/karpenter"
       values = [<<-YAML
         settings:
