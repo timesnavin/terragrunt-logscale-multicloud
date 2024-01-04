@@ -1,15 +1,15 @@
 
-# resource "random_string" "seed" {
-#   length  = 4
-#   special = false
-#   numeric = false
-#   upper   = false
-#   keepers = {
-#     karpenter_role_name =  module.eks_blueprints_addons.karpenter.iam_role_name
-#     eks_cluster_name    = module.eks.cluster_name
-#   }
+resource "random_string" "seed" {
+  length  = 4
+  special = false
+  numeric = false
+  upper   = false
+  keepers = {
+    karpenter_role_name =  module.eks_blueprints_addons.karpenter.iam_role_name
+    eks_cluster_name    = module.eks.cluster_name
+  }
 
-# }
+}
 
 resource "kubernetes_manifest" "karpenter_node_class" {
   manifest = yamldecode(<<-YAML
