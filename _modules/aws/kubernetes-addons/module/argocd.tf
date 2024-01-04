@@ -1,6 +1,21 @@
-resource "time_sleep" "argo_wait_destory" {
-  destroy_duration = "60s"
+
+
+resource "kubectl_manifest" "olm_sub_argocd" {
+  yaml_body = <<-YAML
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: argocd-operator
+  namespace: operators
+spec:
+  channel: alpha
+  name: argocd-operator
+  source: operatorhubio-catalog
+  sourceNamespace: olm
+YAML
+
 }
+
 
 # resource "helm_release" "argocd" {
 #   namespace        = "argocd"
