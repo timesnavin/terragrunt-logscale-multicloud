@@ -34,18 +34,29 @@ module "eks_blueprints_addons" {
   #   cert_manager_route53_hosted_zone_arns  = ["arn:aws:route53:::hostedzone/XXXXXXXXXXXXX"]
 
   enable_aws_for_fluentbit = true
-  enable_fargate_fluentbit = true
+  aws_for_fluentbit = {
+    enable_containerinsights = true
+    kubelet_monitoring       = true
+    set = [{
+      name  = "cloudWatchLogs.autoCreateGroup"
+      value = true
+    }]
+  }
+
+  aws_for_fluentbit_cw_log_group = {
+    create    = true
+    name      = "/aws/eks/${module.eks.cluster_name}/fluentbit/"
+    retention = 3
+  }
+
   fargate_fluentbit = {
     flb_log_cw = true
   }
-  aws_for_fluentbit_cw_log_group = {
-    create = true
-    name     = "/aws/eks/${module.eks.cluster_name}/fluentbit/"
-    retention       = 3
-  }
+  enable_fargate_fluentbit = true
+
   fargate_fluentbit_cw_log_group = {
-    create = true
-    name     = "/aws/eks/${module.eks.cluster_name}/fargate/"
-    retention       = 3
+    create    = true
+    name      = "/aws/eks/${module.eks.cluster_name}/fargate/"
+    retention = 3
   }
 }
