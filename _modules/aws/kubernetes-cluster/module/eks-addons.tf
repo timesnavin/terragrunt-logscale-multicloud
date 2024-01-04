@@ -42,7 +42,7 @@ module "eks_blueprints_addons" {
       namespace        = "karpenter"
       create_namespace = true
       chart            = "karpenter-crd"
-      chart_version    = "0.33.0"
+      chart_version    = "v0.33.0"
       repository       = "oci://public.ecr.aws/karpenter"      
     }
     karpenter = {
@@ -50,7 +50,7 @@ module "eks_blueprints_addons" {
       namespace        = "karpenter"
       create_namespace = true
       chart            = "karpenter"
-      chart_version    = "0.33.0"
+      chart_version    = "v0.33.0"
       repository       = "oci://public.ecr.aws/karpenter"
       skip_crds = true
       values = [<<-YAML
