@@ -31,6 +31,7 @@ module "eks" {
     "controllerManager",
     "scheduler"
   ]
+  cloudwatch_log_group_retention_in_days = 3
 
   # Fargate profiles use the cluster primary security group so these are not utilized
   create_cluster_security_group = true
