@@ -43,7 +43,7 @@ module "eks_blueprints_addons" {
       create_namespace = true
       chart            = "karpenter"
       chart_version    = "0.33.1"
-      repository       = "oci://public.ecr.aws/karpenter/karpenter"
+      repository       = "oci://public.ecr.aws/karpenter"
       values = [<<-YAML
         settings:
           clusterName: "${module.eks.cluster_name}"
