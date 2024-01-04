@@ -52,7 +52,7 @@ module "eks_blueprints_addons" {
       chart            = "karpenter"
       chart_version    = "0.33.0"
       repository       = "oci://public.ecr.aws/karpenter"
-      skip_crts = true
+      skip_crds = true
       values = [<<-YAML
         settings:
           clusterName: "${module.eks.cluster_name}"
