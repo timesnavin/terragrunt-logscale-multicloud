@@ -85,7 +85,7 @@ module "eks" {
       selectors = [
         { namespace = "karpenter" }
       ]
-    } 
+    }
   }
 
   eks_managed_node_group_defaults = {

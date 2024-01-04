@@ -39,14 +39,14 @@ module "eks_blueprints_addons" {
 
   enable_aws_load_balancer_controller = true
 
-  enable_aws_efs_csi_driver           = true
+  enable_aws_efs_csi_driver = true
 
   enable_metrics_server = true
-  enable_vpa = true
+  enable_vpa            = true
 
   enable_external_dns = true
 
-  enable_cert_manager         = true
+  enable_cert_manager = true
 
   helm_releases = {
     karpentercrds = {
