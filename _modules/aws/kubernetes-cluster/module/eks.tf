@@ -60,20 +60,7 @@ module "eks" {
     data.aws_caller_identity.current.account_id
   ]
 
-  # fargate_profile_defaults = {
-  #   iam_role_additional_policies = {
-  #     additional = aws_iam_policy.additional.arn
-  #   }
-  # }
 
-  fargate_profiles = {
-
-    karpenter = {
-      selectors = [
-        { namespace = "karpenter" }
-      ]
-    }
-  }
 
   eks_managed_node_group_defaults = {
     # We are using the IRSA created below for permissions

@@ -34,14 +34,3 @@ module "eks_blueprints_addons" {
   #   cert_manager_route53_hosted_zone_arns  = ["arn:aws:route53:::hostedzone/XXXXXXXXXXXXX"]
 
 
-  enable_fargate_fluentbit = true
-  fargate_fluentbit = {
-    flb_log_cw = true
-  }
-
-  fargate_fluentbit_cw_log_group = {
-    create    = true
-    name      = "/aws/eks/${module.eks.cluster_name}/fargate/"
-    retention = 3
-  }
-}
