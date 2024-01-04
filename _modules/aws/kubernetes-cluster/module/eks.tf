@@ -24,6 +24,7 @@ module "eks" {
     provider_key_arn = module.kms.key_arn
   }
 
+
   cluster_enabled_log_types = [
     "api",
     "audit",
@@ -42,7 +43,19 @@ module "eks" {
   # create_aws_auth_configmap = true
   manage_aws_auth_configmap = true
   # manage_aws_auth 
-  aws_auth_roles = var.additional_aws_auth_roles
+  aws_auth_roles = concat(
+    # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
+    [{
+      rolearn  = module.karpenter.role_arn
+      username = "system:node:{{EC2PrivateDNSName}}"
+      groups = [
+        "system:bootstrappers",
+        "system:nodes",
+      ]
+      }
+    ],
+    var.additional_aws_auth_roles
+  )
 
   aws_auth_users = [
     # {
@@ -60,11 +73,11 @@ module "eks" {
     data.aws_caller_identity.current.account_id
   ]
 
-  fargate_profile_defaults = {
-    iam_role_additional_policies = {
-      additional = aws_iam_policy.additional.arn
-    }
-  }
+  # fargate_profile_defaults = {
+  #   iam_role_additional_policies = {
+  #     additional = aws_iam_policy.additional.arn
+  #   }
+  # }
 
   fargate_profiles = {
 

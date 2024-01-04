@@ -29,12 +29,39 @@ module "eks_blueprints_addons" {
   enable_aws_load_balancer_controller = true
   enable_aws_efs_csi_driver           = true
   #   enable_cluster_proportional_autoscaler = true
-  enable_karpenter = true
+  # enable_karpenter = true
   #   enable_kube_prometheus_stack           = true
   enable_metrics_server = true
   #   enable_external_dns                    = true
   #   enable_cert_manager                    = true
   #   cert_manager_route53_hosted_zone_arns  = ["arn:aws:route53:::hostedzone/XXXXXXXXXXXXX"]
 
-
+  helm_releases = {
+    karpenter = {
+      description      = "A Helm chart for k8s karpenter"
+      namespace        = "karpenter"
+      create_namespace = true
+      chart            = "karpenter"
+      chart_version    = "0.33.1"
+      repository       = "oci://public.ecr.aws/karpenter/karpenter"
+      values = [<<-YAML
+        settings:
+          clusterName: "${module.eks.cluster_name}"
+          clusterEndpoint: ${module.eks.cluster_endpoint}
+          interruptionQueueName: ${module.karpenter.queue_name}
+        serviceAccount:
+          annotations:
+            eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}           
+        controller:
+          resources:
+            requests:
+              cpu: 1
+              memory: 256Mi
+            limits:
+              cpu: 1
+              memory: 256Mi                
+        YAML
+      ]
+    }
+  }
 }
