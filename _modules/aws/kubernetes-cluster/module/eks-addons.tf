@@ -23,7 +23,8 @@ module "eks_blueprints_addons" {
     }
   }
 
-  #   enable_aws_load_balancer_controller    = true
+  enable_aws_load_balancer_controller = true
+  enable_aws_efs_csi_driver           = true
   #   enable_cluster_proportional_autoscaler = true
   enable_karpenter = true
   #   enable_kube_prometheus_stack           = true
@@ -35,6 +36,11 @@ module "eks_blueprints_addons" {
   enable_fargate_fluentbit = true
   fargate_fluentbit = {
     flb_log_cw        = true
+    retention_in_days = 3
+  }
+  fargate_fluentbit_cw_log_group = {
+    name              = "fargate"
+    name_prefix       = "/aws/eks/${module.eks.cluster_name}"
     retention_in_days = 3
   }
 }
