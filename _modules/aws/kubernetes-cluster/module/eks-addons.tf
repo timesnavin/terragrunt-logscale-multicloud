@@ -37,6 +37,14 @@ module "eks_blueprints_addons" {
   #   cert_manager_route53_hosted_zone_arns  = ["arn:aws:route53:::hostedzone/XXXXXXXXXXXXX"]
 
   helm_releases = {
+    karpentercrds = {
+      description      = "A Helm chart for k8s karpenter"
+      namespace        = "karpenter"
+      create_namespace = true
+      chart            = "karpenter-crd"
+      chart_version    = "0.33.0"
+      repository       = "oci://public.ecr.aws/karpenter"      
+    }
     karpenter = {
       description      = "A Helm chart for k8s karpenter"
       namespace        = "karpenter"
@@ -44,6 +52,7 @@ module "eks_blueprints_addons" {
       chart            = "karpenter"
       chart_version    = "0.33.0"
       repository       = "oci://public.ecr.aws/karpenter"
+      skip_crts = true
       values = [<<-YAML
         settings:
           clusterName: "${module.eks.cluster_name}"
