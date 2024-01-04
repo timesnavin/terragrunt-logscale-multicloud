@@ -39,7 +39,7 @@ YAML
 }
 
 resource "kubectl_manifest" "karpenter_default_arm_node_pool" {
-  manifest = <<-YAML
+  yaml_body = <<-YAML
 apiVersion: karpenter.sh/v1beta1
 kind: NodePool
 metadata:
@@ -93,7 +93,7 @@ YAML
 
 
 resource "kubectl_manifest" "karpenter_default_intel_node_pool" {
-  manifest = <<-YAML
+  yaml_body = <<-YAML
 apiVersion: karpenter.sh/v1beta1
 kind: NodePool
 metadata:
