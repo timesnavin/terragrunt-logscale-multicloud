@@ -24,6 +24,14 @@ module "eks" {
     provider_key_arn = module.kms.key_arn
   }
 
+  cluster_enabled_log_types = [
+    "api",
+    "audit",
+    "authenticator",
+    "controllerManager",
+    "scheduler"
+  ]
+
   # Fargate profiles use the cluster primary security group so these are not utilized
   create_cluster_security_group = true
   create_node_security_group    = true
