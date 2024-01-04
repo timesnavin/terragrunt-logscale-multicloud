@@ -37,7 +37,7 @@ metadata:
   name: bottle-${random_string.seed.result}
 spec:
   amiFamily: Bottlerocket
-  role: ${module.eks_blueprints_addons.karpenter.iam_role_name}
+  role: ${mmodule.karpenter.role_name}
   subnetSelectorTerms:
   - tags:
       karpenter.sh/discovery: ${module.eks.cluster_name}
@@ -64,7 +64,7 @@ metadata:
   name: al2-${random_string.seed.result}
 spec:
   amiFamily: AL2
-  role: ${module.eks_blueprints_addons.karpenter.iam_role_name}
+  role: ${mmodule.karpenter.role_name}
   subnetSelectorTerms:
   - tags:
       karpenter.sh/discovery: ${module.eks.cluster_name}
