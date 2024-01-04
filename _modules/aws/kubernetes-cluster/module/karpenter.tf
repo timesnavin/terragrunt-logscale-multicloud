@@ -11,33 +11,33 @@
 
 # }
 
-# resource "kubernetes_manifest" "karpenter_node_class" {
-#   manifest = yamldecode(<<-YAML
-#     apiVersion: karpenter.k8s.aws/v1beta1
-#     kind: EC2NodeClass
-#     metadata:
-#       name: default-${random_string.seed.result}
-#     spec:
-#       amiFamily: Bottlerocket
-#       role: ${module.eks_blueprints_addons.karpenter.iam_role_name}
-#       subnetSelectorTerms:
-#         - tags:
-#             karpenter.sh/discovery: ${module.eks.cluster_name}
-#       securityGroupSelectorTerms:
-#         - tags:
-#             karpenter.sh/discovery: ${module.eks.cluster_name}
-#       tags:
-#         karpenter.sh/discovery: ${module.eks.cluster_name}
-#   YAML
-#   )
+resource "kubernetes_manifest" "karpenter_node_class" {
+  manifest = yamldecode(<<-YAML
+apiVersion: karpenter.k8s.aws/v1beta1
+kind: EC2NodeClass
+metadata:
+  name: default-${random_string.seed.result}
+spec:
+  amiFamily: Bottlerocket
+  role: ${module.eks_blueprints_addons.karpenter.iam_role_name}
+  subnetSelectorTerms:
+  - tags:
+      karpenter.sh/discovery: ${module.eks.cluster_name}
+  securityGroupSelectorTerms:
+  - tags:
+      karpenter.sh/discovery: ${module.eks.cluster_name}
+  tags:
+    karpenter.sh/discovery: ${module.eks.cluster_name}
+YAML
+  )
 
-#   depends_on = [
-#     module.eks_blueprints_addons
-#   ]
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
+  depends_on = [
+    module.eks_blueprints_addons
+  ]
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
 # resource "kubernetes_manifest" "karpenter_default_arm_node_pool" {
 #   manifest = yamldecode(<<-YAML
