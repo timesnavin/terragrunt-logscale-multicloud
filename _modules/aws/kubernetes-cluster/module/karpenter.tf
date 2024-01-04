@@ -11,8 +11,8 @@ resource "random_string" "seed" {
 
 }
 
-resource "kubernetes_manifest" "karpenter_node_class" {
-  manifest = yamldecode(<<-YAML
+resource "kubectl_manifest" "karpenter_node_class" {
+  yaml_body = <<-YAML
 apiVersion: karpenter.k8s.aws/v1beta1
 kind: EC2NodeClass
 metadata:
@@ -29,7 +29,6 @@ spec:
   tags:
     karpenter.sh/discovery: ${module.eks.cluster_name}
 YAML
-  )
 
   depends_on = [
     module.eks_blueprints_addons
