@@ -23,7 +23,7 @@ resource "random_string" "seed" {
   numeric = false
   upper   = false
   keepers = {
-    karpenter_role_name = module.eks_blueprints_addons.karpenter.iam_role_name
+    karpenter_role_name = module.karpenter.role_name
     eks_cluster_name    = module.eks.cluster_name
   }
 
