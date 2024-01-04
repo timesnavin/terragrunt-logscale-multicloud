@@ -43,7 +43,7 @@ module "eks_blueprints_addons" {
       create_namespace = true
       chart            = "karpenter-crd"
       chart_version    = "v0.33.0"
-      repository       = "oci://public.ecr.aws/karpenter"      
+      repository       = "oci://public.ecr.aws/karpenter"
     }
     karpenter = {
       description      = "A Helm chart for k8s karpenter"
@@ -52,7 +52,7 @@ module "eks_blueprints_addons" {
       chart            = "karpenter"
       chart_version    = "v0.33.0"
       repository       = "oci://public.ecr.aws/karpenter"
-      skip_crds = true
+      skip_crds        = true
       values = [<<-YAML
         settings:
           clusterName: "${module.eks.cluster_name}"
