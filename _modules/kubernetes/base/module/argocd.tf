@@ -1,21 +1,17 @@
-resource "kubernetes_namespace" "argocd-operator" {
+resource "kubernetes_namespace" "argocd-operator-system" {
 
   metadata {
-    annotations = {
-      name = "argocd-operator"
-    }
-    name = "argocd-operator"
+    name = "argocd-operator-system"
   }
 }
 resource "kubernetes_namespace" "argocd" {
 
   metadata {
-    annotations = {
-      name = "argocd"
-    }
     name = "argocd"
   }
 }
+
+
 
 # resource "kubectl_manifest" "olm_sub_argocd" {
 #     depends_on = [ kubernetes_namespace.argocd ]
