@@ -25,7 +25,7 @@ locals {
 
 }
 
-dependency "kubernetes" {
+dependency "kubernetes_cluster" {
   config_path = "${get_terragrunt_dir()}/../../kubernetes-cluster/"
 }
 
