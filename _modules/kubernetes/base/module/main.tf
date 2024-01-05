@@ -18,12 +18,13 @@ resource "kubernetes_namespace" "argocd" {
 }
 
 resource "kubectl_manifest" "olm_sub_argocd" {
+    depends_on = [ kubernetes_namespace.argocd ]
   yaml_body = <<-YAML
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: argocd-operator
-  namespace: operators
+  namespace: argocd
 spec:
   channel: alpha
   name: argocd-operator
