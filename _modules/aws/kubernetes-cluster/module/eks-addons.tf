@@ -45,7 +45,8 @@ module "eks_blueprints_addons" {
   enable_vpa            = true
 
   enable_external_dns = true
-
+  external_dns_route53_zone_arns = var.external_dns_route53_zone_arns
+  
   enable_cert_manager = true
 
   helm_releases = {
