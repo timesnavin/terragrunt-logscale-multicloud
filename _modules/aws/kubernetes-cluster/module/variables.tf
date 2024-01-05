@@ -52,6 +52,7 @@ variable "control_plane_subnet_ids" {
 }
 
 variable "external_dns_route53_zone_arns" {
+  type        = list(string)
   
 }
 
