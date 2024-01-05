@@ -1,5 +1,5 @@
 resource "kubernetes_namespace" "argocd-operator" {
-  
+
   metadata {
     annotations = {
       name = "argocd-operator"
@@ -8,7 +8,7 @@ resource "kubernetes_namespace" "argocd-operator" {
   }
 }
 resource "kubernetes_namespace" "argocd" {
-  
+
   metadata {
     annotations = {
       name = "argocd"
@@ -39,6 +39,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: CatalogSource
 metadata:
   name: argocd-catalog
+  namespace: olm
 spec:
   sourceType: grpc
   image: quay.io/argoprojlabs/argocd-operator-registry@sha256:dcf6d07ed5c8b840fb4a6e9019eacd88cd0913bc3c8caa104d3414a2e9972002 # replace with your index image
@@ -48,11 +49,13 @@ YAML
 }
 
 resource "kubectl_manifest" "olm_group_argocd" {
-  yaml_body = <<-YAML
+  depends_on = [kubernetes_namespace.argocd]
+  yaml_body  = <<-YAML
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: argocd-operator
+  namespace: argocd
 spec:
   targetNamespaces:
   - argocd
