@@ -17,51 +17,51 @@ resource "kubernetes_namespace" "argocd" {
   }
 }
 
-# resource "kubectl_manifest" "olm_sub_argocd" {
-#     depends_on = [ kubernetes_namespace.argocd ]
-#   yaml_body = <<-YAML
-# apiVersion: operators.coreos.com/v1alpha1
-# kind: Subscription
-# metadata:
-#   name: argocd-operator
-#   namespace: argocd
-# spec:
-#   channel: alpha
-#   name: argocd-operator
-#   source: argocd-catalog
-#   sourceNamespace: olm
-# YAML
+resource "kubectl_manifest" "olm_sub_argocd" {
+    depends_on = [ kubernetes_namespace.argocd ]
+  yaml_body = <<-YAML
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: argocd-operator
+  namespace: argocd
+spec:
+  channel: alpha
+  name: argocd-operator
+  source: argocd-catalog
+  sourceNamespace: olm
+YAML
 
-# }
+}
 
-# resource "kubectl_manifest" "olm_cat_argocd" {
-#   yaml_body = <<-YAML
-# apiVersion: operators.coreos.com/v1alpha1
-# kind: CatalogSource
-# metadata:
-#   name: argocd-catalog
-#   namespace: olm
-# spec:
-#   sourceType: grpc
-#   image: quay.io/argoprojlabs/argocd-operator-registry@sha256:dcf6d07ed5c8b840fb4a6e9019eacd88cd0913bc3c8caa104d3414a2e9972002 # replace with your index image
-#   displayName: Argo CD Operators
-#   publisher: Argo CD Community
-# YAML
-# }
+resource "kubectl_manifest" "olm_cat_argocd" {
+  yaml_body = <<-YAML
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: argocd-catalog
+  namespace: olm
+spec:
+  sourceType: grpc
+  image: quay.io/argoprojlabs/argocd-operator-registry@sha256:dcf6d07ed5c8b840fb4a6e9019eacd88cd0913bc3c8caa104d3414a2e9972002 # replace with your index image
+  displayName: Argo CD Operators
+  publisher: Argo CD Community
+YAML
+}
 
-# resource "kubectl_manifest" "olm_group_argocd" {
-#   depends_on = [kubernetes_namespace.argocd]
-#   yaml_body  = <<-YAML
-# apiVersion: operators.coreos.com/v1
-# kind: OperatorGroup
-# metadata:
-#   name: argocd-operator
-#   namespace: argocd
-# spec:
-#   targetNamespaces:
-#   - argocd
-# YAML
-# }
+resource "kubectl_manifest" "olm_group_argocd" {
+  depends_on = [kubernetes_namespace.argocd]
+  yaml_body  = <<-YAML
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: argocd-operator
+  namespace: argocd
+spec:
+  targetNamespaces:
+  - argocd
+YAML
+}
 
 
 # resource "helm_release" "argocd" {
