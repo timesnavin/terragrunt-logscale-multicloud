@@ -1,6 +1,5 @@
 resource "kubernetes_namespace" "argocd-operator" {
-  depends_on = [module.eks]
-
+  
   metadata {
     annotations = {
       name = "argocd-operator"
@@ -9,8 +8,7 @@ resource "kubernetes_namespace" "argocd-operator" {
   }
 }
 resource "kubernetes_namespace" "argocd" {
-  depends_on = [module.eks]
-
+  
   metadata {
     annotations = {
       name = "argocd"
