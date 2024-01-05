@@ -86,3 +86,8 @@ module "eks_blueprints_addons" {
     }
   }
 }
+
+resource "time_sleep" "addons" {
+  depends_on       = [module.eks_blueprints_addons]
+  destroy_duration = "300s"
+}
