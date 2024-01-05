@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/acm/cert-region/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/acm/cert-sub/module/"
 }
 
 
@@ -19,21 +19,21 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
-  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
+    sub = "${get_terragrunt_dir()}../../"
+  domain = basename(dirname(local.sub))
 }
 
-dependency "partition_zone" {
-  config_path = "${get_terragrunt_dir()}/../../../../../shared/zone/"
+dependency "parent_zone" {
+  config_path = "${get_terragrunt_dir()}/../../dns/"
   mock_outputs = {
     zone_name = "example.com"
     zone_id   = "A123456789"
   }
-
 }
 
 inputs = {
-  parent_domain  = "${local.partition.name}.${local.partition.dns.parent_domain}"
-  parent_zone_id = dependency.partition_zone.outputs.zone_id
-  child_domain   = local.region.region
+  parent_domain  = dependency.parent_zone.outputs.zone_name
+  parent_zone_id = dependency.parent_zone.outputs.zone_id
+  child_domain   = local.domain
+  
 }

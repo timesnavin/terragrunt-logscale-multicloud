@@ -29,11 +29,8 @@ dependency "kubernetes_cluster" {
   config_path = "${get_terragrunt_dir()}/../../kubernetes-cluster/"
 }
 
-dependency "partition_zone" {
-  config_path = "${get_terragrunt_dir()}/../../../../../shared/zone/"
-}
 dependency "region_zone" {
-  config_path = "${get_terragrunt_dir()}/../../zone/"
+  config_path = "${get_terragrunt_dir()}/../dns/"
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
@@ -41,7 +38,6 @@ dependency "region_zone" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  domain_name_platform = dependency.partition_zone.outputs.zone_name
   domain_name_region   = dependency.region_zone.outputs.zone_name
 
 }
