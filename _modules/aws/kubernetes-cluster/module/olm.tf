@@ -21,6 +21,14 @@ resource "kubernetes_namespace" "olm" {
     }
     name = "olm"
   }
+
+    lifecycle {
+    ignore_changes = [
+      # Ignore changes to tags, e.g. because a management agent
+      # updates these based on some ruleset managed elsewhere.
+      metadata.0.labels["olm.operatorgroup.uid/c0962045-d2f8-4421-9758-70d379dd7b26"]
+    ]
+  }
 }
 
 resource "kubernetes_namespace" "operators" {
