@@ -6,11 +6,11 @@ data "kubectl_file_documents" "olm" {
 }
 
 
-resource "kubectl_manifest" "olm_crds" {
-  depends_on = [module.eks]
-  for_each   = data.kubectl_file_documents.olm_crds.manifests
-  yaml_body  = each.value
-}
+# resource "kubectl_manifest" "olm_crds" {
+#   depends_on = [module.eks]
+#   for_each   = data.kubectl_file_documents.olm_crds.manifests
+#   yaml_body  = each.value
+# }
 
 resource "kubernetes_namespace" "olm" {
   depends_on = [module.eks]
