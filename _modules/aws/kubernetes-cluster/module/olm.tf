@@ -42,13 +42,13 @@ resource "kubernetes_namespace" "operators" {
   }
 }
 
-resource "kubectl_manifest" "olm" {
-  depends_on = [kubectl_manifest.olm_crds, kubernetes_namespace.olm, kubernetes_namespace.operators]
-  for_each   = data.kubectl_file_documents.olm.manifests
-  yaml_body  = each.value
-}
+# resource "kubectl_manifest" "olm" {
+#   depends_on = [kubectl_manifest.olm_crds, kubernetes_namespace.olm, kubernetes_namespace.operators]
+#   for_each   = data.kubectl_file_documents.olm.manifests
+#   yaml_body  = each.value
+# }
 
-resource "time_sleep" "olm_wait_destory" {
-  depends_on       = [kubectl_manifest.olm]
-  destroy_duration = "60s"
-}
+# resource "time_sleep" "olm_wait_destory" {
+#   depends_on       = [kubectl_manifest.olm]
+#   destroy_duration = "60s"
+# }
