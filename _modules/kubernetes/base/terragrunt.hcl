@@ -28,10 +28,6 @@ locals {
 dependency "kubernetes" {
   config_path = "${get_terragrunt_dir()}/../../kubernetes-cluster/"
 }
-dependency "kubernetes_addons" {
-  config_path  = "${get_terragrunt_dir()}/../../kubernetes-addons/"
-  skip_outputs = true
-}
 
 dependency "partition_zone" {
   config_path = "${get_terragrunt_dir()}/../../../../../shared/zone/"
