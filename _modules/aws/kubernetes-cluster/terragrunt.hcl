@@ -33,8 +33,27 @@ dependency "network" {
     private_subnets = ["subnet-01e7d289a152f755e"]
     intra_subnets   = ["subnet-01e7d289a152f755e"]
   }
-
 }
+
+dependency "zone_partition" {
+  config_path = "${get_terragrunt_dir()}/../../../dns"
+  mock_outputs = {
+    zone_id            = "Z00236603S1DPYCJOBON1"
+  }
+}
+dependency "zone_provider" {
+  config_path = "${get_terragrunt_dir()}/../../dns"
+  mock_outputs = {
+    zone_id            = "Z00236603S1DPYCJOBON1"
+  }
+}
+dependency "zone_region" {
+  config_path = "${get_terragrunt_dir()}/../../dns"
+  mock_outputs = {
+    zone_id            = "Z00236603S1DPYCJOBON1"
+  }
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -51,4 +70,11 @@ inputs = {
 
   additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
   additional_kms_owners     = local.region.kubernetes.kms.additional_key_owners
+
+
+  external_dns_route53_zone_arns = [
+    dependency.zone_partition.outputs.zone_id,
+    dependency.zone_provider.outputs.zone_id,
+    dependency.zone_region.outputs.zone_id
+  ]
 }

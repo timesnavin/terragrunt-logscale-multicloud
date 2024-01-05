@@ -51,6 +51,9 @@ variable "control_plane_subnet_ids" {
 
 }
 
+variable "external_dns_route53_zone_arns" {
+  
+}
 
 variable "GITHUB_PAT" {
   description = "The PAT"
