@@ -28,7 +28,7 @@ metadata:
 spec:
   channel: alpha
   name: argocd-operator
-  source: operatorhubio-catalog
+  source: argocd-catalog
   sourceNamespace: olm
 YAML
 
