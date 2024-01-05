@@ -30,8 +30,8 @@ dependency "network" {
   mock_outputs = {
     name            = "foo"
     vpc_id          = "vpc-1234568"
-    private_subnets = []
-    intra_subnets   = []
+    private_subnets = ["subnet-01e7d289a152f755e"]
+    intra_subnets   = ["subnet-01e7d289a152f755e"]
   }
 
 }
