@@ -263,6 +263,8 @@ resource "time_sleep" "addons" {
   destroy_duration = "300s"
 }
 resource "kubernetes_annotations" "coredns" {
+  depends_on = [ module.eks_blueprints_addons ]
+  
   api_version = "apps/v1"
   kind        = "Deployment"
   metadata {
