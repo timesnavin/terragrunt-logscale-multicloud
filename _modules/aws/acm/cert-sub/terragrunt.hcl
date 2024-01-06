@@ -19,7 +19,7 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-    sub = "${get_terragrunt_dir()}../../"
+    sub = "${get_terragrunt_dir()}../"
   domain = basename(dirname(local.sub))
 }
 
