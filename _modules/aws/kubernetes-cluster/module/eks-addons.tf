@@ -24,33 +24,32 @@ module "eks_blueprints_addons" {
       most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
-      configuration_values = yamldecode(<<-YAML
-      replicaCount: 3
-      resources:
-        requests:
-          cpu: 100m
-          memory: 256Mi
-        limits:
-          cpu: 1
-          memory: 256Mi
-      affinity: 
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchLabels:
-                  k8s-app: kube-dns
-      topologySpreadConstraints:
-      - maxSkew: 1  
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            k8s-app: kube-dns
-        matchLabelKeys:
-          - pod-template-hash        
-        YAML
+      configuration_values = jsonencode(
+        {
+          replicaCount = 3
+          resources = {
+            limits = {
+              cpu    = "1"
+              memory = "256Mi"
+            }
+            requests = {
+              cpu    = "200m"
+              memory = "128Mi"
+            }
+          }
+          "topologySpreadConstraints" = [
+            {
+              "maxSkew"           = 1,
+              "topologyKey"       = "topology.kubernetes.io/zone",
+              "whenUnsatisfiable" = "ScheduleAnyway",
+              "labelSelector" = {
+                "matchLabels" = {
+                  "eks.amazonaws.com/component" : "coredns"
+                }
+              }
+            }
+          ]
+        }
       )
     }
     aws-ebs-csi-driver = {
