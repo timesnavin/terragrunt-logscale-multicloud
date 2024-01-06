@@ -102,17 +102,17 @@ module "eks_blueprints_addons" {
   enable_aws_efs_csi_driver = true
 
   enable_metrics_server = true
-  metrics_server = {
-    set = [
-      {
-        name = "args"
-        value = [
-          "--kubelet-insecure-tls",
-          "--kubelet-preferred-address-types=InternalIP",
-        ]
-      },
-    ]
-  }
+  # metrics_server = {
+  #   set = [
+  #     {
+  #       name = "args"
+  #       value = [
+  #         "--kubelet-insecure-tls",
+  #         "--kubelet-preferred-address-types=InternalIP",
+  #       ]
+  #     },
+  #   ]
+  # }
   enable_vpa = true
 
   enable_external_dns            = true
