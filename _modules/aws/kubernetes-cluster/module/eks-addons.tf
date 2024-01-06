@@ -24,7 +24,7 @@ module "eks_blueprints_addons" {
       most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
-      configuration_values = yamlencode(<<-YAML
+      configuration_values = yamldecode(<<-YAML
       replicaCount: 3
       resources:
         requests:
