@@ -73,8 +73,8 @@ inputs = {
 
 
   external_dns_route53_zone_arns = [
-    dependency.zone_partition.outputs.zone_id,
-    dependency.zone_provider.outputs.zone_id,
-    dependency.zone_region.outputs.zone_id
+    dependency.zone_partition.outputs.zone_arn,
+    dependency.zone_provider.outputs.zone_arn,
+    dependency.zone_region.outputs.zone_arn
   ]
 }
