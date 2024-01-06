@@ -29,11 +29,11 @@ module "eks_blueprints_addons" {
           replicaCount = 3
           resources = {
             limits = {
-              cpu    = "1"
-              memory = "256Mi"
+              cpu    = ".25"
+              memory = "128Mi"
             }
             requests = {
-              cpu    = "200m"
+              cpu    = ".25"
               memory = "128Mi"
             }
           }
@@ -52,13 +52,6 @@ module "eks_blueprints_addons" {
                         "operator" : "In",
                         "values" : [
                           "linux"
-                        ]
-                      },
-                      {
-                        "key" : "kubernetes.io/arch",
-                        "operator" : "In",
-                        "values" : [
-                          "arm64"
                         ]
                       }
                     ]
@@ -111,17 +104,13 @@ module "eks_blueprints_addons" {
         controller = {
           resources = {
             limits = {
-              cpu    = "1"
-              memory = "256Mi"
-            }
-            requests = {
-              cpu    = "200m"
+              cpu    = ".25"
               memory = "128Mi"
             }
-          }
-          "podDisruptionBudget" : {
-            "enabled" : true,
-            "maxUnavailable" : 1
+            requests = {
+              cpu    = ".25"
+              memory = "128Mi"
+            }
           }
           "affinity" : {
             "nodeAffinity" : {
@@ -134,13 +123,6 @@ module "eks_blueprints_addons" {
                         "operator" : "In",
                         "values" : [
                           "linux"
-                        ]
-                      },
-                      {
-                        "key" : "kubernetes.io/arch",
-                        "operator" : "In",
-                        "values" : [
-                          "arm64"
                         ]
                       }
                     ]
@@ -170,19 +152,9 @@ module "eks_blueprints_addons" {
               ]
             }
           }
-          "topologySpreadConstraints" = [
-            {
-              "maxSkew"           = 1,
-              "topologyKey"       = "topology.kubernetes.io/zone",
-              "whenUnsatisfiable" = "ScheduleAnyway",
-              "labelSelector" = {
-                "matchLabels" = {
-                  "app.kubernetes.io/component" : "csi-driver"
-                }
-              }
-            }
-          ]
-        } }
+
+        }
+        }
       )
     }
     eks-pod-identity-agent = {
