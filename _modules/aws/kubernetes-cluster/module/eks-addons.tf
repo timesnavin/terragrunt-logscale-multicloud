@@ -38,6 +38,34 @@ module "eks_blueprints_addons" {
   }
 
   enable_aws_load_balancer_controller = true
+  aws_load_balancer_controller = {
+    set = [
+      {
+        name  = "vpcId"
+        value = var.vpc_id
+      },
+      {
+        name  = "podDisruptionBudget.maxUnavailable"
+        value = "1"
+      },
+      {
+        name  = "resources.requests.cpu"
+        value = "100m"
+      },
+      {
+        name  = "resources.requests.memory"
+        value = "128Mi"
+      },
+      {
+        name  = "resources.limits.cpu"
+        value = "1"
+      },
+      {
+        name  = "resources.limits.memory"
+        value = "256Mi"
+      },
+    ]
+  }
 
   enable_aws_efs_csi_driver = true
 
@@ -46,7 +74,7 @@ module "eks_blueprints_addons" {
 
   enable_external_dns = true
   external_dns_route53_zone_arns = var.external_dns_route53_zone_arns
-  
+
   enable_cert_manager = true
 
   helm_releases = {
