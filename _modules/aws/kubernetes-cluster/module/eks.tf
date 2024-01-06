@@ -127,11 +127,11 @@ module "eks" {
     }
 
     "system-x86" = {
-      min_size     = 1
+      min_size     = 3
       max_size     = 7
       desired_size = 1
 
-      instance_types = ["m7i-flex.large"]
+      instance_types = ["m7i.xlarge"]
       labels = {
         computeClass = "general"
         storageClass = "network"

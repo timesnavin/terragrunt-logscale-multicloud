@@ -58,8 +58,7 @@ module "eks_blueprints_addons" {
                         "key" : "kubernetes.io/arch",
                         "operator" : "In",
                         "values" : [
-                          "amd64",
-                          "arm64"
+                          "amd64"
                         ]
                       }
                     ]
