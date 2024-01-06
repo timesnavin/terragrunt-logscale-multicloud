@@ -262,3 +262,15 @@ resource "time_sleep" "addons" {
   depends_on       = [module.eks_blueprints_addons]
   destroy_duration = "300s"
 }
+resource "kubernetes_annotations" "coredns" {
+  api_version = "apps/v1"
+  kind        = "Deployment"
+  metadata {
+    name = "coredns"
+    namespace = "kube-system"
+  }
+  # These annotations will be applied to the Pods created by the Deployment
+  template_annotations = {
+    "eks.amazonaws.com/component" = "fargate"
+  }
+}
