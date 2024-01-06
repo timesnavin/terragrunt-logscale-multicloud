@@ -101,63 +101,63 @@ module "eks" {
     iam_role_attach_cni_policy = true
   }
 
-  eks_managed_node_groups = {
+  # eks_managed_node_groups = {
 
-    # Default node group - as provided by AWS EKS
-    # "system-arm64" = {
-    #   min_size     = 1
-    #   max_size     = 7
-    #   desired_size = 1
+  #   # Default node group - as provided by AWS EKS
+  #   # "system-arm64" = {
+  #   #   min_size     = 1
+  #   #   max_size     = 7
+  #   #   desired_size = 1
 
-    #   instance_types = ["m7g.large"]
-    #   labels = {
-    #     computeClass = "general"
-    #     storageClass = "network"
-    #   }
+  #   #   instance_types = ["m7g.large"]
+  #   #   labels = {
+  #   #     computeClass = "general"
+  #   #     storageClass = "network"
+  #   #   }
 
-    #   taints = [
-    #     {
-    #       key    = "CriticalAddonsOnly"
-    #       value  = "true"
-    #       effect = "PREFER_NO_SCHEDULE"
-    #     }
-    #   ]
+  #   #   taints = [
+  #   #     {
+  #   #       key    = "CriticalAddonsOnly"
+  #   #       value  = "true"
+  #   #       effect = "PREFER_NO_SCHEDULE"
+  #   #     }
+  #   #   ]
 
-    #   # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
-    #   # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-    #   use_custom_launch_template = false
+  #   #   # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
+  #   #   # so we need to disable it to use the default template provided by the AWS EKS managed node group service
+  #   #   use_custom_launch_template = false
 
-    #   ami_type = "BOTTLEROCKET_ARM_64"
-    #   platform = "bottlerocket"
-    # }
+  #   #   ami_type = "BOTTLEROCKET_ARM_64"
+  #   #   platform = "bottlerocket"
+  #   # }
 
-    "system-x86" = {
-      min_size     = 0
-      max_size     = 7
-      desired_size = 0
+  #   "system-x86" = {
+  #     min_size     = 0
+  #     max_size     = 7
+  #     desired_size = 0
 
-      instance_types = ["m7i.xlarge"]
-      labels = {
-        computeClass = "general"
-        storageClass = "network"
-      }
+  #     instance_types = ["m7i.xlarge"]
+  #     labels = {
+  #       computeClass = "general"
+  #       storageClass = "network"
+  #     }
 
-      taints = [
-        {
-          key    = "CriticalAddonsOnly"
-          value  = "true"
-          effect = "PREFER_NO_SCHEDULE"
-        }
-      ]
+  #     taints = [
+  #       {
+  #         key    = "CriticalAddonsOnly"
+  #         value  = "true"
+  #         effect = "PREFER_NO_SCHEDULE"
+  #       }
+  #     ]
 
-      # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
-      # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-      use_custom_launch_template = false
+  #     # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
+  #     # so we need to disable it to use the default template provided by the AWS EKS managed node group service
+  #     use_custom_launch_template = false
 
-      ami_type = "BOTTLEROCKET_x86_64"
-      platform = "bottlerocket"
-    }
-  }
+  #     ami_type = "BOTTLEROCKET_x86_64"
+  #     platform = "bottlerocket"
+  #   }
+  # }
 
   node_security_group_tags = {
     # NOTE - if creating multiple security groups with this module, only tag the
