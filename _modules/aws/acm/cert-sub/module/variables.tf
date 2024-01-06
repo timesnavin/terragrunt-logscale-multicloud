@@ -1,10 +1,7 @@
-variable "parent_domain" {
+variable "domain" {
   type        = string
   description = "(optional) describe your variable"
 }
-variable "parent_zone_id" {
-
-}
-variable "child_domain" {
+variable "zone_id" {
 
 }

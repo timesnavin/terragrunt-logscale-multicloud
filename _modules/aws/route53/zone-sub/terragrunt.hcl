@@ -20,7 +20,7 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))  
-  sub = "${get_terragrunt_dir()}../../"
+  sub = "${get_terragrunt_dir()}/../"
   domain = basename(dirname(local.sub))
 }
 

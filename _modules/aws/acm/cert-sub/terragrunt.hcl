@@ -19,8 +19,6 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-    sub = "${get_terragrunt_dir()}../"
-  domain = basename(dirname(local.sub))
 }
 
 dependency "parent_zone" {
@@ -32,8 +30,7 @@ dependency "parent_zone" {
 }
 
 inputs = {
-  parent_domain  = dependency.parent_zone.outputs.zone_name
-  parent_zone_id = dependency.parent_zone.outputs.zone_id
-  child_domain   = local.domain
+  domain  = dependency.parent_zone.outputs.zone_name
+  zone_id = dependency.parent_zone.outputs.zone_id
   
 }
