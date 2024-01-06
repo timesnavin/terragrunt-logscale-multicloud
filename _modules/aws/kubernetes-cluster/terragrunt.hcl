@@ -48,7 +48,7 @@ dependency "zone_provider" {
   }
 }
 dependency "zone_region" {
-  config_path = "${get_terragrunt_dir()}/../../dns"
+  config_path = "${get_terragrunt_dir()}/../dns"
   mock_outputs = {
     zone_id            = "Z00236603S1DPYCJOBON1"
   }
