@@ -10,7 +10,12 @@ module "eks_blueprints_addons" {
   oidc_provider_arn = module.eks.oidc_provider_arn
 
   eks_addons = {
-    aws-ebs-csi-driver = {
+    vpc-cni = {
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
+    }
+    kube-proxy = {
       most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
@@ -19,13 +24,36 @@ module "eks_blueprints_addons" {
       most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
+      configuration_values = yamlencode(<<-YAML
+      replicaCount: 3
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1
+          memory: 256Mi
+      affinity: 
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  k8s-app: kube-dns
+      topologySpreadConstraints:
+      - maxSkew: 1  
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            k8s-app: kube-dns
+        matchLabelKeys:
+          - pod-template-hash        
+        YAML
+      )
     }
-    vpc-cni = {
-      most_recent                 = true
-      resolve_conflicts_on_create = "OVERWRITE"
-      resolve_conflicts_on_update = "OVERWRITE"
-    }
-    kube-proxy = {
+    aws-ebs-csi-driver = {
       most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
@@ -74,9 +102,20 @@ module "eks_blueprints_addons" {
   enable_aws_efs_csi_driver = true
 
   enable_metrics_server = true
-  enable_vpa            = true
+  metrics_server = {
+    set = [
+      {
+        name = "args"
+        value = [
+          "--kubelet-insecure-tls",
+          "--kubelet-preferred-address-types=InternalIP",
+        ]
+      },
+    ]
+  }
+  enable_vpa = true
 
-  enable_external_dns = true
+  enable_external_dns            = true
   external_dns_route53_zone_arns = var.external_dns_route53_zone_arns
 
   enable_cert_manager = true
