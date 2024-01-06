@@ -107,8 +107,8 @@ module "eks_blueprints_addons" {
       most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
-      configuration_values = jsonencode(
-        {
+      configuration_values = jsonencode({
+        controller = {
           resources = {
             limits = {
               cpu    = "1"
@@ -182,7 +182,7 @@ module "eks_blueprints_addons" {
               }
             }
           ]
-        }
+        } }
       )
     }
     eks-pod-identity-agent = {
