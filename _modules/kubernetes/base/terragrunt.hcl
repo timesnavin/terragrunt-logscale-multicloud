@@ -30,7 +30,7 @@ dependency "kubernetes_cluster" {
 }
 
 dependency "region_zone" {
-  config_path = "${get_terragrunt_dir()}/../dns/"
+  config_path = "${get_terragrunt_dir()}/../../dns/"
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
