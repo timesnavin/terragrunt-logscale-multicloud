@@ -1,21 +1,13 @@
-resource "kubernetes_namespace" "argocd" {
-
-  metadata {
-    name = "argocd"
-  }
-}
-
 resource "helm_release" "argocd" {
-  depends_on = [ kubernetes_namespace.argocd ]
   namespace        = "argocd"
-  # create_namespace = true
+  create_namespace = true
 
   name       = "argocd"
   repository = "oci://ghcr.io/argoproj/argo-helm"
   chart      = "argo-cd"
   version    = "5.52.1"
 
-  wait = false
+  wait = true
 
   values = [
     <<-YAML

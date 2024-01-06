@@ -75,7 +75,7 @@ module "eks" {
 
   fargate_profile_defaults = {
     iam_role_additional_policies = {
-      additional = module.eks_blueprints_addons.fargate_fluentbit.iam_policy
+      fargate_fluentbit = module.eks_blueprints_addons.fargate_fluentbit.iam_policy[0].arn
     }
   }
 

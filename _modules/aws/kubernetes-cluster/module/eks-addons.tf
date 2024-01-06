@@ -223,7 +223,11 @@ module "eks_blueprints_addons" {
   fargate_fluentbit = {
     flb_log_cw = true
   }
-
+  fargate_fluentbit_cw_log_group = {
+    retention = 1
+    name              = "/aws/eks/${module.eks.cluster_name}/fargate"
+    use_name_prefix   = false
+  }
   helm_releases = {
     karpentercrds = {
       description      = "A Helm chart for k8s karpenter"
