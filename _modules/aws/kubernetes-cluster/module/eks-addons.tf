@@ -264,7 +264,7 @@ resource "time_sleep" "addons" {
 }
 resource "kubernetes_annotations" "coredns" {
   depends_on = [ module.eks_blueprints_addons ]
-  
+
   api_version = "apps/v1"
   kind        = "Deployment"
   metadata {
@@ -273,6 +273,6 @@ resource "kubernetes_annotations" "coredns" {
   }
   # These annotations will be applied to the Pods created by the Deployment
   template_annotations = {
-    "eks.amazonaws.com/component" = "fargate"
+    "eks.amazonaws.com/compute-type" = "fargate"
   }
 }
