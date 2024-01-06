@@ -73,11 +73,11 @@ module "eks" {
     data.aws_caller_identity.current.account_id
   ]
 
-  # fargate_profile_defaults = {
-  #   iam_role_additional_policies = {
-  #     additional = aws_iam_policy.additional.arn
-  #   }
-  # }
+  fargate_profile_defaults = {
+    iam_role_additional_policies = {
+      additional = module.eks_blueprints_addons.fargate_fluentbit.iam_policy
+    }
+  }
 
   fargate_profiles = {
 
@@ -90,7 +90,7 @@ module "eks" {
       selectors = [
         { namespace = "kube-system" }
       ]
-    }    
+    }
   }
 
   eks_managed_node_group_defaults = {
