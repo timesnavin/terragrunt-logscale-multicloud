@@ -35,8 +35,8 @@ module "eks" {
   cloudwatch_log_group_retention_in_days = 3
 
   # Fargate profiles use the cluster primary security group so these are not utilized
-  create_cluster_security_group = true
-  create_node_security_group    = true
+  create_cluster_security_group = false
+  create_node_security_group    = false
 
 
   enable_irsa = true
@@ -165,9 +165,6 @@ module "eks" {
   create_cluster_primary_security_group_tags = false
 
   tags = merge(local.tags, {
-    # NOTE - if creating multiple security groups with this module, only tag the
-    # security group that Karpenter should utilize with the following tag
-    # (i.e. - at most, only one security group should have this tag in your account)
     "karpenter.sh/discovery" = var.cluster_name
   })
 }
