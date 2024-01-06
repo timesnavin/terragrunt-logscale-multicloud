@@ -219,6 +219,11 @@ module "eks_blueprints_addons" {
 
   enable_cert_manager = true
 
+  enable_fargate_fluentbit = true
+  fargate_fluentbit = {
+    flb_log_cw = true
+  }
+
   helm_releases = {
     karpentercrds = {
       description      = "A Helm chart for k8s karpenter"
