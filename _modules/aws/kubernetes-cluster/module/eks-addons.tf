@@ -45,6 +45,10 @@ module "eks_blueprints_addons" {
         value = var.vpc_id
       },
       {
+        name  = "region"
+        value = var.cluster_region
+      },
+      {
         name  = "podDisruptionBudget.maxUnavailable"
         value = "1"
       },
