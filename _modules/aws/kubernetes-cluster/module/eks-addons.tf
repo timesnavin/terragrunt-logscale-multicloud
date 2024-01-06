@@ -37,6 +37,58 @@ module "eks_blueprints_addons" {
               memory = "128Mi"
             }
           }
+          "podDisruptionBudget" : {
+            "enabled" : true,
+            "maxUnavailable" : 1
+          }
+          "affinity" : {
+            "nodeAffinity" : {
+              "requiredDuringSchedulingIgnoredDuringExecution" : {
+                "nodeSelectorTerms" : [
+                  {
+                    "matchExpressions" : [
+                      {
+                        "key" : "kubernetes.io/os",
+                        "operator" : "In",
+                        "values" : [
+                          "linux"
+                        ]
+                      },
+                      {
+                        "key" : "kubernetes.io/arch",
+                        "operator" : "In",
+                        "values" : [
+                          "amd64",
+                          "arm64"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "podAntiAffinity" : {
+              "preferredDuringSchedulingIgnoredDuringExecution" : [
+                {
+                  "podAffinityTerm" : {
+                    "labelSelector" : {
+                      "matchExpressions" : [
+                        {
+                          "key" : "k8s-app",
+                          "operator" : "In",
+                          "values" : [
+                            "kube-dns"
+                          ]
+                        }
+                      ]
+                    },
+                    "topologyKey" : "kubernetes.io/hostname"
+                  },
+                  "weight" : 100
+                }
+              ]
+            }
+          }
           "topologySpreadConstraints" = [
             {
               "maxSkew"           = 1,
