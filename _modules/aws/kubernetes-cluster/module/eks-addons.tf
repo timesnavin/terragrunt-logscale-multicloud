@@ -105,11 +105,11 @@ module "eks_blueprints_addons" {
           resources = {
             limits = {
               cpu    = ".25"
-              memory = "128Mi"
+              memory = "512Mi"
             }
             requests = {
               cpu    = ".25"
-              memory = "128Mi"
+              memory = "512Mi"
             }
           }
           "affinity" : {
