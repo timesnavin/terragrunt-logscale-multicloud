@@ -129,7 +129,7 @@ module "eks" {
     "system-x86" = {
       min_size     = 3
       max_size     = 7
-      desired_size = 1
+      desired_size = 3
 
       instance_types = ["m7i.xlarge"]
       labels = {
