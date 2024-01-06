@@ -58,7 +58,7 @@ module "eks_blueprints_addons" {
                         "key" : "kubernetes.io/arch",
                         "operator" : "In",
                         "values" : [
-                          "amd64"
+                          "arm64"
                         ]
                       }
                     ]
@@ -107,6 +107,83 @@ module "eks_blueprints_addons" {
       most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
+      configuration_values = jsonencode(
+        {
+          resources = {
+            limits = {
+              cpu    = "1"
+              memory = "256Mi"
+            }
+            requests = {
+              cpu    = "200m"
+              memory = "128Mi"
+            }
+          }
+          "podDisruptionBudget" : {
+            "enabled" : true,
+            "maxUnavailable" : 1
+          }
+          "affinity" : {
+            "nodeAffinity" : {
+              "requiredDuringSchedulingIgnoredDuringExecution" : {
+                "nodeSelectorTerms" : [
+                  {
+                    "matchExpressions" : [
+                      {
+                        "key" : "kubernetes.io/os",
+                        "operator" : "In",
+                        "values" : [
+                          "linux"
+                        ]
+                      },
+                      {
+                        "key" : "kubernetes.io/arch",
+                        "operator" : "In",
+                        "values" : [
+                          "arm64"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "podAntiAffinity" : {
+              "preferredDuringSchedulingIgnoredDuringExecution" : [
+                {
+                  "podAffinityTerm" : {
+                    "labelSelector" : {
+                      "matchExpressions" : [
+                        {
+                          "key" : "app.kubernetes.io/component",
+                          "operator" : "In",
+                          "values" : [
+                            "csi-driver"
+                          ]
+                        }
+                      ]
+                    },
+                    "topologyKey" : "kubernetes.io/hostname"
+                  },
+                  "weight" : 100
+                }
+              ]
+            }
+          }
+          "topologySpreadConstraints" = [
+            {
+              "maxSkew"           = 1,
+              "topologyKey"       = "topology.kubernetes.io/zone",
+              "whenUnsatisfiable" = "ScheduleAnyway",
+              "labelSelector" = {
+                "matchLabels" = {
+                  "app.kubernetes.io/component" : "csi-driver"
+                }
+              }
+            }
+          ]
+        }
+      )
     }
     eks-pod-identity-agent = {
       most_recent                 = true

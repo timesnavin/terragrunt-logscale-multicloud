@@ -162,7 +162,7 @@ module "eks" {
     "aws-alb"                = true
   }
 
-  create_cluster_primary_security_group_tags = false
+  create_cluster_primary_security_group_tags = true
 
   tags = merge(local.tags, {
     "karpenter.sh/discovery" = var.cluster_name
