@@ -16,3 +16,20 @@ module "ebs_csi_irsa" {
   }
 
 }
+
+resource "helm_release" "ebs_csi" {
+  depends_on = [
+    time_sleep.karpenter_nodes,
+    helm_release.karpenter
+  ]
+  namespace = "kube-system"
+
+  name       = "aws-ebs-csi"
+  repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
+  chart      = "aws-ebs-csi-driver"
+  version    = "2.26.1"
+
+  wait = false
+
+  values = [file("./eks-addon-csi-ebs.yaml")]
+}
