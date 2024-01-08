@@ -11,7 +11,7 @@ module "ebs_csi_irsa" {
   oidc_providers = {
     main = {
       provider_arn               = var.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+      namespace_service_accounts = ["kube-system:ebs-csi-sa"]
     }
   }
 
@@ -31,5 +31,5 @@ resource "helm_release" "ebs_csi" {
 
   wait = false
 
-  values = [file("./eks-addon-csi-ebs.yaml")]
+  values = [templatefile("./eks-addon-csi-ebs.yaml",{irsaarn=module.ebs_csi_irsa.iam_role_arn})]
 }

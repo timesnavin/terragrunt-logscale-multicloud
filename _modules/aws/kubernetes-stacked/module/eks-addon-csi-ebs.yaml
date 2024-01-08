@@ -1,5 +1,9 @@
 controller:
   replicas: 2
+  serviceAccount:
+    name: ebs-csi-sa
+    annotations:
+      eks.amazonaws.com/role-arn: ${irsaarn}
 
   # Specifies whether Leader Election resources should be created
   # Required when running as a Deployment
@@ -62,3 +66,8 @@ controller:
           app: ebs-csi-controller
       matchLabelKeys:
         - pod-template-hash
+node:
+  serviceAccount:
+    name: ebs-csi-sa
+    annotations:
+      eks.amazonaws.com/role-arn: ${irsaarn}
