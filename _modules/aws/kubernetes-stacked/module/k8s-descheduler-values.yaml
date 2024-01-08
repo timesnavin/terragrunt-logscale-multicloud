@@ -1,0 +1,40 @@
+resources:
+  requests:
+    cpu: 500m
+    memory: 256Mi
+  limits:
+    cpu: 2
+    memory: 512Mi
+priorityClassName: "system-cluster-critical"
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/os
+              operator: In
+              values:
+                - linux
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+                - arm64
+      - weight: 50
+        preference:
+          matchExpressions:
+            - key: computeClass
+              operator: In
+              values:
+                - general
+      - weight: 10
+        preference:
+          matchExpressions:
+            - key: storageClass
+              operator: In
+              values:
+                - network

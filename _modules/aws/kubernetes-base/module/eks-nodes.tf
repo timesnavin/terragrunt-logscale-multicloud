@@ -17,7 +17,7 @@ module "eks_managed_node_group" {
 
   subnet_ids = var.node_subnet_ids
 
-  #   min_size     = 1 #var.node_min_size
+  min_size     = 1 #var.node_min_size
   max_size     = var.node_max_size
   desired_size = 1 #var.node_desired_size
 

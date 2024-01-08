@@ -1,17 +1,3 @@
-# module "karpenter_fargate_profile" {
-#   source  = "terraform-aws-modules/eks/aws//modules/fargate-profile"
-#   version = "19.21.0"
-
-#   name         = "karpenter"
-#   cluster_name = var.cluster_name
-
-
-#   subnet_ids = var.node_subnet_ids
-#   selectors = [{
-#     namespace = "karpenter"
-#   }]
-# }
-
 module "karpenter" {
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
   version = "19.21.0"
@@ -65,24 +51,12 @@ resource "helm_release" "karpenter" {
   wait = true
 
   values = [
-    <<-YAML
-    replicas: 2 
-    settings:
-        clusterName: "${data.aws_eks_cluster.this.name}"
-        clusterEndpoint: ${data.aws_eks_cluster.this.endpoint}
-        interruptionQueueName: ${module.karpenter.queue_name}
-    serviceAccount:
-        annotations:
-            eks.amazonaws.com/role-arn: ${module.karpenter.irsa_arn}           
-    controller:
-        resources:
-          requests:
-              cpu: 1
-              memory: 256Mi
-          limits:
-              cpu: 1
-              memory: 256Mi      
-    YAML
+    templatefile("./eks-addon-karpenter-values.yaml",
+      { clusterName           = data.aws_eks_cluster.this.name,
+        clusterEndpoint       = data.aws_eks_cluster.this.endpoint,
+        interruptionQueueName = module.karpenter.queue_name,
+      irsaarn = module.karpenter.irsa_arn }
+    )
   ]
 }
 

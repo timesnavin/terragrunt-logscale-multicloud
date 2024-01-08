@@ -1,20 +1,3 @@
-# module "coredns_fargate_profile" {
-#   source  = "terraform-aws-modules/eks/aws//modules/fargate-profile"
-#   version = "19.21.0"
-
-#   name         = "coredns"
-#   cluster_name = var.cluster_name
-
-
-#   subnet_ids = var.node_subnet_ids
-#   selectors = [{
-#     namespace = "kube-system"
-#     labels = {
-#       k8s-app = "kube-dns"
-#     }
-#   }]
-
-# }
 
 resource "aws_eks_addon" "coredns" {
   # depends_on                  = [module.coredns_fargate_profile]
@@ -58,6 +41,68 @@ resource "aws_eks_addon" "coredns" {
               }
             ]
           }
+          "preferredDuringSchedulingIgnoredDuringExecution": [
+            {
+              "weight": 100
+              "preference": {
+                "matchExpressions": [
+                  {
+                    "key": "role"
+                    "operator": "NotIn"
+                    "values": ["system"]
+                  }
+                ]
+              }
+            },
+            {
+              "weight": 100
+              "preference": {
+                "matchExpressions": [
+                  {
+                    "key": "kubernetes.io/arch"
+                    "operator": "In"
+                    "values": ["arm64"]
+                  }
+                ]
+              }
+            },
+            {
+              "weight": 100
+              "preference": {
+                "matchExpressions": [
+                  {
+                    "key": "kubernetes.io/arch"
+                    "operator": "In"
+                    "values": ["arm64"]
+                  }
+                ]
+              }
+            },
+            {
+              "weight": 50
+              "preference": {
+                "matchExpressions": [
+                  {
+                    "key": "computeClass"
+                    "operator": "In"
+                    "values": ["general"]
+                  }
+                ]
+              }
+            },
+            {
+              "weight": 50
+              "preference": {
+                "matchExpressions": [
+                  {
+                    "key": "computeClass"
+                    "operator": "In"
+                    "values": ["compute"]
+                  }
+                ]
+              }
+            }
+          ]
         },
         "podAntiAffinity" : {
           "preferredDuringSchedulingIgnoredDuringExecution" : [
@@ -95,20 +140,4 @@ resource "aws_eks_addon" "coredns" {
       ]
     }
   )
-}
-
-
-resource "kubernetes_annotations" "coredns" {
-  depends_on = [aws_eks_addon.coredns]
-
-  api_version = "apps/v1"
-  kind        = "Deployment"
-  metadata {
-    name      = "coredns"
-    namespace = "kube-system"
-  }
-  # These annotations will be applied to the Pods created by the Deployment
-  template_annotations = {
-    "eks.amazonaws.com/compute-type" = "fargate"
-  }
 }

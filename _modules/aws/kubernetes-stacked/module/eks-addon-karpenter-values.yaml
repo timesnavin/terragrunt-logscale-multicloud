@@ -1,0 +1,80 @@
+replicas: 2
+settings:
+  clusterName: "${clusterName}"
+  clusterEndpoint: ${clusterEndpoint}
+  interruptionQueueName: ${interruptionQueueName}
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: ${irsaarn}
+controller:
+  resources:
+    requests:
+      cpu: 1
+      memory: 256Mi
+    limits:
+      cpu: 1
+      memory: 256Mi
+podDisruptionBudget:
+  enabled: true
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+                - karpenter
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+                - karpenter
+        topologyKey: topology.kubernetes.io/zone
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/os
+              operator: In
+              values:
+                - linux
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: role
+              operator: NotIn
+              values:
+                - system
+      - weight: 100
+        preference:
+          matchExpressions:
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+                - arm64
+      - weight: 50
+        preference:
+          matchExpressions:
+            - key: computeClass
+              operator: In
+              values:
+                - compute
+      - weight: 10
+        preference:
+          matchExpressions:
+            - key: computeClass
+              operator: In
+              values:
+                - general
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/component: karpenter
+        app.kubernetes.io/instance: karpenter
+    matchLabelKeys:
+      - pod-template-hash
+priorityClassName: "system-cluster-critical"
