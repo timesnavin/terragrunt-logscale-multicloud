@@ -34,7 +34,8 @@ locals {
           "system:nodes",
         ]
         }
-      ]
+      ],
+      var.additional_aws_auth_roles
     ))
   }
 }
