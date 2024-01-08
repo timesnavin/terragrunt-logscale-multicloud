@@ -20,17 +20,10 @@ variable "vpc_id" {
 
 }
 
-variable "node_subnet_ids" {
-  description = "The subnet IDs"
-  type        = list(string)
-
-}
-
 variable "control_plane_subnet_ids" {
   description = "The control plane subnet IDs"
   type        = list(string)
-  default     = null
-
+  
 }
 variable "iam_role_path" {
   description = "The path to the role"
@@ -48,35 +41,5 @@ variable "additional_kms_owners" {
   description = "Additional AWS IAM roles to add to the kms key"
   type        = list(any)
   default     = []
-
-}
-
-# variable "vpc_id" {
-#   description = "The VPC ID"
-#   type        = string
-
-# }
-
-# variable "subnet_ids" {
-#   description = "The subnet IDs"
-#   type        = list(string)
-
-# }
-
-# variable "control_plane_subnet_ids" {
-#   description = "The control plane subnet IDs"
-#   type        = list(string)
-#   default     = null
-
-# }
-
-# variable "external_dns_route53_zone_arns" {
-#   type = list(string)
-
-# }
-
-variable "GITHUB_PAT" {
-  description = "The PAT"
-  type        = string
 
 }

@@ -1,12 +1,15 @@
+data "aws_eks_cluster" "this" {
+  name = var.cluster_name
+}
 provider "kubernetes" {
-  host                   = aws_eks_cluster.this.endpoint
-  cluster_ca_certificate = base64decode(aws.eks.cluster.certificate_authority.0.data)
+  host                   = data.aws_eks_cluster.this.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
     # This requires the awscli to be installed locally where Terraform is executed
-    args = ["eks", "get-token", "--cluster-name", aws_eks_cluster.this.name]
+    args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
   }
 }
 data "aws_ecrpublic_authorization_token" "public_token" {
@@ -15,14 +18,14 @@ data "aws_ecrpublic_authorization_token" "public_token" {
 
 provider "helm" {
   kubernetes {
-    host                   = aws_eks_cluster.this.endpoint
-    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+    host                   = data.aws_eks_cluster.this.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
       # This requires the awscli to be installed locally where Terraform is executed
-      args = ["eks", "get-token", "--cluster-name", aws_eks_cluster.this.name]
+      args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
     }
   }
   registry {
@@ -39,14 +42,14 @@ provider "helm" {
 
 provider "kubectl" {
   load_config_file       = false
-  host                   = aws_eks_cluster.this.endpoint
-  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  host                   = data.aws_eks_cluster.this.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
     # This requires the awscli to be installed locally where Terraform is executed
-    args = ["eks", "get-token", "--cluster-name", aws_eks_cluster.this.name]
+    args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
   }
 }
 

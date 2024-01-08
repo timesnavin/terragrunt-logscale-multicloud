@@ -22,10 +22,10 @@
 #   value       = module.eks.cluster_id
 # }
 
-# output "cluster_name" {
-#   description = "The name of the EKS cluster"
-#   value       = module.eks.cluster_name
-# }
+output "cluster_name" { 
+  description = "The name of the EKS cluster"
+  value       = aws_eks_cluster.this.name
+}
 
 # output "cluster_oidc_provider_arn" {
 #   description = "The ARN of the OIDC Provider if `enable_irsa = true`"
@@ -81,25 +81,25 @@
 #   value       = module.eks.node_security_group_id
 # }
 
-# ################################################################################
-# # IRSA
-# ################################################################################
 
-# output "oidc_provider" {
-#   description = "The OpenID Connect identity provider (issuer URL without leading `https://`)"
-#   value       = module.eks.oidc_provider
-# }
+################################################################################
+# IRSA
+################################################################################
 
-# output "oidc_provider_arn" {
-#   description = "The ARN of the OIDC Provider if `enable_irsa = true`"
-#   value       = module.eks.oidc_provider_arn
-# }
+output "oidc_provider" {
+  description = "The OpenID Connect identity provider (issuer URL without leading `https://`)"
+  value       = try(replace(aws_eks_cluster.this.identity[0].oidc[0].issuer, "https://", ""), null)
+}
 
-# output "cluster_tls_certificate_sha1_fingerprint" {
-#   description = "The SHA1 fingerprint of the public key of the cluster's certificate"
-#   value       = module.eks.cluster_tls_certificate_sha1_fingerprint
-# }
+output "oidc_provider_arn" {
+  description = "The ARN of the OIDC Provider if `enable_irsa = true`"
+  value       = try(aws_iam_openid_connect_provider.oidc_provider.arn, null)
+}
 
+output "cluster_tls_certificate_sha1_fingerprint" {
+  description = "The SHA1 fingerprint of the public key of the cluster's certificate"
+  value       = try(data.tls_certificate.this.certificates[0].sha1_fingerprint, null)
+}
 # ################################################################################
 # # IAM Role
 # ################################################################################

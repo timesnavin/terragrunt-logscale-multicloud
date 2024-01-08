@@ -12,7 +12,7 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes-cluster/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes-base/module/"
 }
 
 
@@ -26,7 +26,7 @@ locals {
 }
 
 dependency "network" {
-  config_path = "${get_terragrunt_dir()}/../network/"
+  config_path = "${get_terragrunt_dir()}/../../network/"
   mock_outputs = {
     name            = "foo"
     vpc_id          = "vpc-1234568"
@@ -35,24 +35,6 @@ dependency "network" {
   }
 }
 
-dependency "zone_partition" {
-  config_path = "${get_terragrunt_dir()}/../../../dns"
-  mock_outputs = {
-    zone_id            = "Z00236603S1DPYCJOBON1"
-  }
-}
-dependency "zone_provider" {
-  config_path = "${get_terragrunt_dir()}/../../dns"
-  mock_outputs = {
-    zone_id            = "Z00236603S1DPYCJOBON1"
-  }
-}
-dependency "zone_region" {
-  config_path = "${get_terragrunt_dir()}/../dns"
-  mock_outputs = {
-    zone_id            = "Z00236603S1DPYCJOBON1"
-  }
-}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
@@ -65,16 +47,10 @@ inputs = {
 
   iam_role_path     = local.provider.aws.iam_path
   vpc_id            = dependency.network.outputs.vpc_id
-  node_subnet_ids        = dependency.network.outputs.private_subnets
-  control_plane_ids = dependency.network.outputs.intra_subnets
+  control_plane_subnet_ids = dependency.network.outputs.intra_subnets
 
   additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
   additional_kms_owners     = local.region.kubernetes.kms.additional_key_owners
 
 
-  external_dns_route53_zone_arns = [
-    dependency.zone_partition.outputs.zone_arn,
-    dependency.zone_provider.outputs.zone_arn,
-    dependency.zone_region.outputs.zone_arn
-  ]
 }
