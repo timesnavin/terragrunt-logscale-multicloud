@@ -29,7 +29,7 @@ affinity:
               operator: In
               values:
                 - karpenter
-        topologyKey: topology.kubernetes.io/zone
+        topologyKey: kubernetes.io/hostname
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:

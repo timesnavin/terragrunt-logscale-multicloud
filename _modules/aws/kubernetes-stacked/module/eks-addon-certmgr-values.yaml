@@ -14,7 +14,7 @@ affinity:
               operator: In
               values:
                 - cert-manager
-        topologyKey: topology.kubernetes.io/zone
+        topologyKey: kubernetes.io/hostname
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
@@ -80,7 +80,7 @@ webhook:
                 operator: In
                 values:
                   - cert-manager
-          topologyKey: topology.kubernetes.io/zone
+          topologyKey: kubernetes.io/hostname
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
@@ -145,7 +145,7 @@ cainjector:
                 operator: In
                 values:
                   - cert-manager
-          topologyKey: topology.kubernetes.io/zone
+          topologyKey: kubernetes.io/hostname
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:

@@ -26,6 +26,19 @@ resources:
 priorityClassName: "system-cluster-critical"
 
 affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+                - controller
+            - key: app.kubernetes.io/instance
+              operator: In
+              values:
+                - cert-manager
+        topologyKey: kubernetes.io/hostname
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
