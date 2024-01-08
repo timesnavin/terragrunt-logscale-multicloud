@@ -14,7 +14,7 @@ variable "iam_role_path" {
 }
 
 variable "system_node_role_arn" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 variable "additional_aws_auth_roles" {
@@ -36,6 +36,6 @@ variable "GITHUB_PAT" {
 
 
 variable "oidc_provider_arn" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }

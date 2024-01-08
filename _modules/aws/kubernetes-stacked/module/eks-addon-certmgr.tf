@@ -21,7 +21,7 @@ resource "helm_release" "cert-manager" {
   chart      = "cert-manager"
   version    = "v1.13.3"
 
-  wait = true
+  wait   = true
   values = [file("./eks-addon-certmgr-values.yaml")]
 
 }

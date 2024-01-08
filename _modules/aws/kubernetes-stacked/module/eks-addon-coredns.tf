@@ -41,63 +41,63 @@ resource "aws_eks_addon" "coredns" {
               }
             ]
           }
-          "preferredDuringSchedulingIgnoredDuringExecution": [
+          "preferredDuringSchedulingIgnoredDuringExecution" : [
             {
-              "weight": 100
-              "preference": {
-                "matchExpressions": [
+              "weight" : 100
+              "preference" : {
+                "matchExpressions" : [
                   {
-                    "key": "role"
-                    "operator": "NotIn"
-                    "values": ["system"]
+                    "key" : "role"
+                    "operator" : "NotIn"
+                    "values" : ["system"]
                   }
                 ]
               }
             },
             {
-              "weight": 100
-              "preference": {
-                "matchExpressions": [
+              "weight" : 100
+              "preference" : {
+                "matchExpressions" : [
                   {
-                    "key": "kubernetes.io/arch"
-                    "operator": "In"
-                    "values": ["arm64"]
+                    "key" : "kubernetes.io/arch"
+                    "operator" : "In"
+                    "values" : ["arm64"]
                   }
                 ]
               }
             },
             {
-              "weight": 100
-              "preference": {
-                "matchExpressions": [
+              "weight" : 100
+              "preference" : {
+                "matchExpressions" : [
                   {
-                    "key": "kubernetes.io/arch"
-                    "operator": "In"
-                    "values": ["arm64"]
+                    "key" : "kubernetes.io/arch"
+                    "operator" : "In"
+                    "values" : ["arm64"]
                   }
                 ]
               }
             },
             {
-              "weight": 50
-              "preference": {
-                "matchExpressions": [
+              "weight" : 50
+              "preference" : {
+                "matchExpressions" : [
                   {
-                    "key": "computeClass"
-                    "operator": "In"
-                    "values": ["general"]
+                    "key" : "computeClass"
+                    "operator" : "In"
+                    "values" : ["general"]
                   }
                 ]
               }
             },
             {
-              "weight": 50
-              "preference": {
-                "matchExpressions": [
+              "weight" : 50
+              "preference" : {
+                "matchExpressions" : [
                   {
-                    "key": "computeClass"
-                    "operator": "In"
-                    "values": ["compute"]
+                    "key" : "computeClass"
+                    "operator" : "In"
+                    "values" : ["compute"]
                   }
                 ]
               }
