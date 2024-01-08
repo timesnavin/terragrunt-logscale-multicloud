@@ -121,7 +121,7 @@ spec:
 YAML
 
   depends_on = [
-    helm_release.karpenter
+    time_sleep.karpenter
   ]
   lifecycle {
     create_before_destroy = true
@@ -171,7 +171,7 @@ spec:
 YAML
 
   depends_on = [
-    helm_release.karpenter
+    time_sleep.karpenter
   ]
   lifecycle {
     replace_triggered_by = [
@@ -225,7 +225,7 @@ spec:
 YAML
 
   depends_on = [
-    helm_release.karpenter
+    time_sleep.karpenter
   ]
   lifecycle {
     replace_triggered_by = [
@@ -283,7 +283,7 @@ spec:
 YAML
 
   depends_on = [
-    helm_release.karpenter
+    time_sleep.karpenter
   ]
   lifecycle {
     replace_triggered_by = [
