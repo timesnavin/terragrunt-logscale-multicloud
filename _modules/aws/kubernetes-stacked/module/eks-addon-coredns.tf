@@ -1,23 +1,23 @@
-module "coredns_fargate_profile" {
-  source  = "terraform-aws-modules/eks/aws//modules/fargate-profile"
-  version = "19.21.0"
+# module "coredns_fargate_profile" {
+#   source  = "terraform-aws-modules/eks/aws//modules/fargate-profile"
+#   version = "19.21.0"
 
-  name         = "coredns"
-  cluster_name = var.cluster_name
+#   name         = "coredns"
+#   cluster_name = var.cluster_name
 
 
-  subnet_ids = var.node_subnet_ids
-  selectors = [{
-    namespace = "kube-system"
-    labels = {
-      k8s-app = "kube-dns"
-    }
-  }]
+#   subnet_ids = var.node_subnet_ids
+#   selectors = [{
+#     namespace = "kube-system"
+#     labels = {
+#       k8s-app = "kube-dns"
+#     }
+#   }]
 
-}
+# }
 
 resource "aws_eks_addon" "coredns" {
-  depends_on                  = [module.coredns_fargate_profile]
+  # depends_on                  = [module.coredns_fargate_profile]
   cluster_name                = var.cluster_name
   addon_name                  = "coredns"
   addon_version               = "v1.10.1-eksbuild.6"

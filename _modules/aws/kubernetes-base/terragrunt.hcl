@@ -48,7 +48,8 @@ inputs = {
   iam_role_path     = local.provider.aws.iam_path
   vpc_id            = dependency.network.outputs.vpc_id
   control_plane_subnet_ids = dependency.network.outputs.intra_subnets
-
+  node_subnet_ids        = dependency.network.outputs.private_subnets
+  
   additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
   additional_kms_owners     = local.region.kubernetes.kms.additional_key_owners
 

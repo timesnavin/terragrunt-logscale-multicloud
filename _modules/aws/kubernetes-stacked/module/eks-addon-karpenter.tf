@@ -1,16 +1,16 @@
-module "karpenter_fargate_profile" {
-  source  = "terraform-aws-modules/eks/aws//modules/fargate-profile"
-  version = "19.21.0"
+# module "karpenter_fargate_profile" {
+#   source  = "terraform-aws-modules/eks/aws//modules/fargate-profile"
+#   version = "19.21.0"
 
-  name         = "karpenter"
-  cluster_name = var.cluster_name
+#   name         = "karpenter"
+#   cluster_name = var.cluster_name
 
 
-  subnet_ids = var.node_subnet_ids
-  selectors = [{
-    namespace = "karpenter"
-  }]
-}
+#   subnet_ids = var.node_subnet_ids
+#   selectors = [{
+#     namespace = "karpenter"
+#   }]
+# }
 
 module "karpenter" {
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
@@ -48,7 +48,7 @@ resource "helm_release" "karpentercrds" {
 
 resource "helm_release" "karpenter" {
   depends_on = [
-    kubernetes_config_map_v1_data.aws_auth,
+    # kubernetes_config_map_v1_data.aws_auth,
     helm_release.karpentercrds,
     aws_eks_addon.coredns,
     aws_eks_addon.kube-proxy,

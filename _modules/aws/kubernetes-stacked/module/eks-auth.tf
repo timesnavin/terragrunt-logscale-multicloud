@@ -1,7 +1,7 @@
 locals {
 
   fargate_profile_pod_execution_role_arns = [
-    module.coredns_fargate_profile.iam_role_arn,
+    # module.coredns_fargate_profile.iam_role_arn,
     module.karpenter.role_arn
   ]
 
@@ -19,6 +19,15 @@ locals {
       ],
       [{
         rolearn  = module.karpenter.role_arn
+        username = "system:node:{{EC2PrivateDNSName}}"
+        groups = [
+          "system:bootstrappers",
+          "system:nodes",
+        ]
+        }
+      ],
+      [{
+        rolearn  = var.system_node_role_arn
         username = "system:node:{{EC2PrivateDNSName}}"
         groups = [
           "system:bootstrappers",
@@ -57,5 +66,5 @@ resource "kubernetes_config_map_v1_data" "aws_auth" {
 
   data = local.aws_auth_configmap_data
 
- 
+
 }

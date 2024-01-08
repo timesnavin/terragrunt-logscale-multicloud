@@ -13,6 +13,10 @@ variable "iam_role_path" {
 
 }
 
+variable "system_node_role_arn" {
+  type = string
+  description = "(optional) describe your variable"
+}
 # variable "additional_aws_auth_roles" {
 #   description = "Additional AWS IAM roles to add to the aws-auth configmap"
 #   type        = list(any)

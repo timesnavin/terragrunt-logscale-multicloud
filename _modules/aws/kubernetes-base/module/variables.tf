@@ -23,13 +23,35 @@ variable "vpc_id" {
 variable "control_plane_subnet_ids" {
   description = "The control plane subnet IDs"
   type        = list(string)
-  
+
+}
+variable "node_subnet_ids" {
+  description = "The node subnet IDs"
+  type        = list(string)
+
 }
 variable "iam_role_path" {
   description = "The path to the role"
   type        = string
   default     = "/"
 
+}
+
+variable "node_min_size" {
+  type        = number
+  default     = 0
+  description = "(optional) describe your variable"
+}
+variable "node_max_size" {
+  type        = number
+  default     = 9
+  description = "(optional) describe your variable"
+}
+variable "node_desired_size" {
+  type    = number
+  default = 0
+
+  description = "(optional) describe your variable"
 }
 
 # variable "additional_aws_auth_roles" {

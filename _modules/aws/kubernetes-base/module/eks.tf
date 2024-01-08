@@ -22,7 +22,38 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
   role       = aws_iam_role.cluster.name
 }
 
+resource "aws_iam_role_policy_attachment" "cluster_encryption" {
+  # Encryption config not available on Outposts
+  
+  policy_arn = aws_iam_policy.cluster_encryption.arn
+  role       = aws_iam_role.cluster.name
+}
 
+resource "aws_iam_policy" "cluster_encryption" {
+  # Encryption config not available on Outposts
+
+  name        = "${var.cluster_name}-encryption-policy"
+  # name_prefix = var.cluster_encryption_policy_use_name_prefix ? local.cluster_encryption_policy_name : null
+  # description = var.cluster_encryption_policy_description
+  # path        = var.cluster_encryption_policy_path
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ListGrants",
+          "kms:DescribeKey",
+        ]
+        Effect   = "Allow"
+        Resource =  module.kms.key_arn 
+      },
+    ]
+  })
+}
+  
 # Optionally, enable Security Groups for Pods
 # Reference: https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html
 resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
@@ -88,6 +119,32 @@ resource "aws_eks_cluster" "this" {
   }
 
   depends_on = [aws_cloudwatch_log_group.cluster]
+}
+
+
+# This sleep resource is used to provide a timed gap between the cluster creation and the downstream dependencies
+# that consume the outputs from here. Any of the values that are used as triggers can be used in dependencies
+# to ensure that the downstream resources are created after both the cluster is ready and the sleep time has passed.
+# This was primarily added to give addons that need to be configured BEFORE data plane compute resources
+# enough time to create and configure themselves before the data plane compute resources are created.
+resource "time_sleep" "eks_create" {
+
+
+  create_duration = "90s"
+
+  triggers = {
+    cluster_name     = aws_eks_cluster.this.name
+    cluster_endpoint = aws_eks_cluster.this.endpoint
+    cluster_version  = aws_eks_cluster.this.version
+
+    cluster_certificate_authority_data = aws_eks_cluster.this.certificate_authority[0].data
+  }
+}
+resource "time_sleep" "eks_destroy" {
+  depends_on = [aws_eks_cluster.this]
+
+  destroy_duration = "180s"
+
 }
 
 # ################################################################################

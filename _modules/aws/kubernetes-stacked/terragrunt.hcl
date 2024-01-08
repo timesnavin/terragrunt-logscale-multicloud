@@ -75,7 +75,7 @@ inputs = {
   node_subnet_ids        = dependency.network.outputs.private_subnets
   
   additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
-  
+  system_node_role_arn = dependency.kubernetes_base.outputs.system_node_role_arn
 
   external_dns_route53_zone_arns = [
     dependency.zone_partition.outputs.zone_arn,

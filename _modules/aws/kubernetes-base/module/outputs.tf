@@ -119,6 +119,9 @@ output "cluster_tls_certificate_sha1_fingerprint" {
 #   value       = module.eks.cluster_iam_role_unique_id
 # }
 
+output "system_node_role_arn" {
+  value = module.eks_managed_node_group.iam_role_arn
+}
 # ################################################################################
 # # EKS Addons
 # ################################################################################
