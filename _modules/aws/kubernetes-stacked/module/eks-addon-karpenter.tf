@@ -24,7 +24,7 @@ resource "helm_release" "karpentercrds" {
   name       = "karpentercrds"
   repository = "oci://public.ecr.aws/karpenter"
   chart      = "karpenter-crd"
-  version    = "v0.33.0"
+  version    = "v0.33.1"
 
   wait = true
 
@@ -46,7 +46,7 @@ resource "helm_release" "karpenter" {
   name       = "karpenter"
   repository = "oci://public.ecr.aws/karpenter"
   chart      = "karpenter"
-  version    = "v0.33.0"
+  version    = "v0.33.1"
 
   wait = true
 
