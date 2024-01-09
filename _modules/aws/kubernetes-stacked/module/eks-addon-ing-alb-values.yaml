@@ -23,7 +23,7 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
           matchExpressions:
-            - key: app.kubernetes.io/component
+            - key: app.kubernetes.io/name
               operator: In
               values:
                 - aws-load-balancer-controller
@@ -75,7 +75,7 @@ topologySpreadConstraints:
     whenUnsatisfiable: DoNotSchedule
     labelSelector:
       matchLabels:
-        app.kubernetes.io/component: aws-load-balancer-controller
+        app.kubernetes.io/name: aws-load-balancer-controller
         app.kubernetes.io/instance: aws-load-balancer-controller
     matchLabelKeys:
       - pod-template-hash
