@@ -31,5 +31,5 @@ resource "helm_release" "efs_csi" {
 
   wait = false
 
-  values = [templatefile("./eks-addon-csi-efs.yaml",{irsaarn=module.efs_csi_irsa.iam_role_arn})]
+  values = [templatefile("./eks-addon-csi-efs.yaml", { irsaarn = module.efs_csi_irsa.iam_role_arn })]
 }

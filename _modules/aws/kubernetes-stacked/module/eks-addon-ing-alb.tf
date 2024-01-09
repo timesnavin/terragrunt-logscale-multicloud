@@ -34,15 +34,17 @@ resource "helm_release" "alb-controller" {
     kubectl_manifest.alb_controller_crds,
     helm_release.cert-manager
   ]
-  namespace        = "kube-system"
-  
+  namespace = "kube-system"
+
   name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
   chart      = "alb-controller"
   version    = "v1.6.1"
 
-  wait   = true
-  values = [templatefile("./eks-addon-ing-alb-values.yaml",{clusterName=var.cluster_name,irsaarn=module.ing_alb_irsa.iam_role_arn}})]
+  wait = true
+  values = [
+    templatefile("./eks-addon-ing-alb-values.yaml", { clusterName = var.cluster_name, irsaarn = module.ing_alb_irsa.iam_role_arn })
+  ]
 
 
 }
