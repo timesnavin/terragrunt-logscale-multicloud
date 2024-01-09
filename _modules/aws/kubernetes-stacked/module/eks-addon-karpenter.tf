@@ -168,7 +168,9 @@ spec:
         - key: ebs.csi.aws.com/agent-not-ready
           value: "true"
           effect: NoExecute    
-
+        - key: efs.csi.aws.com/agent-not-ready
+          value: "true"
+          effect: NoExecute    
   limits:
     cpu: 1000
   disruption:
@@ -228,6 +230,10 @@ spec:
         - key: ebs.csi.aws.com/agent-not-ready
           value: "true"
           effect: NoExecute    
+        - key: efs.csi.aws.com/agent-not-ready
+          value: "true"
+          effect: NoExecute    
+
   limits:
     cpu: 1000
   disruption:
@@ -291,6 +297,10 @@ spec:
         - key: ebs.csi.aws.com/agent-not-ready
           value: "true"
           effect: NoExecute    
+        - key: efs.csi.aws.com/agent-not-ready
+          value: "true"
+          effect: NoExecute    
+
   limits:
     cpu: 1000
   disruption:
