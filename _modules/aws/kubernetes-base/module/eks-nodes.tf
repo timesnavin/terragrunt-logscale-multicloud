@@ -17,9 +17,9 @@ module "eks_managed_node_group" {
 
   subnet_ids = var.node_subnet_ids
 
-  min_size     = 1 #var.node_min_size
+  min_size     = var.node_min_size
   max_size     = var.node_max_size
-  desired_size = 1 #var.node_desired_size
+  desired_size = var.node_desired_size
 
   #   ami_id              = try(each.value.ami_id, var.eks_managed_node_group_defaults.ami_id, "")
   ami_type = "BOTTLEROCKET_x86_64"
