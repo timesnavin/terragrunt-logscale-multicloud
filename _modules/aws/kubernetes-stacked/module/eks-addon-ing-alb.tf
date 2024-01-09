@@ -39,7 +39,7 @@ resource "helm_release" "alb-controller" {
   name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
   chart      = "alb-controller"
-  version    = "1.6.2"
+  version    = "v1.6.2"
 
   wait = true
   values = [
