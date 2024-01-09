@@ -67,18 +67,6 @@ resource "aws_eks_addon" "coredns" {
               }
             },
             {
-              "weight" : 100
-              "preference" : {
-                "matchExpressions" : [
-                  {
-                    "key" : "kubernetes.io/arch"
-                    "operator" : "In"
-                    "values" : ["arm64"]
-                  }
-                ]
-              }
-            },
-            {
               "weight" : 50
               "preference" : {
                 "matchExpressions" : [
@@ -130,10 +118,10 @@ resource "aws_eks_addon" "coredns" {
         {
           "maxSkew"           = 1,
           "topologyKey"       = "topology.kubernetes.io/zone",
-          "whenUnsatisfiable" = "ScheduleAnyway",
+          "whenUnsatisfiable" = "DoNotSchedule",
           "labelSelector" = {
             "matchLabels" = {
-              "eks.amazonaws.com/component" : "coredns"
+              "k8s-app" : "kube-dns"
             }
           }
         }
