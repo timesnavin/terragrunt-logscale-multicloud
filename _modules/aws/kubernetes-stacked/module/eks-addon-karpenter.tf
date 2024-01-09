@@ -164,16 +164,15 @@ spec:
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
           values: ["2"]
+      startupTaints:
+        - key: ebs.csi.aws.com/agent-not-ready
+          value: "true"
+          effect: NoExecute    
+
   limits:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
-  template:
-    spec:
-      startupTaints:
-      - key: ebs.csi.aws.com/agent-not-ready
-        value: "true"
-        effect: NoExecute    
     
 YAML
 
@@ -225,16 +224,14 @@ spec:
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
           values: ["2"]
+      startupTaints:
+        - key: ebs.csi.aws.com/agent-not-ready
+          value: "true"
+          effect: NoExecute    
   limits:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
-  template:
-    spec:
-      startupTaints:
-      - key: ebs.csi.aws.com/agent-not-ready
-        value: "true"
-        effect: NoExecute    
 
 YAML
 
@@ -290,16 +287,14 @@ spec:
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
           values: ["2"]
+      startupTaints:
+        - key: ebs.csi.aws.com/agent-not-ready
+          value: "true"
+          effect: NoExecute    
   limits:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
-  template:
-    spec:
-      startupTaints:
-      - key: ebs.csi.aws.com/agent-not-ready
-        value: "true"
-        effect: NoExecute    
 
 YAML
 
