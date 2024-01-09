@@ -32,7 +32,7 @@ resource "helm_release" "kyverno-policies" {
   name       = "kyverno"
   repository = "https://kyverno.github.io/kyverno/"
   chart      = "kyverno-policies"
-  version    = "3.0.4"
+  version    = "3.1.3"
 
   wait = false
 
