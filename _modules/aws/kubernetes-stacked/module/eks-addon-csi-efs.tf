@@ -11,8 +11,25 @@ module "efs_csi_irsa" {
   oidc_providers = {
     main = {
       provider_arn               = var.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"]
+      namespace_service_accounts = ["kube-system:efs-csi-controller-sa"]
     }
   }
 
+}
+
+resource "helm_release" "efs_csi" {
+  depends_on = [
+    time_sleep.karpenter_nodes,
+    helm_release.karpenter
+  ]
+  namespace = "kube-system"
+
+  name       = "aws-efs-csi"
+  repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
+  chart      = "aws-efs-csi-driver"
+  version    = "2.26.1"
+
+  wait = false
+
+  values = [templatefile("./eks-addon-csi-efs.yaml",{irsaarn=module.efs_csi_irsa.iam_role_arn})]
 }

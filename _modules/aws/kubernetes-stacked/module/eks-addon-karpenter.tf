@@ -168,6 +168,13 @@ spec:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
+  template:
+    spec:
+      startupTaints:
+      - key: ebs.csi.aws.com/agent-not-ready
+        value: "true"
+        effect: NoExecute    
+    
 YAML
 
   depends_on = [
@@ -222,6 +229,13 @@ spec:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
+  template:
+    spec:
+      startupTaints:
+      - key: ebs.csi.aws.com/agent-not-ready
+        value: "true"
+        effect: NoExecute    
+
 YAML
 
   depends_on = [
@@ -280,6 +294,13 @@ spec:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
+  template:
+    spec:
+      startupTaints:
+      - key: ebs.csi.aws.com/agent-not-ready
+        value: "true"
+        effect: NoExecute    
+
 YAML
 
   depends_on = [
