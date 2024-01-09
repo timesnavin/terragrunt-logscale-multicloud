@@ -44,6 +44,7 @@ dependency "network" {
 inputs = {
   cluster_name    = dependency.network.outputs.name
   cluster_version = local.region.kubernetes.version
+  cluster_region = local.region.name
 
   iam_role_path     = local.provider.aws.iam_path
   vpc_id            = dependency.network.outputs.vpc_id

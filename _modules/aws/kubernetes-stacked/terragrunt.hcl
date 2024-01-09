@@ -67,6 +67,7 @@ dependency "zone_region" {
 inputs = {
   cluster_name    = dependency.kubernetes_base.outputs.cluster_name
   cluster_version = local.region.kubernetes.version
+  cluster_region = local.region.name
 
   oidc_provider_arn = dependency.kubernetes_base.outputs.oidc_provider_arn
   

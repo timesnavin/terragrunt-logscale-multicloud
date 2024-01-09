@@ -1,6 +1,12 @@
 variable "cluster_name" {
 
 }
+variable "cluster_region" {
+  description = "The region"
+  type        = string
+  default     = "us-east-1"
+
+}
 variable "node_subnet_ids" {
   description = "The node subnet IDs"
   type        = list(string)
