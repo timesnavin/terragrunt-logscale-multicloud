@@ -12,5 +12,5 @@ resource "helm_release" "zalando-operator" {
   chart      = "postgres-operator"
   version    = "1.10.1"
 
-  values = [templatefile("./k8s-zalando-operator.yaml",{region=data.aws_eks_cluster.region})]
+  values = [templatefile("./k8s-zalando-operator.yaml",{region=data.aws_eks_cluster.this.region})]
 }
