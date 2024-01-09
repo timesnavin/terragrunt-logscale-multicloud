@@ -27,7 +27,7 @@ resource "helm_release" "efs_csi" {
   name       = "aws-efs-csi"
   repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
   chart      = "aws-efs-csi-driver"
-  version    = "2.26.1"
+  version    = "2.5.3"
 
   wait = false
 
