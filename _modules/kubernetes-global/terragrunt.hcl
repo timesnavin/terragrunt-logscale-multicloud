@@ -12,7 +12,7 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = "${dirname(find_in_parent_folders())}/_modules/kubernetes/base/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/kubernetes-global/module/"
 }
 
 
@@ -20,24 +20,27 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
+  global = yamldecode(file(find_in_parent_folders("global.yaml")))
 
 }
 
-dependency "kubernetes_cluster" {
-  config_path = "${get_terragrunt_dir()}/../../kubernetes-cluster/"
+dependency "kubernetes" {
+  config_path = "${get_terragrunt_dir()}/../../../${local.global.provider}/regions/${local.global.region}/kubernetes-cluster/"
+}
+dependency "kubernetes_addons" {
+  config_path  = "${get_terragrunt_dir()}/../../../regions/${local.region.name}/kubernetes-addons/"
+  skip_outputs = true
 }
 
-dependency "region_zone" {
-  config_path = "${get_terragrunt_dir()}/../../dns/"
-}
+// dependency "partition_zone" {
+//    config_path = "${get_terragrunt_dir()}/../../../shared/zone/"
+// }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  domain_name_region   = dependency.region_zone.outputs.zone_name
+  //domain_name_platform = dependency.partition_zone.outputs.zone_name
 
 }
