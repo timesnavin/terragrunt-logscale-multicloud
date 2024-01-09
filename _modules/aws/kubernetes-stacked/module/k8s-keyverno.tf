@@ -5,6 +5,7 @@ resource "helm_release" "keyverno" {
     helm_release.karpenter
   ]
   namespace = "keyverno"
+  create_namespace = true
   
 
   name       = "keyverno"
