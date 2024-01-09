@@ -7,7 +7,7 @@ resource "helm_release" "metrics-server" {
   name       = "metrics-server"
   repository = "https://kubernetes-sigs.github.io/metrics-server/"
   chart      = "metrics-server"
-  version    = "v3.11.0"
+  version    = "3.11.0"
 
   wait = true
   values = [
