@@ -1,4 +1,8 @@
 kind: Deployment
+
+deschedulerPolicy:
+  evictSystemCriticalPods: true
+  
 # Specifies the replica count for Deployment
 # Set leaderElection if you want to use more than 1 replica
 # Set affinity.podAntiAffinity rule if you want to schedule onto a node
