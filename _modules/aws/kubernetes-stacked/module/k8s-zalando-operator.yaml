@@ -33,7 +33,7 @@ affinity:
             - key: kubernetes.io/arch
               operator: In
               values:
-                - arm64
+                - amd64
       - weight: 50
         preference:
           matchExpressions:
