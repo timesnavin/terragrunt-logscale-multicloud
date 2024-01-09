@@ -29,7 +29,7 @@ resource "helm_release" "kyverno-policies" {
   namespace = "kyverno"
   
 
-  name       = "kyverno"
+  name       = "kyverno-policies"
   repository = "https://kyverno.github.io/kyverno/"
   chart      = "kyverno-policies"
   version    = "3.1.3"
