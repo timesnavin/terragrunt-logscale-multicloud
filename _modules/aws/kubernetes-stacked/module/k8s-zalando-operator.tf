@@ -25,7 +25,7 @@ resource "helm_release" "zalando-operator-ui" {
   create_namespace = true
 
   name       = "postgres-operator-ui"
-  repository = "https://opensource.zalando.com/postgres-operator/charts/postgres-operator"
+  repository = "https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui"
   chart      = "postgres-operator-ui"
   version    = "1.10.1"
 
