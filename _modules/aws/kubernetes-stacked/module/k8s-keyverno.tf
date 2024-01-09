@@ -1,40 +1,40 @@
 
-resource "helm_release" "keyverno" {
+resource "helm_release" "kyverno" {
   depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter
   ]
-  namespace = "keyverno"
+  namespace = "kyverno"
   create_namespace = true
   
 
-  name       = "keyverno"
+  name       = "kyverno"
   repository = "https://kyverno.github.io/kyverno/"
-  chart      = "keyverno"
+  chart      = "kyverno"
   version    = "3.0.5"
 
   wait = false
 
-  values = [file("./k8s-keyverno-values.yaml")]
+  values = [file("./k8s-kyverno-values.yaml")]
 }
 
 
 
-resource "helm_release" "keyverno-policies" {
+resource "helm_release" "kyverno-policies" {
   depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
-    helm_release.keyverno
+    helm_release.kyverno
   ]
-  namespace = "keyverno"
+  namespace = "kyverno"
   
 
-  name       = "keyverno"
+  name       = "kyverno"
   repository = "https://kyverno.github.io/kyverno/"
-  chart      = "keyverno-policies"
+  chart      = "kyverno-policies"
   version    = "3.0.4"
 
   wait = false
 
-  values = [file("./k8s-keyverno-policies-values.yaml")]
+  values = [file("./k8s-kyverno-policies-values.yaml")]
 }
