@@ -1,13 +1,18 @@
-replicas: 2
+replicaCount: 2
+namespace:
+  name: strimzi-operator
+  create: false
+podDisruptionBudget:
+  create: true
 affinity:
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
           matchExpressions:
-            - key: name
+            - key: app
               operator: In
               values:
-                - strimzi-cluster-operator
+                - strimzi-drain-cleaner
         topologyKey: kubernetes.io/hostname
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -45,6 +50,6 @@ topologySpreadConstraints:
     whenUnsatisfiable: DoNotSchedule
     labelSelector:
       matchLabels:
-        name: strimzi-cluster-operator
+        app: strimzi-drain-cleaner
     matchLabelKeys:
       - pod-template-hash
