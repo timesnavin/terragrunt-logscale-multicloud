@@ -28,7 +28,16 @@ module "eks_managed_node_group" {
   #   capacity_type        = "SPOT"
   #   disk_size            = try(each.value.disk_size, var.eks_managed_node_group_defaults.disk_size, null)
   #   force_update_version = try(each.value.force_update_version, var.eks_managed_node_group_defaults.force_update_version, null)
-  instance_types = ["m7i-flex.xlarge"]
+  instance_types = [
+    "m7g.large",
+    "m7g.xlarge",
+    "m7i.xlarge",
+    "m7i.2xlarge",    
+    "m7i-flex.xlarge",
+    "m7i-flex.2xlarge",
+    "m6g.xlarge",
+    "m6g.2xlarge",    
+    ]
 
   taints = {
     dedicated = {
