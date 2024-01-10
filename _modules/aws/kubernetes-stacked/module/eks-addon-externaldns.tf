@@ -24,9 +24,11 @@ resource "helm_release" "externaldns" {
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
     kubectl_manifest.alb_controller_crds,
-    helm_release.cert-manager
   ]
+  create_namespace = true
+
   namespace = "external-dns"
+
 
   name       = "external-dns"
   repository = "https://kubernetes-sigs.github.io/external-dns/"
