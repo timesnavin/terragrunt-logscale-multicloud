@@ -33,7 +33,7 @@ resource "helm_release" "externaldns" {
   name       = "external-dns"
   repository = "https://kubernetes-sigs.github.io/external-dns/"
   chart      = "external-dns"
-  version    = "1.13.1"
+  version    = "1.14.0"
 
   wait = true
   values = [
