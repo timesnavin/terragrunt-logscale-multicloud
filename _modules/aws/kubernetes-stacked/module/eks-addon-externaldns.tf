@@ -16,3 +16,27 @@ module "edns_irsa" {
   }
 
 }
+
+
+
+resource "helm_release" "externaldns" {
+  depends_on = [
+    time_sleep.karpenter_nodes,
+    helm_release.karpenter,
+    kubectl_manifest.alb_controller_crds,
+    helm_release.cert-manager
+  ]
+  namespace = "kube-system"
+
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  version    = "v1.6.2"
+
+  wait = true
+  values = [
+    templatefile("./eks-addon-ing-alb-values.yaml", { clusterName = var.cluster_name, irsaarn = module.edns_irsa.iam_role_arn })
+  ]
+
+
+}
