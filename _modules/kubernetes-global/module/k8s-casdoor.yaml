@@ -1,0 +1,33 @@
+ingress:
+  enabled: true
+  annotations:
+    alb.ingress.kubernetes.io/group.name: global-internet
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  tls:
+    - hosts:
+        - identity.ref.loglabs.net
+  hosts:
+    - host: identity.ref.loglabs.net
+      paths:
+        - path: /
+          pathType: Prefix
+  className: alb
+config: |
+  appname = casdoor
+  httpport = {{ .Values.service.port }}
+  runmode = prod
+  SessionOn = true
+  copyrequestbody = true
+  driverName = postgres
+  dataSourceName = "user=casdoor password=${dbpass} host=identity-db port=5432 dbname=casdoor"
+  dbName =
+  redisEndpoint =
+  defaultStorageProvider =
+  isCloudIntranet = false
+  authState = "casdoor"
+  socks5Proxy = ""
+  verificationCodeTimeout = 10
+  initScore = 0
+  logPostOnly = true
+  origin =
+  enableGzip = true
