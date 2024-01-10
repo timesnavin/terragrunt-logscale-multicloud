@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc.git?ref=v5.4.0"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc.git?ref=v5.5.0"
 }
 
 
