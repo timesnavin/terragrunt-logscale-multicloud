@@ -3,7 +3,7 @@ module "edns_irsa" {
   version = "5.33.0"
 
 
-  role_name_prefix = "externaldns"
+  role_name_prefix = "external-dns"
   role_path        = var.iam_role_path
 
   attach_external_dns_policy = true
@@ -11,7 +11,7 @@ module "edns_irsa" {
   oidc_providers = {
     main = {
       provider_arn               = var.oidc_provider_arn
-      namespace_service_accounts = ["externaldns:externaldns"]
+      namespace_service_accounts = ["external-dns:external-dns-sa"]
     }
   }
 
@@ -26,16 +26,16 @@ resource "helm_release" "externaldns" {
     kubectl_manifest.alb_controller_crds,
     helm_release.cert-manager
   ]
-  namespace = "kube-system"
+  namespace = "external-dns"
 
-  name       = "aws-load-balancer-controller"
-  repository = "https://aws.github.io/eks-charts"
-  chart      = "aws-load-balancer-controller"
-  version    = "v1.6.2"
+  name       = "external-dns"
+  repository = "https://kubernetes-sigs.github.io/external-dns/"
+  chart      = "external-dns"
+  version    = "1.13.1"
 
   wait = true
   values = [
-    templatefile("./eks-addon-ing-alb-values.yaml", { clusterName = var.cluster_name, irsaarn = module.edns_irsa.iam_role_arn })
+    templatefile("./eks-addon-externaldns.yaml", { clusterName = var.cluster_name, irsaarn = module.edns_irsa.iam_role_arn })
   ]
 
 

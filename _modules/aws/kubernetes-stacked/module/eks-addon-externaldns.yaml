@@ -1,4 +1,6 @@
 serviceAccount:
+  creat: true
+  name: external-dns-sa
   annotations:
     eks.amazonaws.com/role-arn: ${irsaarn}
 
