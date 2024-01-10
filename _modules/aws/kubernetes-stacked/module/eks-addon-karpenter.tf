@@ -175,6 +175,7 @@ spec:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
+  weight: 50
     
 YAML
 
@@ -238,7 +239,7 @@ spec:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
-
+  weight: 40
 YAML
 
   depends_on = [
@@ -258,7 +259,7 @@ resource "kubectl_manifest" "karpenter_general_arm_node_pool" {
 apiVersion: karpenter.sh/v1beta1
 kind: NodePool
 metadata:
-  name: compute-net-arm64
+  name: general-net-arm64
 spec:
   template:
     metadata:
@@ -300,7 +301,7 @@ spec:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
-    
+    weight: 30
 YAML
 
   depends_on = [
@@ -363,6 +364,7 @@ spec:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
+  weight: 29
 
 YAML
 
@@ -425,11 +427,15 @@ spec:
         - key: efs.csi.aws.com/agent-not-ready
           value: "true"
           effect: NoExecute    
-
+      taints:
+        - key: storageClass
+          value: nvme
+          effect: PreferNoSchedule
   limits:
     cpu: 1000
   disruption:
     consolidationPolicy: WhenUnderutilized
+  weight: 1
 
 YAML
 
@@ -455,9 +461,12 @@ resource "time_sleep" "karpenter" {
 resource "time_sleep" "karpenter_nodes" {
   depends_on = [
     time_sleep.karpenter,
+    kubectl_manifest.karpenter_general_arm_node_pool,
+    kubectl_manifest.karpenter_general_intel_node_pool,
     kubectl_manifest.karpenter_compute_arm_node_pool,
     kubectl_manifest.karpenter_compute_arm_node_pool,
     kubectl_manifest.karpenter_nvme_intel_node_pool
   ]
+  create_duration = "1m"
   destroy_duration = "300s"
 }
