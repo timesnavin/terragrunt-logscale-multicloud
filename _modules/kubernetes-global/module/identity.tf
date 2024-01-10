@@ -8,10 +8,6 @@ resource "kubernetes_namespace" "identity" {
 }
 
 resource "helm_release" "keycloak_operator" {
-    depends_on = [
-    time_sleep.karpenter_nodes,
-    helm_release.karpenter
-  ]
   
   namespace        = kubernetes_namespace.identity.metadata.0.name
   
@@ -23,8 +19,15 @@ resource "helm_release" "keycloak_operator" {
   values = [file("./k8s-keycloak-operator.yaml")]
 }
 
+resource "time_sleep" "keycloak_operator" {
+  depends_on = [
+    helm_release.keycloak_operator
+  ]
+  create_duration = "2m"
+}
 
 resource "kubectl_manifest" "identitydb" {
+  depends_on = [ time_sleep.keycloak_operator ]
     yaml_body = <<YAML
 kind: "postgresql"
 apiVersion: "acid.zalan.do/v1"
