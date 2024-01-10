@@ -14,7 +14,7 @@ apiVersion: "acid.zalan.do/v1"
 
 metadata:
   name: "db"
-  namespace: "${kubernetes_namespace.sso.metadata.0.name}}"
+  namespace: "${kubernetes_namespace.sso.metadata.0.name}"
   labels:
     team: acid
 
