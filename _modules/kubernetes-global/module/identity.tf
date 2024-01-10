@@ -73,10 +73,10 @@ spec:
     vendor: postgres
     host: postgres-db
     usernameSecret:
-      name: secret/identity.db.credentials.postgresql.acid.zalan.do
+      name: secret/kk.identity.credentials.postgresql.acid.zalan.do
       key: username
     passwordSecret:
-      name: secret/identity.db.credentials.postgresql.acid.zalan.do
+      name: secret/kk.identity.credentials.postgresql.acid.zalan.do
       key: password
   # http:
     # tlsSecret: austin-me-tls
