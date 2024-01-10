@@ -7,6 +7,23 @@ resource "kubernetes_namespace" "identity" {
   }
 }
 
+resource "helm_release" "keycloak_operator" {
+    depends_on = [
+    time_sleep.karpenter_nodes,
+    helm_release.karpenter
+  ]
+  
+  namespace        = kubernetes_namespace.identity.metadata.0.name
+  
+  name       = "keycloak-operator"
+  repository = "https://kbumsik.io/keycloak-kubernetes/"
+  chart      = "keycloak-operator"
+  version    = "0.0.4"
+
+  values = [file("./k8s-keycloak-operator.yaml")]
+}
+
+
 resource "kubectl_manifest" "identitydb" {
     yaml_body = <<YAML
 kind: "postgresql"
