@@ -1,19 +1,19 @@
-resource "kubernetes_namespace" "sso" {
+resource "kubernetes_namespace" "identity" {
   metadata {
     annotations = {
-      name = "sso"
+      name = "identity"
     }
-    name = "sso"
+    name = "identity"
   }
 }
 
-resource "kubectl_manifest" "ssodb" {
+resource "kubectl_manifest" "identitydb" {
     yaml_body = <<YAML
 kind: "postgresql"
 apiVersion: "acid.zalan.do/v1"
 
 metadata:
-  name: "db"
+  name: "identity"
   namespace: "${kubernetes_namespace.sso.metadata.0.name}"
   labels:
     team: acid
@@ -40,23 +40,23 @@ spec:
 YAML
 }
 
-resource "kubectl_manifest" "ssodb" {
+resource "kubectl_manifest" "sso" {
     yaml_body = <<YAML
 apiVersion: k8s.keycloak.org/v2alpha1
 kind: Keycloak
 metadata:
-  name: example-kc
-  namespace: "${kubernetes_namespace.sso.metadata.0.name}"
+  name: identity
+  namespace: "${kubernetes_namespace.identity.metadata.0.name}"
 spec:
   instances: 1
   db:
     vendor: postgres
     host: postgres-db
     usernameSecret:
-      name: secret/kk.db.credentials.postgresql.acid.zalan.do
+      name: secret/identity.db.credentials.postgresql.acid.zalan.do
       key: username
     passwordSecret:
-      name: secret/kk.db.credentials.postgresql.acid.zalan.do
+      name: secret/identity.db.credentials.postgresql.acid.zalan.do
       key: password
   # http:
     # tlsSecret: austin-me-tls
