@@ -148,7 +148,7 @@ spec:
       requirements:
         - key: karpenter.sh/capacity-type
           operator: NotIn
-          values: ["spot"]          
+          values: ["spot"]
         - key: "karpenter.k8s.aws/instance-category"
           operator: In
           values: ["c"]
@@ -163,7 +163,7 @@ spec:
           values: ["arm64"]              
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
-          values: ["2"]
+          values: ["5"]
       startupTaints:
         - key: ebs.csi.aws.com/agent-not-ready
           value: "true"
@@ -225,7 +225,7 @@ spec:
           values: ["amd64"]              
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
-          values: ["2"]
+          values: ["5"]
       startupTaints:
         - key: ebs.csi.aws.com/agent-not-ready
           value: "true"
@@ -288,7 +288,7 @@ spec:
           values: ["arm64"]              
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
-          values: ["2"]
+          values: ["5"]
       startupTaints:
         - key: ebs.csi.aws.com/agent-not-ready
           value: "true"
@@ -350,7 +350,7 @@ spec:
           values: ["amd64"]              
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
-          values: ["2"]
+          values: ["5"]
       startupTaints:
         - key: ebs.csi.aws.com/agent-not-ready
           value: "true"
@@ -417,7 +417,7 @@ spec:
           values: ["amd64"]              
         - key: "karpenter.k8s.aws/instance-generation"
           operator: Gt
-          values: ["2"]
+          values: ["3"]
       startupTaints:
         - key: ebs.csi.aws.com/agent-not-ready
           value: "true"
