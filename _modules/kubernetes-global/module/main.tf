@@ -39,3 +39,28 @@ spec:
       memory: 500Mi
 YAML
 }
+
+resource "kubectl_manifest" "ssodb" {
+    yaml_body = <<YAML
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: example-kc
+  namespace: "${kubernetes_namespace.sso.metadata.0.name}"
+spec:
+  instances: 1
+  db:
+    vendor: postgres
+    host: postgres-db
+    usernameSecret:
+      name: secret/kk.db.credentials.postgresql.acid.zalan.do
+      key: username
+    passwordSecret:
+      name: secret/kk.db.credentials.postgresql.acid.zalan.do
+      key: password
+  # http:
+    # tlsSecret: austin-me-tls
+  hostname:
+    hostname: identity.ref.loglabs.net
+YAML
+}
