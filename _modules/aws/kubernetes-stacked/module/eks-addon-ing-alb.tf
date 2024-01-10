@@ -6,7 +6,7 @@ module "ing_alb_irsa" {
   role_name_prefix = "alb"
   role_path        = var.iam_role_path
 
-  attach_external_dns_policy = true
+  attach_load_balancer_controller_policy = true
 
   oidc_providers = {
     main = {
