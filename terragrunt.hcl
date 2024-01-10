@@ -57,59 +57,68 @@ generate "provider_aws_eks_helm" {
   if_exists = "overwrite_terragrunt"
   disable   = local.kubernetes.type == "eks" ? false : true
   contents  = <<-EOF
-
-    variable "provider_aws_eks_cluster_endpoint" {
-      type = string
-    }
-    variable "provider_aws_eks_cluster_certificate_authority_data" {
-      type = string
-    }
+  
     variable "provider_aws_eks_cluster_name" {
       type = string
     }
     variable "GITHUB_PAT" {
       type = string
     }
-    provider "kubernetes" {
-      host                   = var.provider_aws_eks_cluster_endpoint
-      cluster_ca_certificate = base64decode(var.provider_aws_eks_cluster_certificate_authority_data)
 
-      exec {
-        api_version = "client.authentication.k8s.io/v1beta1"
-        command     = "aws"
-        # This requires the awscli to be installed locally where Terraform is executed
-        args = ["eks", "get-token", "--cluster-name", var.provider_aws_eks_cluster_name]
-      }
-    }    
-    provider "helm" {
-      kubernetes {
-        host                   = var.provider_aws_eks_cluster_endpoint
-        cluster_ca_certificate = base64decode(var.provider_aws_eks_cluster_certificate_authority_data)
+  data "aws_eks_cluster" "this" {
+    name = var.provider_aws_eks_cluster_name
+  }
+  provider "kubernetes" {
+    host                   = data.aws_eks_cluster.this.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 
-        exec {
-          api_version = "client.authentication.k8s.io/v1beta1"
-          command     = "aws"
-          # This requires the awscli to be installed locally where Terraform is executed
-          args = ["eks", "get-token", "--cluster-name", var.provider_aws_eks_cluster_name]
-        }
-      }
-      registry {
-        url = "oci://ghcr.io"
-        username = "_PAT_"
-        password = var.GITHUB_PAT
-      }      
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      # This requires the awscli to be installed locally where Terraform is executed
+      args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
     }
-    provider "kubectl" {
-      host                   = var.provider_aws_eks_cluster_endpoint
-      cluster_ca_certificate = base64decode(var.provider_aws_eks_cluster_certificate_authority_data)
-      load_config_file       = false
+  }
+  data "aws_ecrpublic_authorization_token" "public_token" {
+    # provider = aws.virginia
+  }
+
+  provider "helm" {
+    kubernetes {
+      host                   = data.aws_eks_cluster.this.endpoint
+      cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+
       exec {
         api_version = "client.authentication.k8s.io/v1beta1"
         command     = "aws"
         # This requires the awscli to be installed locally where Terraform is executed
-        args = ["eks", "get-token", "--cluster-name", var.provider_aws_eks_cluster_name]
+        args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
       }
-    }    
+    }
+    registry {
+      url      = "oci://ghcr.io"
+      username = "_PAT_"
+      password = var.GITHUB_PAT
+    }
+    registry {
+      url      = "oci://public.ecr.aws"
+      password = data.aws_ecrpublic_authorization_token.public_token.password
+      username = data.aws_ecrpublic_authorization_token.public_token.user_name
+    }
+  }
+
+  provider "kubectl" {
+    load_config_file       = false
+    host                   = data.aws_eks_cluster.this.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      # This requires the awscli to be installed locally where Terraform is executed
+      args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
+    }
+  }
 EOF
 }
 
@@ -159,8 +168,8 @@ inputs = {
   provider_aws_tags   = local.common.cloud.tags
   provider_aws_region = local.platform.type == "aws" || local.kubernetes.type == "eks" ? local.platform.aws.region : ""
 
-  provider_aws_eks_cluster_endpoint                   = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_endpoint : ""
-  provider_aws_eks_cluster_certificate_authority_data = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_certificate_authority_data : ""
+  #provider_aws_eks_cluster_endpoint                   = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_endpoint : ""
+  #provider_aws_eks_cluster_certificate_authority_data = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_certificate_authority_data : ""
   provider_aws_eks_cluster_name                       = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_name : ""
 
 

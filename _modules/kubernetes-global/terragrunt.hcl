@@ -24,11 +24,11 @@ locals {
 
 }
 
-dependency "kubernetes" {
-  config_path = "${get_terragrunt_dir()}/../../../${local.global.provider}/regions/${local.global.region}/kubernetes-cluster/"
+dependency "kubernetes_cluster" {
+  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-base/"
 }
 dependency "kubernetes_addons" {
-  config_path  = "${get_terragrunt_dir()}/../../../regions/${local.region.name}/kubernetes-addons/"
+  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-stacked/"
   skip_outputs = true
 }
 
