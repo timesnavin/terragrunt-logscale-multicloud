@@ -5,6 +5,7 @@ module "ing_alb_irsa" {
 
   role_name_prefix = "alb"
   role_path        = var.iam_role_path
+  policy_name_prefix = var.iam_policy_name_prefix
 
   attach_load_balancer_controller_policy = true
 

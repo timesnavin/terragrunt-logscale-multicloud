@@ -5,6 +5,7 @@ module "edns_irsa" {
 
   role_name_prefix = "external-dns"
   role_path        = var.iam_role_path
+  policy_name_prefix = var.iam_policy_name_prefix
 
   attach_external_dns_policy = true
 

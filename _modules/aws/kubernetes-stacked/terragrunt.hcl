@@ -71,7 +71,10 @@ inputs = {
 
   oidc_provider_arn = dependency.kubernetes_base.outputs.oidc_provider_arn
   
-  iam_role_path     = local.provider.aws.iam_path
+  iam_role_path     = "${local.platform.aws.iam_role_path_prefix}}/${local.partition.name}/${local.region.name}/"
+  iam_policy_path     = "${local.platform.aws.iam_policy_pathy_prefix}}/${local.partition.name}/${local.region.name}/"
+  iam_policy_name_prefix = "${local.platform.aws.iam_policy_name_prefix}}_${local.partition.name}_${local.region.name}_"
+
   vpc_id            = dependency.network.outputs.vpc_id
   node_subnet_ids        = dependency.network.outputs.private_subnets
   

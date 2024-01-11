@@ -36,6 +36,12 @@ variable "iam_role_path" {
   default     = "/"
 
 }
+variable "iam_policy_path" {
+  default = "/"
+}
+variable "iam_policy_name_prefix" {
+  default = "AmazonEKS_"
+}
 
 variable "node_min_size" {
   type        = number

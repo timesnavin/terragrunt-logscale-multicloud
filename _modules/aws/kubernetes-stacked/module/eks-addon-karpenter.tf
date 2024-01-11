@@ -5,6 +5,10 @@ module "karpenter" {
   cluster_name           = var.cluster_name
   irsa_oidc_provider_arn = var.oidc_provider_arn
 
+  iam_role_use_name_prefix = true
+  irsa_path = var.iam_role_path
+  rule_name_prefix = var.iam_policy_name_prefix
+  
   # In v0.32.0/v1beta1, Karpenter now creates the IAM instance profile
   # so we disable the Terraform creation and add the necessary permissions for Karpenter IRSA
   enable_karpenter_instance_profile_creation = true
