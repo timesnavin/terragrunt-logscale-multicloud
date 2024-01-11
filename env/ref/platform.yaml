@@ -3,5 +3,5 @@ aws:
   region: us-east-1
   #must have leading but not trailing slash
   iam_role_path_prefix: "/loglabs"
-  iam_role_policy_prefix: "/loglabs"
+  iam_policy_path_prefix: "/loglabs"
   iam_policy_name_prefix: "loglabs"

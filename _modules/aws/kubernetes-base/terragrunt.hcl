@@ -49,7 +49,7 @@ inputs = {
   cluster_region = local.region.name
 
   iam_role_path     = "${local.platform.aws.iam_role_path_prefix}}/${local.partition.name}/${local.region.name}/"
-  iam_policy_path     = "${local.platform.aws.iam_policy_pathy_prefix}}/${local.partition.name}/${local.region.name}/"
+  iam_policy_path     = "${local.platform.aws.iam_policy_path_prefix}}/${local.partition.name}/${local.region.name}/"
   iam_policy_name_prefix = "${local.platform.aws.iam_policy_name_prefix}}_${local.partition.name}_${local.region.name}_"
   vpc_id            = dependency.network.outputs.vpc_id
   control_plane_subnet_ids = dependency.network.outputs.intra_subnets
