@@ -17,7 +17,7 @@ module "keda_irsa" {
 
 }
 
-resource "helm_release" "keda_irsa" {
+resource "helm_release" "keda" {
   depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
@@ -27,9 +27,9 @@ resource "helm_release" "keda_irsa" {
   namespace = "keda-operator"
 
   name       = "keda-operator"
-  repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
-  chart      = "keda-operator"
-  version    = "2.5.3"
+  repository = "https://kedacore.github.io/charts"
+  chart      = "keda"
+  version    = "2.12.0"
 
   wait = false
 
