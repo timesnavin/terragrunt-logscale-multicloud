@@ -67,7 +67,7 @@ module "s3-bucket" {
       }
       expiration = {
         days                         = 36500
-        expired_object_delete_marker = true
+        # expired_object_delete_marker = true
       }
 
     },
@@ -83,7 +83,7 @@ module "s3-bucket" {
       }
       expiration = {
         days                         = 3
-        expired_object_delete_marker = true
+        # expired_object_delete_marker = true
       }
 
     },
@@ -99,7 +99,7 @@ module "s3-bucket" {
       }
       expiration = {
         days                         = 3
-        expired_object_delete_marker = true
+        # expired_object_delete_marker = true
       }
 
     },
