@@ -35,3 +35,23 @@ resource "helm_release" "ebs_csi" {
 
   values = [templatefile("./eks-addon-csi-ebs.yaml", { irsaarn = module.ebs_csi_irsa.iam_role_arn })]
 }
+
+
+resource kubectl_manifest "ebs_gp3" {
+  depends_on = [
+    helm_release.ebs_csi
+  ]
+  yaml_body  = <<YAML
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gp3
+parameters:
+  fsType: ext4
+  type: gp3
+provisioner: kubernetes.io/aws-ebs
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer   
+YAML
+  }
