@@ -54,5 +54,6 @@ inputs = {
 
   additional_kms_owners     = local.region.kubernetes.kms.additional_key_owners
 
+  namespace = "logscale"
 
 }
