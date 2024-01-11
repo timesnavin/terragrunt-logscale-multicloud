@@ -5,7 +5,7 @@ module "ebs_csi_irsa" {
 
   role_name_prefix = "ebs_csi"
   role_path        = var.iam_role_path
-  
+  policy_name_prefix = var.iam_policy_name_prefix
   
 
   attach_ebs_csi_policy = true
