@@ -207,7 +207,7 @@ kafka:
       memory: 256Mi
     requests:
       cpu: 1
-      memory: 128Mi
+      memory: 192Mi
   storage:
     type: persistent-claim
     size: 50Gi
@@ -285,10 +285,10 @@ zookeeper:
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
       cpu: 1
-      memory: 128Mi
+      memory: 192Mi
     requests:
-      cpu: 100m
-      memory: 32Mi
+      cpu: 500m
+      memory: 96Mi
   storage:
     type: persistent-claim
     size: 5Gi
