@@ -37,7 +37,7 @@ resource "helm_release" "ebs_csi" {
 }
 
 
-resource kubectl_manifest "ebs_gp3" {
+resource kubectl_manifest "ebs_gp3-delete" {
   depends_on = [
     helm_release.ebs_csi
   ]
@@ -50,7 +50,7 @@ parameters:
   fsType: ext4
   type: gp3
 provisioner: ebs.csi.aws.com
-reclaimPolicy: Retain
+reclaimPolicy: Delete
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer   
 YAML
