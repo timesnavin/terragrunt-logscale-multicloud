@@ -22,6 +22,7 @@ terraform {
 locals {
   provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
   region   = yamldecode(file(find_in_parent_folders("region.yaml")))
+  platform   = yamldecode(file(find_in_parent_folders("platform.yaml")))
 
 }
 dependency "kubernetes_base" {
