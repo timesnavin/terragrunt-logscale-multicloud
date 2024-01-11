@@ -29,7 +29,7 @@ resource "helm_release" "keda" {
   name       = "keda-operator"
   repository = "https://kedacore.github.io/charts"
   chart      = "keda"
-  version    = "2.12.0"
+  version    = "2.12.1"
 
   wait = false
 
