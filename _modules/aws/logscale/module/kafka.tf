@@ -7,7 +7,7 @@ resource "helm_release" "kafka-cluster" {
   name       = "kafka"
   repository = "oci://ghcr.io/logscale-contrib/charts"
   chart      = "kafka-strimzi-cluster"
-  version    = "2.112"
+  version    = "2.1.2"
 
   wait   = true
   values = [
