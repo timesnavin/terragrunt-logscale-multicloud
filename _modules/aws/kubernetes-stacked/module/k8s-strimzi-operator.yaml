@@ -1,3 +1,4 @@
+watchAnyNamespace: true
 replicas: 2
 affinity:
   podAntiAffinity:
