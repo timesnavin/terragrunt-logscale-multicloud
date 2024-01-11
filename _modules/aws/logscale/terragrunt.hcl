@@ -20,6 +20,7 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
+  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
   
 }
 
@@ -44,5 +45,7 @@ dependency "kubernetes_addons" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
   //domain_name_platform = dependency.partition_zone.outputs.zone_name
+  additional_kms_owners     = local.region.kubernetes.kms.additional_key_owners
+
 
 }
