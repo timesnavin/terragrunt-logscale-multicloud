@@ -42,7 +42,8 @@ resource "helm_release" "karpenter" {
     helm_release.karpentercrds,
     aws_eks_addon.coredns,
     aws_eks_addon.kube-proxy,
-    aws_eks_addon.vpc-cni
+    aws_eks_addon.vpc-cni,
+    
   ]
   namespace        = "karpenter"
   create_namespace = true

@@ -3,7 +3,8 @@ resource "helm_release" "goldilocks" {
   depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
-    helm_release.metrics-server
+    helm_release.metrics-server,
+    helm_release.cert-manager
   ]
   namespace = "goldilocks"
   create_namespace = true

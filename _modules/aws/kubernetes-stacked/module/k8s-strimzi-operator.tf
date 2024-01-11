@@ -1,7 +1,8 @@
 resource "helm_release" "strimzi-operator" {
   depends_on = [
     time_sleep.karpenter_nodes,
-    helm_release.karpenter
+    helm_release.karpenter,
+    helm_release.cert-manager
   ]
 
   namespace        = "strimzi-operator"
