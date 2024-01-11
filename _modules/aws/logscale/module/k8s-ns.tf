@@ -1,8 +1,8 @@
 resource "kubernetes_namespace" "logscale" {
   metadata {
     annotations = {
-      name = "logscale"
+      name = var.namespace
     }
-    name = "logscale"
+    name = var.namespace
   }
 }
