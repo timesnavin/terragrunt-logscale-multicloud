@@ -14,11 +14,14 @@ include "root" {
   path = find_in_parent_folders()
 }
 
-
+locals {
+  global = yamldecode(file(find_in_parent_folders("global.yaml")))
+  
+}
 # Include the envcommon configuration for the component. The envcommon configuration contains settings that are common
 # for the component across all environments.
 include "module" {
-  path   = "${dirname(find_in_parent_folders())}/_modules/aws/logscale/terragrunt.hcl"
+  path   = "${dirname(find_in_parent_folders())}/_modules/${locals.global.type}/logscale/terragrunt.hcl"
   expose = true
 }
 
