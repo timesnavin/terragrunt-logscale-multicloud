@@ -13,7 +13,7 @@ resource "helm_release" "casdoor" {
   name       = "identity"
   repository = "oci://registry-1.docker.io/casbin"
   chart      = "casdoor-helm-charts"
-  version    = "0.4.2"
+  version    = "0.4.3"
 
   values = [
     templatefile("./k8s-casdoor.yaml",
