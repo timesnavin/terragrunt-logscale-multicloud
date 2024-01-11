@@ -49,7 +49,7 @@ metadata:
 parameters:
   fsType: ext4
   type: gp3
-provisioner: kubernetes.io/aws-ebs
+provisioner: ebs.csi.aws.com
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer   
