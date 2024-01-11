@@ -20,20 +20,19 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
   platform   = yamldecode(file(find_in_parent_folders("platform.yaml")))
   partition   = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  global   = yamldecode(file(find_in_parent_folders("global.yaml")))
+  tenant = yamldecode(file(find_in_parent_folders("tenant.yaml")))
+
+  
 }
 
 dependency "kubernetes_cluster" {
-  config_path = "${get_terragrunt_dir()}/../../kubernetes/kubernetes-base/"
-  mock_outputs = {
-    cluster_name            = "foo"
-  }
+  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-base/"
 }
 dependency "kubernetes_addons" {
-  config_path = "${get_terragrunt_dir()}/../../kubernetes/kubernetes-base/"
+  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-stacked/"
   skip_outputs = true
 }
 
@@ -49,13 +48,12 @@ inputs = {
   //domain_name_platform = dependency.partition_zone.outputs.zone_name
   oidc_provider_arn = dependency.kubernetes_cluster.outputs.oidc_provider_arn
 
-  iam_role_path     = "${local.platform.aws.iam_role_path_prefix}/${local.partition.name}/${local.region.name}/"
-  iam_policy_path     = "${local.platform.aws.iam_policy_path_prefix}/${local.partition.name}/${local.region.name}/"
-  iam_policy_name_prefix = "${local.platform.aws.iam_policy_name_prefix}_${local.partition.name}_${local.region.name}_"
+  iam_role_path     = "${local.platform.aws.iam_role_path_prefix}/${local.partition.name}/${local.global.region}/"
+  iam_policy_path     = "${local.platform.aws.iam_policy_path_prefix}/${local.partition.name}/${local.global.region}/"
+  iam_policy_name_prefix = "${local.platform.aws.iam_policy_name_prefix}_${local.partition.name}_${local.global.region}_"
 
-  additional_kms_owners     = local.region.kubernetes.kms.additional_key_owners
+  additional_kms_owners     = local.platform.aws.kms.additional_key_owners
 
-  namespace = dependency.kubernetes_cluster.outputs.cluster_name
-
+  namespace = "tenant-${local.tenant.name}"
 
 }

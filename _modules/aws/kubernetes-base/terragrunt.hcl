@@ -55,7 +55,7 @@ inputs = {
   control_plane_subnet_ids = dependency.network.outputs.intra_subnets
   node_subnet_ids        = dependency.network.outputs.private_subnets
   
-  additional_kms_owners     = local.region.kubernetes.kms.additional_key_owners
+  additional_kms_owners     = local.platform.aws.kms.additional_key_owners
 
 
 }
