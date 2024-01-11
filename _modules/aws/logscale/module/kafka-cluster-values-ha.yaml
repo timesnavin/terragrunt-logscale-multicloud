@@ -200,11 +200,11 @@ kafka:
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
     limits:
-      cpu: 1
-      memory: 128Mi
+      cpu: 2
+      memory: 256Mi
     requests:
       cpu: 1
-      memory: 64Mi
+      memory: 128Mi
   storage:
     type: persistent-claim
     size: 50Gi
