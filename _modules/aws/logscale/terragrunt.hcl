@@ -47,6 +47,7 @@ dependency "kubernetes_addons" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
   //domain_name_platform = dependency.partition_zone.outputs.zone_name
+  oidc_provider_arn = dependency.kubernetes_cluster.outputs.oidc_provider_arn
 
   iam_role_path     = "${local.platform.aws.iam_role_path_prefix}/${local.partition.name}/${local.region.name}/"
   iam_policy_path     = "${local.platform.aws.iam_policy_path_prefix}/${local.partition.name}/${local.region.name}/"
@@ -54,6 +55,7 @@ inputs = {
 
   additional_kms_owners     = local.region.kubernetes.kms.additional_key_owners
 
-  namespace = "logscale"
+  namespace = dependency.kubernetes_cluster.outputs.cluster_name
+
 
 }

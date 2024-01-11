@@ -6,9 +6,8 @@ variable "iam_role_path" {
 variable "iam_policy_path" {
   default = "/"
 }
-variable "cluster_name" {
 
-}
+
 variable "oidc_provider_arn" {
   type        = string
   description = "(optional) describe your variable"
