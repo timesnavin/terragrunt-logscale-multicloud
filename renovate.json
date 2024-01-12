@@ -5,6 +5,8 @@
     ":dependencyDashboard"
   ],
   "flux": {
-    "fileMatch": ["flux/.+\\.yaml$"]
+    "fileMatch": [
+      "flux-[^\\/]+\\/.*\\.yaml$"
+    ]
   }
 }
