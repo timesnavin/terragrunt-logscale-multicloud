@@ -6,3 +6,13 @@ resource "helm_release" "flux2" {
   create_namespace = true
   version = "2.12.2"
 }
+
+data "kubectl_path_documents" "flux2-repos" {
+  pattern = "./manifests/flux-repos/*.yaml"
+}
+
+resource "kubectl_manifest" "flux2-repos" {
+  depends_on = [helm_release.flux2]
+  count      = length(data.kubectl_path_documents.flux2-repos.documents)
+  yaml_body  = element(data.kubectl_path_documents.flux2-repos.documents, count.index)
+}
