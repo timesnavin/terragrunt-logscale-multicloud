@@ -87,13 +87,7 @@ spec:
                     operator: In
                     values:
                       - arm64
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: computeClass
-                    operator: In
-                    values:
-                      - general
+
 
     metricServer:
       affinity:
@@ -129,13 +123,7 @@ spec:
                     operator: In
                     values:
                       - arm64
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: computeClass
-                    operator: In
-                    values:
-                      - general
+
 
     webhooks:
       replicaCount: 2
@@ -172,13 +160,7 @@ spec:
                     operator: In
                     values:
                       - arm64
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: computeClass
-                    operator: In
-                    values:
-                      - general
+
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: topology.kubernetes.io/zone

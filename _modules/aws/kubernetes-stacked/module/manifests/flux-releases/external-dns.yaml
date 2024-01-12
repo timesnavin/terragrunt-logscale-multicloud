@@ -74,10 +74,4 @@ spec:
                   operator: In
                   values:
                     - arm64
-          - weight: 10
-            preference:
-              matchExpressions:
-                - key: computeClass
-                  operator: In
-                  values:
-                    - general
+

@@ -65,18 +65,6 @@ resource "aws_eks_addon" "coredns" {
                   }
                 ]
               }
-            },
-            {
-              "weight" : 50
-              "preference" : {
-                "matchExpressions" : [
-                  {
-                    "key" : "computeClass"
-                    "operator" : "In"
-                    "values" : ["general"]
-                  }
-                ]
-              }
             }
           ]
         },

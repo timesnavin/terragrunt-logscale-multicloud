@@ -6,15 +6,16 @@ resource "kubernetes_config_map" "cluster_vars" {
   }
 
   data = {
-    aws_eks_cluster_name          = data.aws_eks_cluster.this.name
-    aws_region                    = var.cluster_region
-    aws_arn_efs                   = module.efs_csi_irsa.iam_role_arn
-    aws_arn_ebs                   = module.ebs_csi_irsa.iam_role_arn
-    aws_arn_alb                   = module.ing_alb_irsa.iam_role_arn
-    aws_arn_keda                  = module.keda_irsa.iam_role_arn
-    aws_arn_edns                  = module.edns_irsa.iam_role_arn
-    aws_arn_karpenter             = module.karpenter.irsa_arn
-    aws_eks_endpoint              = data.aws_eks_cluster.this.endpoint,
+    aws_eks_cluster_name             = data.aws_eks_cluster.this.name
+    aws_region                       = var.cluster_region
+    aws_arn_efs                      = module.efs_csi_irsa.iam_role_arn
+    aws_arn_ebs                      = module.ebs_csi_irsa.iam_role_arn
+    aws_arn_alb                      = module.ing_alb_irsa.iam_role_arn
+    aws_arn_keda                     = module.keda_irsa.iam_role_arn
+    aws_arn_edns                     = module.edns_irsa.iam_role_arn
+    aws_arn_karpenter                = module.karpenter.irsa_arn
+    aws_role_name_karpenter          = module.karpenter.role_name
+    aws_eks_endpoint                 = data.aws_eks_cluster.this.endpoint,
     aws_eks_sqsinterruptionQueueName = module.karpenter.queue_name
   }
 
