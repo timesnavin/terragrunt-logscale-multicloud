@@ -17,20 +17,3 @@ module "efs_csi_irsa" {
   }
 
 }
-
-resource "helm_release" "efs_csi" {
-  depends_on = [
-    time_sleep.karpenter_nodes,
-    helm_release.karpenter
-  ]
-  namespace = "kube-system"
-
-  name       = "aws-efs-csi"
-  repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver"
-  chart      = "aws-efs-csi-driver"
-  version    = "2.5.3"
-
-  wait = false
-
-  values = [templatefile("./eks-addon-csi-efs.yaml", { irsaarn = module.efs_csi_irsa.iam_role_arn })]
-}

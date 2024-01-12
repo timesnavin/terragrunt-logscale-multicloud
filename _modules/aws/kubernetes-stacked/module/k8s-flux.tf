@@ -16,7 +16,8 @@ resource "kubernetes_config_map" "cluster_vars" {
   }
 
   data = {
-    aws_region = var.cluster_region
+    aws_region  = var.cluster_region
+    aws_arn_efs = module.efs_csi_irsa.iam_role_arn
   }
 
 }
