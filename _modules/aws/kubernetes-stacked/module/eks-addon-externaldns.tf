@@ -24,7 +24,6 @@ resource "helm_release" "externaldns" {
   depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
-    kubectl_manifest.alb_controller_crds,
   ]
   create_namespace = true
 

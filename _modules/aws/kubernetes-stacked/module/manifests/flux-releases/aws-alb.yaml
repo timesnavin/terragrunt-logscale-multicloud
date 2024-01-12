@@ -35,9 +35,12 @@ spec:
       name: clustervars
       valuesKey: aws_arn_alb
       targetPath: controller.serviceAccount.annotations.eks\.amazonaws\.com/role-arn
+    - kind: ConfigMap
+      name: clustervars
+      valuesKey: aws_eks_cluster_name
+      targetPath: clusterName
   values:
     enableCertManager: true
-    clusterName: "${clusterName}"
     replicas: 2
 
     controller:

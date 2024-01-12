@@ -20,11 +20,12 @@ resource "kubernetes_config_map" "cluster_vars" {
   }
 
   data = {
-    aws_region  = var.cluster_region
-    aws_arn_efs = module.efs_csi_irsa.iam_role_arn
-    aws_arn_ebs = module.ebs_csi_irsa.iam_role_arn
-    aws_arn_alb = module.ing_alb_irsa.iam_role_arn
-    aws_arn_keda = module.keda_irsa.iam_role_arn
+    aws_eks_cluster_name = var.cluster_name
+    aws_region           = var.cluster_region
+    aws_arn_efs          = module.efs_csi_irsa.iam_role_arn
+    aws_arn_ebs          = module.ebs_csi_irsa.iam_role_arn
+    aws_arn_alb          = module.ing_alb_irsa.iam_role_arn
+    aws_arn_keda         = module.keda_irsa.iam_role_arn
   }
 
 }
