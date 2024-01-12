@@ -50,7 +50,7 @@ spec:
                 - key: app.kubernetes.io/name
                   operator: In
                   values:
-                    - postgres-operator
+                    - zalando
                 - key: app.kubernetes.io/instance
                   operator: In
                   values:
@@ -90,6 +90,6 @@ spec:
         labelSelector:
           matchLabels:
             app.kubernetes.io/name: postgres-operator
-            app.kubernetes.io/instance: postgres-operator
+            app.kubernetes.io/instance: zalando
         matchLabelKeys:
           - pod-template-hash
