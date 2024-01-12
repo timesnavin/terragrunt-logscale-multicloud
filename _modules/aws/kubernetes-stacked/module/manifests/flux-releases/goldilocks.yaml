@@ -31,6 +31,8 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
+  dependsOn:
+    - name: metrics-server
   values:
     installCRDs: true
     replicaCount: 2
