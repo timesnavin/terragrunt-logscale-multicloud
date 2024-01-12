@@ -9,10 +9,10 @@ spec:
   chart:
     spec:
       chart: goldilocks
-      version: "0.29.0"
+      version: "8.0.0"
       sourceRef:
         kind: HelmRepository
-        name: jetstack
+        name: fairwinds
       interval: 5m
   releaseName: goldilocks
   targetNamespace: goldilocks
