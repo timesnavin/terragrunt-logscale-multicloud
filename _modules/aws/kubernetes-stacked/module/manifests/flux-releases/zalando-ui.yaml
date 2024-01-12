@@ -1,0 +1,93 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: zalando-ui
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: "postgres-operator-ui"
+      version: "1.10.1"
+      sourceRef:
+        kind: HelmRepository
+        name: zalando-ui
+      interval: 5m
+  dependsOn:
+    - name: zalando
+  releaseName: zalando-ui
+  targetNamespace: postgres-operator
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths: ["/spec/replicas"]
+        target:
+          kind: Deployment
+  values:
+    replicas: 2
+    configKubernetes:
+      enable_finalizers: true
+      enable_pod_antiaffinity: true
+    configAwsOrGcp:
+      aws_region: ${region}
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - postgres-operator
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                    - postgres-operator
+            topologyKey: kubernetes.io/hostname
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/os
+                  operator: In
+                  values:
+                    - linux
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                    - amd64
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 50
+            preference:
+              matchExpressions:
+                - key: computeClass
+                  operator: In
+                  values:
+                    - general
+          - weight: 10
+            preference:
+              matchExpressions:
+                - key: storageClass
+                  operator: In
+                  values:
+                    - network
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: postgres-operator
+            app.kubernetes.io/instance: postgres-operator
+        matchLabelKeys:
+          - pod-template-hash
