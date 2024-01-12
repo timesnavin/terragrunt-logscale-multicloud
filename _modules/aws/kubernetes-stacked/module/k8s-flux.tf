@@ -11,25 +11,6 @@ resource "helm_release" "flux2" {
   ]
 }
 
-
-resource "kubernetes_config_map" "cluster_vars" {
-  depends_on = [helm_release.flux2]
-  metadata {
-    name      = "clustervars"
-    namespace = "flux-system"
-  }
-
-  data = {
-    aws_eks_cluster_name = var.cluster_name
-    aws_region           = var.cluster_region
-    aws_arn_efs          = module.efs_csi_irsa.iam_role_arn
-    aws_arn_ebs          = module.ebs_csi_irsa.iam_role_arn
-    aws_arn_alb          = module.ing_alb_irsa.iam_role_arn
-    aws_arn_keda         = module.keda_irsa.iam_role_arn
-  }
-
-}
-
 data "kubectl_path_documents" "flux2-repos" {
   pattern = "./manifests/flux-repos/*.yaml"
 }
