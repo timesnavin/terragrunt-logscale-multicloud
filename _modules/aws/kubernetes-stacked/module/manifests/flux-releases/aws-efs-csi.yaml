@@ -34,7 +34,7 @@ spec:
     - kind: ConfigMap
       name: clustervars
       valuesKey: aws_arn_efs
-      targetPath: controller.serviceAccount.annotations."eks\.amazonaws\.com/role-arn"
+      targetPath: controller.serviceAccount.annotations.eks\.amazonaws\.com/role-arn
   values:
     controller:
       replicas: 2
