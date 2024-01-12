@@ -3,14 +3,14 @@ resource "helm_release" "argocd" {
 
     helm_release.cert-manager
   ]
-  namespace = "kube-system"
+  namespace = "argo"
 
-  name       = "descheduler"
-  repository = "https://kubernetes-sigs.github.io/descheduler/"
-  chart      = "descheduler"
-  version    = "0.29.0"
+  name       = "argocd"
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  version    = "5.52.1"
 
-  wait = false
+  wait = true
 
   values = [file("./k8s-argocd-values.yaml")]
 }
