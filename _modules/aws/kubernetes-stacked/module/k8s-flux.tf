@@ -20,10 +20,9 @@ resource "kubectl_manifest" "flux2-repos" {
     helm_release.flux2,
     kubernetes_config_map.cluster_vars
   ]
-  count     = length(data.kubectl_path_documents.flux2-repos.documents)
-  yaml_body = element(data.kubectl_path_documents.flux2-repos.documents, count.index)
+  for_each  = data.kubectl_path_documents.flux2-repos.manifests
+  yaml_body = each.value
 }
-
 
 
 data "kubectl_path_documents" "flux2-releases" {
@@ -32,6 +31,6 @@ data "kubectl_path_documents" "flux2-releases" {
 
 resource "kubectl_manifest" "flux2-releases" {
   depends_on = [helm_release.flux2]
-  count      = length(data.kubectl_path_documents.flux2-releases.documents)
-  yaml_body  = element(data.kubectl_path_documents.flux2-releases.documents, count.index)
+  for_each   = data.kubectl_path_documents.flux2-releases.manifests
+  yaml_body  = each.value
 }
