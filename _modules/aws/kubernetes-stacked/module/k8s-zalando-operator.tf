@@ -2,7 +2,7 @@ resource "helm_release" "zalando-operator" {
   depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
-    helm_release.cert-manager
+    #helm_release.cert-manager
   ]
 
   namespace        = "postgres-operator"

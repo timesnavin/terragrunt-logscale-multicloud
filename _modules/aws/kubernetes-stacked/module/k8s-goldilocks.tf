@@ -4,7 +4,7 @@ resource "helm_release" "goldilocks" {
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
     helm_release.metrics-server,
-    helm_release.cert-manager
+    #helm_release.cert-manager
   ]
   namespace        = "goldilocks"
   create_namespace = true

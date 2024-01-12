@@ -15,7 +15,9 @@ spec:
         name: jetstack
       interval: 5m
   releaseName: cert-manager
+  targetNamespace: cert-manager
   install:
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:

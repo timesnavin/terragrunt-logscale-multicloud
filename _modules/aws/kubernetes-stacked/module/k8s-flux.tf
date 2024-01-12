@@ -16,3 +16,15 @@ resource "kubectl_manifest" "flux2-repos" {
   count      = length(data.kubectl_path_documents.flux2-repos.documents)
   yaml_body  = element(data.kubectl_path_documents.flux2-repos.documents, count.index)
 }
+
+
+
+data "kubectl_path_documents" "flux2-releases" {
+  pattern = "./manifests/flux-releases/*.yaml"
+}
+
+resource "kubectl_manifest" "flux2-releases" {
+  depends_on = [helm_release.flux2]
+  count      = length(data.kubectl_path_documents.flux2-releases.documents)
+  yaml_body  = element(data.kubectl_path_documents.flux2-releases.documents, count.index)
+}

@@ -33,7 +33,7 @@ resource "helm_release" "alb-controller" {
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
     kubectl_manifest.alb_controller_crds,
-    helm_release.cert-manager
+    #helm_release.cert-manager
   ]
   namespace = "kube-system"
 

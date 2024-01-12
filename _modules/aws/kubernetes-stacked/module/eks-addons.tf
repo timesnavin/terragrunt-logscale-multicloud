@@ -3,7 +3,7 @@ resource "time_sleep" "addons" {
   destroy_duration = "300s"
   depends_on = [
     helm_release.alb-controller,
-    helm_release.cert-manager,
+    #helm_release.cert-manager,
     helm_release.descheduler,
     helm_release.ebs_csi,
     helm_release.efs_csi,
