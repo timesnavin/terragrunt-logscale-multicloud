@@ -22,10 +22,6 @@ terraform {
       source  = "hashicorp/null"
       version = ">= 3.0"
     }
-    argocd = {
-      source = "jojand/argocd"
-      version = "2.3.2"
-    }
   }
 }
 
