@@ -37,9 +37,10 @@ spec:
       valuesKey: aws_region
       targetPath: configAwsOrGcp.aws_region
   values:
+    enableJsonLogging: true
     replicas: 2
-    configKubernetes:
-      enable_finalizers: true
+    configKubernetes:    
+    #   enable_finalizers: true
       enable_pod_antiaffinity: true
     affinity:
       podAntiAffinity:
