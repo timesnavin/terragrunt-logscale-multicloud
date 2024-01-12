@@ -30,7 +30,10 @@ data "kubectl_path_documents" "flux2-releases" {
 }
 
 resource "kubectl_manifest" "flux2-releases" {
-  depends_on = [helm_release.flux2]
-  for_each   = data.kubectl_path_documents.flux2-releases.manifests
-  yaml_body  = each.value
+  depends_on = [
+    helm_release.flux2,
+    kubectl_manifest.flux2-repos
+  ]
+  for_each  = data.kubectl_path_documents.flux2-releases.manifests
+  yaml_body = each.value
 }
