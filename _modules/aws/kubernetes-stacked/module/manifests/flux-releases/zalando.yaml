@@ -12,7 +12,7 @@ spec:
       version: "1.10.1"
       sourceRef:
         kind: HelmRepository
-        name: zalando
+        name: zalando-pg
       interval: 5m
   releaseName: zalando
   targetNamespace: postgres-operator
@@ -35,7 +35,7 @@ spec:
     - kind: ConfigMap
       name: clustervars
       valuesKey: aws_region
-      targestPath: configAwsOrGcp.aws_region
+      targetPath: configAwsOrGcp.aws_region
   values:
     replicas: 2
     configKubernetes:
