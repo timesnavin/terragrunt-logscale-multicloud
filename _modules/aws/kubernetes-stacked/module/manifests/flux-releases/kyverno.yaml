@@ -26,12 +26,16 @@ spec:
   test:
     enable: false
   driftDetection:
-    mode: enabled
+    mode: warn
     ignore:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
+      - paths: ["/rules"]
+        target:
+          kind: ClusterRole
   values:
+
     admissionController:
       replicas: 3
       priorityClassName: "system-cluster-critical"

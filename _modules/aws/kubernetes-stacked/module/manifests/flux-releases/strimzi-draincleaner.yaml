@@ -33,6 +33,7 @@ spec:
           kind: Deployment
   dependsOn:
     - name: strimzi
+    - name: cert-manager
   values:
     watchAnyNamespace: true
     replicas: 2

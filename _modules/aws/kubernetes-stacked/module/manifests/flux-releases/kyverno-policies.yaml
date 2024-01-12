@@ -26,7 +26,7 @@ spec:
   test:
     enable: false
   driftDetection:
-    mode: enabled
+    mode: warn
     ignore:
       - paths: ["/spec/replicas"]
         target:
