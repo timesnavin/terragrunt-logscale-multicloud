@@ -7,14 +7,31 @@ resource "helm_release" "flux2" {
   version          = "2.12.2"
 }
 
+
+resource "kubernetes_config_map" "cluster_vars" {
+  depends_on = [helm_release.flux2]
+  metadata {
+    name      = "clustervars"
+    namespace = "flux-system"
+  }
+
+  data = {
+    aws_region = var.cluster_region
+  }
+
+}
+
 data "kubectl_path_documents" "flux2-repos" {
   pattern = "./manifests/flux-repos/*.yaml"
 }
 
 resource "kubectl_manifest" "flux2-repos" {
-  depends_on = [helm_release.flux2]
-  count      = length(data.kubectl_path_documents.flux2-repos.documents)
-  yaml_body  = element(data.kubectl_path_documents.flux2-repos.documents, count.index)
+  depends_on = [
+    helm_release.flux2,
+    kubernetes_config_map.cluster_vars
+  ]
+  count     = length(data.kubectl_path_documents.flux2-repos.documents)
+  yaml_body = element(data.kubectl_path_documents.flux2-repos.documents, count.index)
 }
 
 

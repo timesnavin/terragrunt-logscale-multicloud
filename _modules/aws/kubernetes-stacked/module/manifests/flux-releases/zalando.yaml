@@ -31,13 +31,16 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
+  valuesFrom:
+    - kind: ConfigMap
+      name: clustervars
+      valuesKey: aws_region
+      targestPath: configAwsOrGcp.aws_region
   values:
     replicas: 2
     configKubernetes:
       enable_finalizers: true
       enable_pod_antiaffinity: true
-    configAwsOrGcp:
-      aws_region: ${region}
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
