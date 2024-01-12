@@ -6,9 +6,9 @@ module "karpenter" {
   irsa_oidc_provider_arn = var.oidc_provider_arn
 
   iam_role_use_name_prefix = true
-  irsa_path = var.iam_role_path
+  irsa_path                = var.iam_role_path
   # rule_name_prefix = "ll"
-  
+
   # In v0.32.0/v1beta1, Karpenter now creates the IAM instance profile
   # so we disable the Terraform creation and add the necessary permissions for Karpenter IRSA
   enable_karpenter_instance_profile_creation = true
@@ -43,7 +43,7 @@ resource "helm_release" "karpenter" {
     aws_eks_addon.coredns,
     aws_eks_addon.kube-proxy,
     aws_eks_addon.vpc-cni,
-    
+
   ]
   namespace        = "karpenter"
   create_namespace = true
@@ -472,6 +472,6 @@ resource "time_sleep" "karpenter_nodes" {
     kubectl_manifest.karpenter_compute_arm_node_pool,
     kubectl_manifest.karpenter_nvme_intel_node_pool
   ]
-  create_duration = "1m"
+  create_duration  = "1m"
   destroy_duration = "300s"
 }

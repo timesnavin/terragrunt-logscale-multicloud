@@ -3,10 +3,10 @@ module "ebs_csi_irsa" {
   version = "5.33.0"
 
 
-  role_name_prefix = "ebs_csi"
-  role_path        = var.iam_role_path
+  role_name_prefix   = "ebs_csi"
+  role_path          = var.iam_role_path
   policy_name_prefix = var.iam_policy_name_prefix
-  
+
 
   attach_ebs_csi_policy = true
 
@@ -37,11 +37,11 @@ resource "helm_release" "ebs_csi" {
 }
 
 
-resource kubectl_manifest "ebs_gp3-delete" {
+resource "kubectl_manifest" "ebs_gp3-delete" {
   depends_on = [
     helm_release.ebs_csi
   ]
-  yaml_body  = <<YAML
+  yaml_body = <<YAML
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -54,4 +54,4 @@ reclaimPolicy: Delete
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer   
 YAML
-  }
+}

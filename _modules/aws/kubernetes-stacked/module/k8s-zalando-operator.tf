@@ -1,5 +1,5 @@
 resource "helm_release" "zalando-operator" {
-    depends_on = [
+  depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
     helm_release.cert-manager
@@ -13,11 +13,11 @@ resource "helm_release" "zalando-operator" {
   chart      = "postgres-operator"
   version    = "1.10.1"
 
-  values = [templatefile("./k8s-zalando-operator.yaml",{region=var.cluster_region})]
+  values = [templatefile("./k8s-zalando-operator.yaml", { region = var.cluster_region })]
 }
 
 resource "helm_release" "zalando-operator-ui" {
-    depends_on = [
+  depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
     helm_release.zalando-operator
@@ -31,5 +31,5 @@ resource "helm_release" "zalando-operator-ui" {
   chart      = "postgres-operator-ui"
   version    = "1.10.1"
 
-  values = [templatefile("./k8s-zalando-operator.yaml",{region=var.cluster_region})]
+  values = [templatefile("./k8s-zalando-operator.yaml", { region = var.cluster_region })]
 }

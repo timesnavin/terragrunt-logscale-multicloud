@@ -6,13 +6,13 @@ resource "helm_release" "goldilocks" {
     helm_release.metrics-server,
     helm_release.cert-manager
   ]
-  namespace = "goldilocks"
+  namespace        = "goldilocks"
   create_namespace = true
 
   name       = "goldilocks"
   repository = "https://charts.fairwinds.com/stable"
   chart      = "goldilocks"
-#   version    = "0.29.0"
+  #   version    = "0.29.0"
 
   wait = false
 

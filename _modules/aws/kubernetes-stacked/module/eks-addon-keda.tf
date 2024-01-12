@@ -3,11 +3,11 @@ module "keda_irsa" {
   version = "5.33.0"
 
 
-  role_name_prefix = "keda-operator"
-  role_path        = var.iam_role_path
+  role_name_prefix   = "keda-operator"
+  role_path          = var.iam_role_path
   policy_name_prefix = var.iam_policy_name_prefix
 
-  
+
   oidc_providers = {
     main = {
       provider_arn               = var.oidc_provider_arn
@@ -24,7 +24,7 @@ resource "helm_release" "keda" {
     helm_release.cert-manager
   ]
   create_namespace = true
-  namespace = "keda-operator"
+  namespace        = "keda-operator"
 
   name       = "keda-operator"
   repository = "https://kedacore.github.io/charts"

@@ -1,5 +1,5 @@
 resource "helm_release" "logscale-operator" {
-    depends_on = [
+  depends_on = [
     time_sleep.karpenter_nodes,
     helm_release.karpenter,
     helm_release.cert-manager
@@ -13,5 +13,5 @@ resource "helm_release" "logscale-operator" {
   chart      = "humio-operator"
   version    = "0.20.1"
 
-  values = [templatefile("./k8s-logscale-operator.yaml",{})]
+  values = [templatefile("./k8s-logscale-operator.yaml", {})]
 }
