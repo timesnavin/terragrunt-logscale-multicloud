@@ -3,5 +3,8 @@
   "extends": [
     "config:recommended",
     ":dependencyDashboard"
-  ]
+  ],
+  "flux": {
+    "fileMatch": ["flux/.+\\.yaml$"]
+  }
 }
