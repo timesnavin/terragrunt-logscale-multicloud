@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: casdoor
+  namespace: identity
+spec:
+  interval: 60m
+  url: oci://registry-1.docker.io/casbin
