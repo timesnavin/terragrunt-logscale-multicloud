@@ -35,4 +35,10 @@ module "log_bucket" {
       }
     }
   ]
+
+  server_side_encryption_configuration = {
+    rule = {
+      bucket_key_enabled = true
+    }
+  }
 }

@@ -15,7 +15,7 @@ module "s3_logscale_export" {
 
   logging = {
     target_bucket = module.log_bucket.s3_bucket_id
-    target_prefix = "log/s3/"
+    target_prefix = "S3Logs/"
   }
 
   lifecycle_rule = [
@@ -29,4 +29,11 @@ module "s3_logscale_export" {
       }
     }
   ]
+
+  server_side_encryption_configuration = {
+    rule = {
+      bucket_key_enabled = true
+    }
+  }
+
 }
