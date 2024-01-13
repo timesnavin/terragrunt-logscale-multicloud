@@ -14,8 +14,8 @@ spec:
         kind: HelmRepository
         name: strimzi
       interval: 5m
-  releaseName: strimzi
-  targetNamespace: strimzi
+  releaseName: strimzi-operator
+  targetNamespace: strimzi-operator
   install:
     createNamespace: true
     remediation:
@@ -26,7 +26,7 @@ spec:
   test:
     enable: false
   driftDetection:
-    mode: enabled
+    mode: warn
     ignore:
       - paths: ["/spec/replicas"]
         target:
@@ -34,6 +34,13 @@ spec:
   values:
     watchAnyNamespace: true
     replicas: 2
+    resources:
+      requests:
+        cpu: "1"
+        memory: 256Mi
+      limits:
+        cpu: "2"
+        memory: 364Mi
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:

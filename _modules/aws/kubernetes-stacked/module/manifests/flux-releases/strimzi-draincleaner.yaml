@@ -14,8 +14,8 @@ spec:
         kind: HelmRepository
         name: strimzi
       interval: 5m
-  releaseName: strimzi
-  targetNamespace: strimzi
+  releaseName: strimzi-drain-cleaner
+  targetNamespace: strimzi-drain-cleaner
   install:
     createNamespace: true
     remediation:
@@ -38,6 +38,13 @@ spec:
     watchAnyNamespace: true
     replicas: 2
     affinity:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 64Gi
+        limits:
+          cpu: 1
+          memory: 128Gi
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:

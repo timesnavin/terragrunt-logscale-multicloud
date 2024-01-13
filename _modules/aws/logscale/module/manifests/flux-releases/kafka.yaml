@@ -41,6 +41,7 @@ spec:
     # - name: strimzi-drain-cleaner
     #   namespace: flux-system
   values:
+    fullnameOverride: kafka
     cruiseControl:
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
@@ -123,44 +124,6 @@ spec:
         targetCPUUtilizationPercentage: 80
         # targetMemoryUtilizationPercentage: 80
 
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/component
-                    operator: In
-                    values:
-                      - descheduler
-                  - key: app.kubernetes.io/instance
-                    operator: In
-                    values:
-                      - descheduler
-              topologyKey: kubernetes.io/hostname
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/os
-                    operator: In
-                    values:
-                      - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: storageClass
-                    operator: In
-                    values:
-                      - network
     userOperator:
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
@@ -180,45 +143,6 @@ spec:
         maxReplicas: 100
         targetCPUUtilizationPercentage: 80
         # targetMemoryUtilizationPercentage: 80
-
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/component
-                    operator: In
-                    values:
-                      - descheduler
-                  - key: app.kubernetes.io/instance
-                    operator: In
-                    values:
-                      - descheduler
-              topologyKey: kubernetes.io/hostname
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/os
-                    operator: In
-                    values:
-                      - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: storageClass
-                    operator: In
-                    values:
-                      - network
 
     kafka:
       replicas: 3
