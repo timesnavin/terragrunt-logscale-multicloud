@@ -27,7 +27,9 @@ locals {
 
   
 }
-
+dependency "bucket" {
+  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/bucket/"
+}
 dependency "kubernetes_cluster" {
   config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-base/"
 }
@@ -56,4 +58,6 @@ inputs = {
 
   namespace = "tenant-${local.tenant.name}"
 
+  logscale_data_bucket_arn = dependency.bucket.outputs.logscale_data_bucket_arn
+  logscale_export_bucket_arn = dependency.bucket.outputs.logscale_export_bucket_arn
 }

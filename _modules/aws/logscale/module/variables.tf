@@ -16,14 +16,18 @@ variable "oidc_provider_arn" {
 variable "namespace" {
   
 }
-variable "service_account" {
-    default = "logscale-sa"
+
+variable "logscale_data_bucket_arn" {
+  type = string
+  description = "(optional) describe your variable"
+}
+variable "logscale_export_bucket_arn" {
+  type = string
+  description = "(optional) describe your variable"
 }
 
-variable "additional_kms_owners" {
-  type        = list(string)
-  description = "(optional) describe your variable"
-  
+variable "service_account" {
+    default = "logscale-sa"
 }
 
 variable "force_destroy" {

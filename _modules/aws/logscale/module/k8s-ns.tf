@@ -1,8 +1,8 @@
-resource "kubernetes_namespace" "logscale" {
-  metadata {
-    annotations = {
-      name = var.namespace
-    }
-    name = var.namespace
-  }
-}
+# resource "kubernetes_namespace" "logscale" {
+#   metadata {
+#     annotations = {
+#       name = var.namespace
+#     }
+#     name = var.namespace
+#   }
+# }

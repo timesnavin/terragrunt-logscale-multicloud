@@ -24,9 +24,9 @@ module "iam_iam-policy" {
   version = "5.33.0"
 
   name_prefix = "${var.namespace}_${var.service_account}"
-  path = var.iam_policy_path
+  path        = var.iam_policy_path
 
-  
+
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -34,47 +34,24 @@ module "iam_iam-policy" {
         "Sid" : "FullAccess",
         "Effect" : "Allow",
         "Action" : [
-          "s3:GetLifecycleConfiguration",
-          "s3:DeleteObjectVersion",
-          "s3:ListBucketVersions",
-          "s3:GetBucketLogging",
-          "s3:RestoreObject",
-          "s3:ListBucket",
-          "s3:GetBucketVersioning",
           "s3:PutObject",
           "s3:GetObject",
-          "s3:PutLifecycleConfiguration",
-          "s3:GetBucketCORS",
-          "s3:DeleteObject",
-          "s3:GetBucketLocation",
-          "s3:GetObjectVersion"
+          "s3:DeleteObject"
         ],
         "Resource" : [
-          "${module.s3-bucket.s3_bucket_arn}/*",
-          module.s3-bucket.s3_bucket_arn
+          "${var.logscale_data_bucket_arn}/${var.namespace}/*",
+          "${var.logscale_export_bucket_arn}/${var.namespace}/*",
         ]
       },
       {
         "Sid" : "ListBucket",
         "Effect" : "Allow",
         "Action" : [
-          "s3:ListBucket",
-          "s3:HeadBucket"
-        ],
-        "Resource" : module.s3-bucket.s3_bucket_arn
-      },
-      {
-        "Sid" : "KMSEncryptDecrypt",
-        "Effect" : "Allow",
-        "Action" : [
-          "kms:Encrypt",
-          "kms:Decrypt",
-          "kms:GenerateDataKey",
-          "kms:ReEncrypt*",
-          "kms:DescribeKey"
+          "s3:ListBucket"
         ],
         "Resource" : [
-          module.kms.key_arn
+          var.logscale_data_bucket_arn,
+          var.logscale_export_bucket_arn
         ]
       }
     ]
