@@ -1,0 +1,60 @@
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "name": "identity"
+    },
+    "creationTimestamp": "2024-01-12T23:56:37Z",
+    "deletionTimestamp": "2024-01-13T00:04:04Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "identity"
+    },
+    "name": "identity",
+    "resourceVersion": "1300581",
+    "uid": "6d94a4a4-aad8-4000-bee2-bcd317f48449"
+  },
+  "spec": {
+    "finalizers": []
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2024-01-13T00:04:10Z",
+        "message": "All resources successfully discovered",
+        "reason": "ResourcesDiscovered",
+        "status": "False",
+        "type": "NamespaceDeletionDiscoveryFailure"
+      },
+      {
+        "lastTransitionTime": "2024-01-13T00:04:10Z",
+        "message": "All legacy kube types successfully parsed",
+        "reason": "ParsedGroupVersions",
+        "status": "False",
+        "type": "NamespaceDeletionGroupVersionParsingFailure"
+      },
+      {
+        "lastTransitionTime": "2024-01-13T00:04:10Z",
+        "message": "All content successfully deleted, may be waiting on finalization",
+        "reason": "ContentDeleted",
+        "status": "False",
+        "type": "NamespaceDeletionContentFailure"
+      },
+      {
+        "lastTransitionTime": "2024-01-13T00:04:10Z",
+        "message": "Some resources are remaining: ingresses.networking.k8s.io has 1 resource instances, targetgroupbindings.elbv2.k8s.aws has 1 resource instances",
+        "reason": "SomeResourcesRemain",
+        "status": "True",
+        "type": "NamespaceContentRemaining"
+      },
+      {
+        "lastTransitionTime": "2024-01-13T00:04:10Z",
+        "message": "Some content in the namespace has finalizers remaining: elbv2.k8s.aws/resources in 1 resource instances, group.ingress.k8s.aws/global-internet in 1 resource instances",
+        "reason": "SomeFinalizersRemain",
+        "status": "True",
+        "type": "NamespaceFinalizersRemaining"
+      }
+    ],
+    "phase": "Terminating"
+  }
+}

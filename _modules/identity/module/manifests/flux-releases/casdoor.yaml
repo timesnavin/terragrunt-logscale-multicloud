@@ -15,7 +15,7 @@ spec:
         name: casdoor
       interval: 5m
   releaseName: casdoor
-  targetNamespace: casdoor
+  targetNamespace: identity
   install:
     remediation:
       retries: 3
@@ -33,7 +33,7 @@ spec:
   dependsOn:
     - name: casdoor-db
   valuesFrom:
-    - kind: ConfigMap
+    - kind: Secret
       name: casdoor.identity-db.credentials.postgresql.acid.zalan.do
       valuesKey: password
       targetPath: settings.dbpass

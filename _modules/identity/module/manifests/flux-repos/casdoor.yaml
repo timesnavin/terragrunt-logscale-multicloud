@@ -4,5 +4,6 @@ metadata:
   name: casdoor
   namespace: identity
 spec:
+  type: oci
   interval: 60m
   url: oci://registry-1.docker.io/casbin
