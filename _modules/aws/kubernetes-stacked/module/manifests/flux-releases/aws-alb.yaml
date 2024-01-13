@@ -34,7 +34,7 @@ spec:
     - kind: ConfigMap
       name: clustervars
       valuesKey: aws_arn_alb
-      targetPath: controller.serviceAccount.annotations.eks\.amazonaws\.com/role-arn
+      targetPath: serviceAccount.annotations.eks\.amazonaws\.com/role-arn
     - kind: ConfigMap
       name: clustervars
       valuesKey: aws_eks_cluster_name
