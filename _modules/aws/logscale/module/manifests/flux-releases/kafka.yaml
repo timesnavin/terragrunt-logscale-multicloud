@@ -49,11 +49,11 @@ spec:
         # resources, such as Minikube. If you do want to specify resources, uncomment the following
         # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
         limits:
-          cpu: 300m
-          memory: 256Mi
+          cpu: 4
+          memory: 512Mi
         requests:
           cpu: 100m
-          memory: 128Mi
+          memory: 256Mi
 
       autoscaling:
         enabled: false
@@ -63,22 +63,6 @@ spec:
         # targetMemoryUtilizationPercentage: 80
 
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - kafka
-              topologyKey: kubernetes.io/hostname
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - zookeeper
-              topologyKey: kubernetes.io/hostname
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
@@ -152,11 +136,11 @@ spec:
         # resources, such as Minikube. If you do want to specify resources, uncomment the following
         # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
         limits:
-          cpu: 2
-          memory: 384Mi
-        requests:
           cpu: 1
-          memory: 256Mi
+          memory: 2000Mi
+        requests:
+          cpu: 100m
+          memory: 1500Mi
       storage:
         type: persistent-claim
         size: 50Gi
@@ -176,14 +160,11 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchExpressions:
-                  - key: app.kubernetes.io/component
+                  - key: app.kubernetes.io/name
                     operator: In
                     values:
-                      - descheduler
-                  - key: app.kubernetes.io/instance
-                    operator: In
-                    values:
-                      - descheduler
+                      - kafka
+                      - zookeeper
               topologyKey: kubernetes.io/hostname
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -228,10 +209,10 @@ spec:
         # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
         limits:
           cpu: 1
-          memory: 192Mi
+          memory: 2000Mi
         requests:
           cpu: 500m
-          memory: 96Mi
+          memory: 1500Mi
       storage:
         type: persistent-claim
         size: 5Gi
@@ -255,12 +236,6 @@ spec:
                     operator: In
                     values:
                       - kafka
-              topologyKey: kubernetes.io/hostname
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
                       - zookeeper
               topologyKey: kubernetes.io/hostname
         nodeAffinity:
