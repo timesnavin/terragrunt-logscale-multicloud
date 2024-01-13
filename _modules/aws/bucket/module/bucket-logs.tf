@@ -30,18 +30,8 @@ module "log_bucket" {
       enabled                                = true
       abort_incomplete_multipart_upload_days = 7
 
-      noncurrent_version_transition = [
-        {
-          days          = 14
-          storage_class = "STANDARD_IA"
-        }{
-          days          = 21
-          storage_class = "GLACIER"
-        },
-      ]
-
       noncurrent_version_expiration = {
-        days = 90
+        days = 14
       }
     }
   ]

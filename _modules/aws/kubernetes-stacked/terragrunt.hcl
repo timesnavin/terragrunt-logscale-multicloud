@@ -42,6 +42,14 @@ dependency "network" {
   }
 }
 
+dependency "bucket" {
+  config_path = "${get_terragrunt_dir()}/../../bucket/"
+  mock_outputs = {
+    log_bucket            = "foo"
+    
+  }
+}
+
 dependency "zone_partition" {
   config_path = "${get_terragrunt_dir()}/../../../../dns"
   mock_outputs = {
@@ -88,4 +96,6 @@ inputs = {
     dependency.zone_provider.outputs.zone_arn,
     dependency.zone_region.outputs.zone_arn
   ]
+
+  log_s3_bucket_id = dependency.bucket.outputs.log_s3_bucket_id
 }

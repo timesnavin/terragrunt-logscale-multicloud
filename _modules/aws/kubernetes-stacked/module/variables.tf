@@ -50,3 +50,7 @@ variable "oidc_provider_arn" {
   type        = string
   description = "(optional) describe your variable"
 }
+variable "log_s3_bucket_id" {
+  type        = string
+  description = "(optional) describe your variable"
+}
