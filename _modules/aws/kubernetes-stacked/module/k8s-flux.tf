@@ -1,4 +1,5 @@
 resource "helm_release" "flux2" {
+  depends_on       = [kubernetes_labels.topolvm]
   repository       = "https://fluxcd-community.github.io/helm-charts"
   chart            = "flux2"
   name             = "flux2"
