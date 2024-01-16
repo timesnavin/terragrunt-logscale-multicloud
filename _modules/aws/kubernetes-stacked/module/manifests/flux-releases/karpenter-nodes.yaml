@@ -85,6 +85,22 @@ spec:
           tags:
             karpenter.sh/discovery: {{ .Values.settings.clusterName }}
       - |
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        metadata:
+          name: ubuntu
+        spec:
+          amiFamily: Ubuntu
+          role: {{ .Values.settings.role_name }}
+          subnetSelectorTerms:
+          - tags:
+              karpenter.sh/discovery: {{ .Values.settings.clusterName }}
+          securityGroupSelectorTerms:
+          - tags:
+              karpenter.sh/discovery: {{ .Values.settings.clusterName }}
+          tags:
+            karpenter.sh/discovery: {{ .Values.settings.clusterName }}
+      - |
         apiVersion: karpenter.sh/v1beta1
         kind: NodePool
         metadata:
@@ -138,7 +154,7 @@ spec:
                 storageClass: "nvme"
             spec:
               nodeClassRef:
-                name: al2
+                name: ubuntu
               requirements:
                 - key: "kubernetes.io/arch"
                   operator: In
