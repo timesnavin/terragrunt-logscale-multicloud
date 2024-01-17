@@ -43,6 +43,8 @@ spec:
     enableCertManager: true
     replicas: 2
 
+    defaultTargetType: ip
+
     controller:
       resources:
         requests:

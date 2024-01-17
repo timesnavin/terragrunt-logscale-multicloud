@@ -40,9 +40,9 @@ spec:
   values:
     ingress:
       enabled: true
-      annotations:
-        alb.ingress.kubernetes.io/group.name: global-internet
-        alb.ingress.kubernetes.io/scheme: internet-facing
+      # annotations:
+      #   alb.ingress.kubernetes.io/group.name: global-internet
+      #   alb.ingress.kubernetes.io/scheme: internet-facing
       tls:
         - hosts:
             - identity.ref.loglabs.net
@@ -51,7 +51,7 @@ spec:
           paths:
             - path: /
               pathType: Prefix
-      className: alb
+      className: alb-partition
     config: |
       appname = casdoor
       httpport = {{ .Values.service.port }}
