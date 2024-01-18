@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: casdoor-helm-charts
-      version: "v1.504.0"
+      version: "v1.505.0"
       sourceRef:
         kind: HelmRepository
         name: casdoor
