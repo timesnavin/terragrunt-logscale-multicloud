@@ -6,6 +6,7 @@ resource "kubernetes_config_map" "cluster_vars" {
   }
 
   data = {
+    platformType                     = "aws"
     aws_eks_cluster_name             = data.aws_eks_cluster.this.name
     aws_region                       = var.cluster_region
     aws_arn_efs                      = module.efs_csi_irsa.iam_role_arn
@@ -17,7 +18,7 @@ resource "kubernetes_config_map" "cluster_vars" {
     aws_role_name_karpenter          = module.karpenter.role_name
     aws_eks_endpoint                 = data.aws_eks_cluster.this.endpoint,
     aws_eks_sqsinterruptionQueueName = module.karpenter.queue_name,
-    aws_s3_log_bucket                = var.log_s3_bucket_id
+    aws_s3_log_bucket                = var.log_s3_bucket_id,    
   }
 
 }

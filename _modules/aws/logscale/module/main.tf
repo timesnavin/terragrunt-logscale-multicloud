@@ -6,7 +6,9 @@ data "kubectl_path_documents" "flux2-repos" {
 
 resource "kubectl_manifest" "flux2-repos" {
   depends_on = [
-    kubernetes_namespace.logscale
+    kubernetes_namespace.logscale,
+    kubernetes_config_map.cluster_vars,
+    kubernetes_config_map.logscale_vars
   ]
   override_namespace = var.namespace
   for_each           = data.kubectl_path_documents.flux2-repos.manifests

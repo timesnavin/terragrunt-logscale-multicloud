@@ -17,17 +17,26 @@ variable "namespace" {
   
 }
 
-variable "logscale_data_bucket_arn" {
+variable "logscale_storage_bucket_id" {
   type = string
   description = "(optional) describe your variable"
 }
-variable "logscale_export_bucket_arn" {
+variable "logscale_export_bucket_id" {
+  type = string
+  description = "(optional) describe your variable"
+}
+variable "logscale_archive_bucket_id" {
   type = string
   description = "(optional) describe your variable"
 }
 
 variable "service_account" {
     default = "logscale-sa"
+}
+
+variable "logscale_license" {
+  type = string
+  description = "(optional) describe your variable"
 }
 
 variable "force_destroy" {

@@ -58,6 +58,8 @@ inputs = {
 
   namespace = "tenant-${local.tenant.name}"
 
-  logscale_data_bucket_arn = dependency.bucket.outputs.logscale_data_bucket_arn
-  logscale_export_bucket_arn = dependency.bucket.outputs.logscale_export_bucket_arn
+  logscale_storage_bucket_id = dependency.bucket.outputs.logscale_storage_bucket_id
+  logscale_export_bucket_id = dependency.bucket.outputs.logscale_export_bucket_id
+  logscale_archive_bucket_id = dependency.bucket.outputs.logscale_archive_bucket_id
+
 }

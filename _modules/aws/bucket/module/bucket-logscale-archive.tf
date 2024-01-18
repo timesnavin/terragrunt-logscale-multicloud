@@ -1,9 +1,9 @@
 
-module "s3_logscale_data" {
+module "s3_logscale_archive" {
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "4.0.1"
 
-  bucket_prefix = "${var.partition_name}-logscale-data"
+  bucket_prefix = "${var.partition_name}-logscale-archive"
   acl           = "private"
 
   control_object_ownership = true
@@ -20,12 +20,16 @@ module "s3_logscale_data" {
 
   lifecycle_rule = [
     {
-      id                                     = "data"
+      id                                     = "archive"
       enabled                                = true
-      abort_incomplete_multipart_upload_days = 7
+      abort_incomplete_multipart_upload_days = 3
 
+      noncurrent_version_expiration = {
+        days = 7
+      }
     }
   ]
+
   server_side_encryption_configuration = {
     rule = {
       bucket_key_enabled = true
