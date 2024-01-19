@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: logscale
-      version: "7.0.0-next.115"
+      version: "7.0.0-next.118"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib-ls
@@ -24,13 +24,13 @@ spec:
   test:
     enable: false
   driftDetection:
-    mode: enabled
+    mode: warn
     ignore:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  dependsOn:
-    - name: kafka-topics
+  # dependsOn:
+  #   - name: kafka-topics
   valuesFrom:
     - kind: ConfigMap
       name: clustervars
@@ -75,6 +75,8 @@ spec:
 
   values:
     fullnameOverride: logscale
+    image:
+      tag: 1.118.2
     humio:
       fqdn: logscale-ops.ref.loglabs.net
       fqdnInputs: logscale-ops-inputs.ref.loglabs.net
@@ -91,7 +93,7 @@ spec:
           entityID: https://test.qa.logsr.life
           idpCertificate: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM4RENDQWRpZ0F3SUJBZ0lRTldqZE10UmZqYTlHdEFxVmVvcW1vakFOQmdrcWhraUc5dzBCQVFzRkFEQTBNVEl3TUFZRFZRUUQKRXlsTmFXTnliM052Wm5RZ1FYcDFjbVVnUm1Wa1pYSmhkR1ZrSUZOVFR5QkRaWEowYVdacFkyRjBaVEFlRncweU16QXhNVGt3TVRNegpNVFphRncweU5qQXhNVGt3TVRNek1UWmFNRFF4TWpBd0JnTlZCQU1US1UxcFkzSnZjMjltZENCQmVuVnlaU0JHWldSbGNtRjBaV1FnClUxTlBJRU5sY25ScFptbGpZWFJsTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUEzaENrcTdLMGM4dUQKbG1vYnEwS0JmcDZlUVNUajR0REgrRDhPbWxBUllzdG1aQWpnRDNxUnBEaHBwbC9PSWRFZzNPVHhzTEZqaG9yS3l0ek5Kc2pWcExWeQpCYnZ4Qm1KUnBETFd1TTNlMDlpcWltYTI2QkR4L3cybEJYd2kvMExXcVpVQitBNlhydmE0QVk0Qmp0Y1loZEg3Y09LdURPeFhROVQzCjl6QXQyQTgyRzRSWHRIY1JwaEZoMnN1RCt6anpLYU1ldVVGU0l0T0xLS0Q4eXo0TEI5YjExNys5bWdMQytmNTJzaktQUTVUVGlFcHAKWDhZWWpQR0RTSEhTbE8vdWt6aEVvR2xmUktmSlhsZE9HcjR3ZHlERVRlR3ZVWkhyS1l6eFN1djI4UUhEUnhjSkZWeEhFWTQxOGxhbgpEc3ZrbUlxM0FYU1d3TmNGTHpMUlUvVkRUUUlEQVFBQk1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQVAzTk8rT2h1dWY0VldpR3BvCmVwSE9yRDNKMG91ZVdhOWlyTDhtOW9XWXBhQnl4ZTlJZzYrTFVrcCtnYnUxZ2FReE55QllQZDVLRGVQMmRvRG5zVmhFMGg4VXNiNlUKMXlYQVl0WTFQTU1ucm45a2lSVG5NMU9zMWp3R0h4NHJBNzdXYXpQYU5SczBSaUg5aTBFcnRmSUdwNFpqU0N3MHNLR2xZRFArTXNBZgpIaklGTW0zSGtQMUVvYWwzbkdrT0VYaEhSYWJwOTNiOExOU291T0VhZCtJaElXaUdCalczU0puVyt5TVVQWFBWQlBhK2ZabWNiZzMxCkNNSTM5eGRvSUlVRVY2N3Zkb3cvdU5ad1IybWhkbUZkWHNpUDNSR3NkTDRZRi9XRFFxQWtsdUU5SmlseGJhSzA4aWNQc0tOV1pPblMKdWwybEdEZWpLMnZIT05saU5vNXQKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
 
-      nodeCount: 2
+      nodeCount: 3
       #In general for these node requests and limits should match
       resources:
         requests:
@@ -99,7 +101,7 @@ spec:
           cpu: 2
         limits:
           memory: 24Gi
-          cpu: 4
+          cpu: 2
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -112,14 +114,24 @@ spec:
                     operator: "In"
                     values: ["linux"]
                   - key: "karpenter.k8s.aws/instance-local-nvme"
-                    operator: Exists
+                    operator: Gt
+                    values:
+                      - "910"
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
                 matchExpressions:
+                  - key: humio.com/node-pool
+                    operator: In
+                    values: 
+                    - "logscale"
+                    - "logscale-ingest-only"
+                    - "logscale-http-only"
                   - key: app.kubernetes.io/name
                     operator: In
-                    values: ["humio"]
+                    values: 
+                    - "zookeeper"
+                    - "kafka"
               topologyKey: "kubernetes.io/hostname"
       topologySpreadConstraints:
         - maxSkew: 1
@@ -130,7 +142,11 @@ spec:
               - key: humio.com/node-pool
                 operator: In
                 values:
-                  - "{{ .Release.Name }}"
+                  - logscale
+      tolerations:
+        - key: topolvm.io/local
+          operator: "Equal"
+          value: "true"
       dataVolumePersistentVolumeClaimSpecTemplate:
         accessModes: ["ReadWriteOnce"]
         resources:
@@ -144,21 +160,28 @@ spec:
           requests:
             storage: "10Gi"
         storageClassName: "gp3"
+      priorityClass: partition-high
 
       ingress:
         ui:
           className: alb-partition
           enabled: true
           tls: true
-
+          annotations:
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+            alb.ingress.kubernetes.io/ssl-redirect: '443'      
         inputs:
           className: alb-partition
           enabled: true
           tls: true
+          annotations:
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+            alb.ingress.kubernetes.io/ssl-redirect: '443'      
 
       nodepools:
         ingest:
-          nodeCount: 2
+          priorityClass: partition-medium
+          nodeCount: 3
           resources:
             limits:
               cpu: "2"
@@ -181,9 +204,12 @@ spec:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:
                     matchExpressions:
-                      - key: app.kubernetes.io/name
+                      - key: humio.com/node-pool
                         operator: In
-                        values: ["humio"]
+                        values: 
+                        - "logscale"
+                        - "logscale-ingest-only"
+                        - "logscale-http-only"
                   topologyKey: "kubernetes.io/hostname"
           topologySpreadConstraints:
             - maxSkew: 1
@@ -194,9 +220,10 @@ spec:
                   - key: humio.com/node-pool
                     operator: In
                     values:
-                      - "{{ .Release.Name }}-ingest-only"
+                      - logscale-ingest-only
         ui:
-          nodeCount: 2
+          priorityClass: partition-low
+          nodeCount: 3
           resources:
             limits:
               cpu: "2"
@@ -219,10 +246,12 @@ spec:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:
                     matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values: ["humio"]
-
+                      - key: humio.com/node-pool
+                        operator: In
+                        values: 
+                        - "logscale"
+                        - "logscale-ingest-only"
+                        - "logscale-http-only"
                   topologyKey: "kubernetes.io/hostname"
           topologySpreadConstraints:
             - maxSkew: 1
@@ -233,4 +262,4 @@ spec:
                   - key: humio.com/node-pool
                     operator: In
                     values:
-                      - "{{ .Release.Name }}-http-only"
+                      - "logscale-http-only"

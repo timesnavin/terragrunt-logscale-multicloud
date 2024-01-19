@@ -136,8 +136,8 @@ spec:
                 - key: efs.csi.aws.com/agent-not-ready
                   value: "true"
                   effect: NoExecute    
-            kubelet:
-              podsPerCore: 4
+              kubelet:
+                podsPerCore: 4
           limits:
             cpu: 1000
           disruption:
@@ -190,8 +190,8 @@ spec:
               #   - key: topolvm.io/local
               #     value: "true"
               #     effect: PreferNoSchedule   
-            kubelet:
-              podsPerCore: 4
+              kubelet:
+                podsPerCore: 4
           limits:
             cpu: 1000
           disruption:
