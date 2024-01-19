@@ -17,7 +17,7 @@ resource "kubernetes_config_map" "logscale_vars" {
 
   data = {
     platformType     = "aws"
-    bucket_prefix    = var.namespace
+    bucket_prefix    = "${var.namespace}/"
     bucket_storage   = var.logscale_storage_bucket_id
     bucket_export    = var.logscale_export_bucket_id
     bucket_archive   = var.logscale_archive_bucket_id

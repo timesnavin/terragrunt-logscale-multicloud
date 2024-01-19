@@ -85,6 +85,8 @@ spec:
         prefixEnable: true
         bootstrap: kafka-kafka-bootstrap:9092
 
+      config:
+        enableInternalLogger: "true"
       auth:
         rootUser: logscaleadmin
         method: saml
