@@ -49,10 +49,10 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchExpressions:
-                - key: name
+                - key: app.kubernetes.io/name
                   operator: In
                   values:
-                    - otel-operator
+                    - opentelemetry-operator
             topologyKey: kubernetes.io/hostname
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -84,6 +84,6 @@ spec:
         whenUnsatisfiable: DoNotSchedule
         labelSelector:
           matchLabels:
-            name: strimzi-cluster-operator
+            app.kubernetes.io/name: opentelemetry-operator
         matchLabelKeys:
           - pod-template-hash
