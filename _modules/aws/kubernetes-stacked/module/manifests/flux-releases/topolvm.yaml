@@ -154,22 +154,13 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
-          resources:
-            requests:
-              cpu: "1"
-              memory: "64Mi"
           # volumeMounts:
           #   - mountPath: /dev/
           #     name: local-dev
           #     mountPropagation: "HostToContainer"
 
       tolerations:
-        - key: ebs.csi.aws.com/agent-not-ready
-          operator: Exists
-        - key: ebs.csi.aws.com/agent-not-ready
-          operator: Exists
-        - key: topolvm.github.io/agent-not-ready
-          operator: Exists
+        - operator: Exists
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

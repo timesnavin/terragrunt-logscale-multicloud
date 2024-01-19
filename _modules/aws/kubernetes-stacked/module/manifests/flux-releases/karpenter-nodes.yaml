@@ -136,6 +136,8 @@ spec:
                 - key: efs.csi.aws.com/agent-not-ready
                   value: "true"
                   effect: NoExecute    
+            kubelet:
+              podsPerCore: 4
           limits:
             cpu: 1000
           disruption:
@@ -165,19 +167,31 @@ spec:
                 - key: "karpenter.k8s.aws/instance-encryption-in-transit-supported"
                   operator: In
                   values: ["true"]
+                - key: "karpenter.k8s.aws/instance-generation"
+                  operator: Gt
+                  values: ["3"]
                 - key: "karpenter.k8s.aws/instance-hypervisor"
                   operator: In
                   values: ["nitro"]
                 - key: "karpenter.k8s.aws/instance-category"
                   operator: In
                   values: ["i"]
+                - key: "karpenter.k8s.aws/instance-cpu"
+                  operator: Gt
+                  values: ["4"]
               startupTaints:
                 - key: ebs.csi.aws.com/agent-not-ready
                   value: "true"
                   effect: NoExecute    
                 - key: efs.csi.aws.com/agent-not-ready
                   value: "true"
-                  effect: NoExecute    
+                  effect: NoExecute   
+              # taints:
+              #   - key: topolvm.io/local
+              #     value: "true"
+              #     effect: PreferNoSchedule   
+            kubelet:
+              podsPerCore: 4
           limits:
             cpu: 1000
           disruption:
