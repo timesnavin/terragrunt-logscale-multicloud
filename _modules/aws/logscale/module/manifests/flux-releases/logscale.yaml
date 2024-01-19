@@ -29,8 +29,8 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  # dependsOn:
-  #   - name: kafka-topics
+  dependsOn:
+    - name: kafka-topics
   valuesFrom:
     - kind: ConfigMap
       name: clustervars
