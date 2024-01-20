@@ -12,12 +12,12 @@ resource "kubernetes_config_map" "logscale_vars" {
   depends_on = [kubernetes_namespace.logscale]
   metadata {
     name      = "logscalevars"
-    namespace = var.namespace
+    namespace = local.namespace
   }
 
   data = {
     platformType     = "aws"
-    bucket_prefix    = "${var.namespace}/"
+    bucket_prefix    = "${local.namespace}/"
     bucket_storage   = var.logscale_storage_bucket_id
     bucket_export    = var.logscale_export_bucket_id
     bucket_archive   = var.logscale_archive_bucket_id
@@ -25,6 +25,8 @@ resource "kubernetes_config_map" "logscale_vars" {
     logscale_sa_arn  = module.irsa.iam_role_arn
     logscale_sa_name = var.service_account
     logscale_license = var.logscale_license
+    fqdn             = local.fqdn
+    fqdn_ingest      = local.fqdn_ingest
   }
 }
 
@@ -41,7 +43,7 @@ resource "kubernetes_config_map" "cluster_vars" {
   depends_on = [kubernetes_namespace.logscale]
   metadata {
     name      = "clustervars"
-    namespace = var.namespace
+    namespace = local.namespace
   }
 
   data = data.kubernetes_config_map.clustervars.data

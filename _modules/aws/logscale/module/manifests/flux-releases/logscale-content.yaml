@@ -64,4 +64,4 @@ spec:
           managedClusterName: logscale
           name: otel
           repositoryName: infra-kubernetes
-          tokenSecretName: infra-kubernetes
+          tokenSecretName: infra-kubernetes-otel

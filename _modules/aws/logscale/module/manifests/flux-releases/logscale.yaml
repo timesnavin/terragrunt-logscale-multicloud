@@ -72,14 +72,19 @@ spec:
       name: logscalevars
       valuesKey: logscale_license
       targetPath: humio.license
-
+    - kind: ConfigMap
+      name: logscalevars
+      valuesKey: fqdn
+      targetPath: humio.fqdn
+    - kind: ConfigMap
+      name: logscalevars
+      valuesKey: fqdn_ingest
+      targetPath: humio.fqdnInputs      
   values:
     fullnameOverride: logscale
     humio:
       image:
         tag: 1.118.2
-      fqdn: logscale-ops.ref.loglabs.net
-      fqdnInputs: logscale-ops-inputs.ref.loglabs.net
       kafka:
         manager: external
         prefixEnable: true

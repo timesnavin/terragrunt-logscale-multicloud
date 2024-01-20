@@ -38,9 +38,10 @@ dependency "kubernetes_addons" {
   skip_outputs = true
 }
 
-// dependency "partition_zone" {
-//    config_path = "${get_terragrunt_dir()}/../../../shared/zone/"
-// }
+dependency "dns_partition" {
+  config_path = "${get_terragrunt_dir()}/../../dns/"  
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -62,4 +63,7 @@ inputs = {
   logscale_export_bucket_id = dependency.bucket.outputs.logscale_export_bucket_id
   logscale_archive_bucket_id = dependency.bucket.outputs.logscale_archive_bucket_id
 
+  domain_name = dependency.dns_partition.outputs.zone_name
+  host_prefix = "partition"
+  tenant = "logscale"
 }
