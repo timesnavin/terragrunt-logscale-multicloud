@@ -41,6 +41,5 @@ dependency "kubernetes_addons" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  //domain_name_platform = dependency.partition_zone.outputs.zone_name
-
+domain_name = "ref.loglabs.net"
 }
