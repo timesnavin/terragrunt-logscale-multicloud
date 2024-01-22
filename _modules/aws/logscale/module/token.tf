@@ -3,12 +3,19 @@ resource "dns_address_validation" "logscale" {
   provider   = dns-validation
 
   name = local.fqdn
+  timeouts  {
+    create = "10m"
+  }
+
 }
 resource "dns_address_validation" "ingest" {
   depends_on = [kubectl_manifest.flux2-releases]
   provider   = dns-validation
 
   name = local.fqdn_ingest
+  timeouts  {
+    create = "10m"
+  }
 }
 
 resource "time_sleep" "dns" {

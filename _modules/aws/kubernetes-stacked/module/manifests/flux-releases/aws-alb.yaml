@@ -17,9 +17,11 @@ spec:
   releaseName: aws-load-balancer-controller
   targetNamespace: kube-system
   install:
+    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
+    crds: CreateReplace
     remediation:
       retries: 3
   test:
@@ -45,6 +47,7 @@ spec:
 
     defaultTargetType: ip
     ingressClass: null
+    createIngressClassResource: false
 
     controller:
       resources:

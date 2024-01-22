@@ -7,5 +7,5 @@ output "admin_token" {
   value     = random_password.bootstrap_token.result
 }
 output "url" {
-  value = "https://identity.${var.domain_name}"
+  value = "https://${var.host_name}.${var.domain_name}"
 }

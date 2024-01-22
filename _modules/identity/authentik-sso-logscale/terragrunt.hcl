@@ -35,14 +35,12 @@ dependency "kubernetes_addons" {
 dependency "authentik" {
   config_path = "${get_terragrunt_dir()}/../identity/"
 }
-
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  domain_name = "ref.loglabs.net"
   admin_email = "ryan.faircloth@crowdstrike.com"
   app_name    = "logscale"
   app_group   = "parition"

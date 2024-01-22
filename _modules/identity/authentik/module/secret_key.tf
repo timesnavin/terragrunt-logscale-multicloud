@@ -1,6 +1,6 @@
 
 resource "random_password" "key" {
-  length = 50
+  length  = 50
   special = false
 }
 
@@ -21,7 +21,10 @@ resource "dns_address_validation" "identity" {
   depends_on = [kubectl_manifest.flux2-releases]
   provider   = dns-validation
 
-  name = "identity.ref.loglabs.net"
+  name = "${var.host_name}.${var.domain_name}"
+  timeouts {
+    create = "5m"
+  }
 }
 
 resource "time_sleep" "identity" {

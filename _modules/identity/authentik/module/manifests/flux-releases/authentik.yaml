@@ -77,9 +77,9 @@ spec:
         alb.ingress.kubernetes.io/ssl-redirect: "443"
       tls:
         - hosts:
-            - identity.ref.loglabs.net
+            - identity.ref.logsr.life
       hosts:
-        - host: identity.ref.loglabs.net
+        - host: identity.ref.logsr.life
           paths:
             - path: /
               pathType: Prefix
