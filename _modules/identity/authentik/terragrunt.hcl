@@ -12,7 +12,7 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = "${dirname(find_in_parent_folders())}/_modules/identity/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/identity/authentik/module/"
 }
 
 
@@ -28,7 +28,7 @@ dependency "kubernetes_cluster" {
   config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-base/"
 }
 dependency "kubernetes_addons" {
-  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-stacked/"
+  config_path  = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-stacked/"
   skip_outputs = true
 }
 
@@ -41,6 +41,6 @@ dependency "kubernetes_addons" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-domain_name = "ref.loglabs.net"
-admin_email = "ryan.faircloth@crowdstrike.com"
+  domain_name = "ref.loglabs.net"
+  admin_email = "ryan.faircloth@crowdstrike.com"
 }

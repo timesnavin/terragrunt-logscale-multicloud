@@ -19,9 +19,9 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))  
-  sub = "${get_terragrunt_dir()}/../"
-  domain = basename(dirname(local.sub))
+  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  sub       = "${get_terragrunt_dir()}/../"
+  domain    = basename(dirname(local.sub))
 }
 
 dependency "parent_zone" {

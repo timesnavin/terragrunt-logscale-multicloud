@@ -20,12 +20,12 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  platform   = yamldecode(file(find_in_parent_folders("platform.yaml")))
-  partition   = yamldecode(file(find_in_parent_folders("partition.yaml")))
-  global   = yamldecode(file(find_in_parent_folders("global.yaml")))
-  tenant = yamldecode(file(find_in_parent_folders("tenant.yaml")))
+  platform  = yamldecode(file(find_in_parent_folders("platform.yaml")))
+  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  global    = yamldecode(file(find_in_parent_folders("global.yaml")))
+  tenant    = yamldecode(file(find_in_parent_folders("tenant.yaml")))
 
-  
+
 }
 dependency "bucket" {
   config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/bucket/"
@@ -34,12 +34,12 @@ dependency "kubernetes_cluster" {
   config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-base/"
 }
 dependency "kubernetes_addons" {
-  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-stacked/"
+  config_path  = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-stacked/"
   skip_outputs = true
 }
 
 dependency "dns_partition" {
-  config_path = "${get_terragrunt_dir()}/../../dns/"  
+  config_path = "${get_terragrunt_dir()}/../../dns/"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -51,19 +51,19 @@ inputs = {
   //domain_name_platform = dependency.partition_zone.outputs.zone_name
   oidc_provider_arn = dependency.kubernetes_cluster.outputs.oidc_provider_arn
 
-  iam_role_path     = "${local.platform.aws.iam_role_path_prefix}/${local.partition.name}/${local.global.region}/"
-  iam_policy_path     = "${local.platform.aws.iam_policy_path_prefix}/${local.partition.name}/${local.global.region}/"
+  iam_role_path          = "${local.platform.aws.iam_role_path_prefix}/${local.partition.name}/${local.global.region}/"
+  iam_policy_path        = "${local.platform.aws.iam_policy_path_prefix}/${local.partition.name}/${local.global.region}/"
   iam_policy_name_prefix = "${local.platform.aws.iam_policy_name_prefix}_${local.partition.name}_${local.global.region}_"
 
-  additional_kms_owners     = local.platform.aws.kms.additional_key_owners
+  additional_kms_owners = local.platform.aws.kms.additional_key_owners
 
   namespace = "tenant-${local.tenant.name}"
 
   logscale_storage_bucket_id = dependency.bucket.outputs.logscale_storage_bucket_id
-  logscale_export_bucket_id = dependency.bucket.outputs.logscale_export_bucket_id
+  logscale_export_bucket_id  = dependency.bucket.outputs.logscale_export_bucket_id
   logscale_archive_bucket_id = dependency.bucket.outputs.logscale_archive_bucket_id
 
   domain_name = dependency.dns_partition.outputs.zone_name
   host_prefix = "partition"
-  tenant = "logscale"
+  tenant      = "logscale"
 }

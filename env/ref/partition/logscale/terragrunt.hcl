@@ -12,7 +12,7 @@
 # components and environments, such as how to configure remote state.
 locals {
   global = yamldecode(file(find_in_parent_folders("global.yaml")))
-  
+
 }
 
 include "root" {

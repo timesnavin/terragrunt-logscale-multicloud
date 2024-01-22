@@ -32,5 +32,5 @@ dependency "parent_zone" {
 inputs = {
   domain  = dependency.parent_zone.outputs.zone_name
   zone_id = dependency.parent_zone.outputs.zone_id
-  
+
 }

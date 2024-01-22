@@ -170,7 +170,7 @@ inputs = {
 
   #provider_aws_eks_cluster_endpoint                   = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_endpoint : ""
   #provider_aws_eks_cluster_certificate_authority_data = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_certificate_authority_data : ""
-  provider_aws_eks_cluster_name                       = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_name : ""
+  provider_aws_eks_cluster_name = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_name : ""
 
 
   provider_google_project     = local.platform.type == "google" ? local.platform.google.project_id : ""

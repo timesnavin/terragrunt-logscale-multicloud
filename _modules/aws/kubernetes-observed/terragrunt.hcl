@@ -20,20 +20,20 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
-  platform   = yamldecode(file(find_in_parent_folders("platform.yaml")))
-  partition   = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  provider  = yamldecode(file(find_in_parent_folders("provider.yaml")))
+  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
+  platform  = yamldecode(file(find_in_parent_folders("platform.yaml")))
+  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
 
 }
 dependency "kubernetes_base" {
   config_path = "${get_terragrunt_dir()}/../kubernetes-base/"
   mock_outputs = {
-    cluster_name            = "foo"
+    cluster_name = "foo"
   }
 }
 dependency "kubernetes_stacked" {
-  config_path = "${get_terragrunt_dir()}/../kubernetes-base/"
+  config_path  = "${get_terragrunt_dir()}/../kubernetes-base/"
   skip_outputs = true
 }
 dependency "logscale" {
@@ -48,23 +48,23 @@ dependency "logscale" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  cluster_name    = dependency.kubernetes_base.outputs.cluster_name
+  cluster_name          = dependency.kubernetes_base.outputs.cluster_name
   logscale_ingest_token = dependency.logscale.outputs.otel-token
-  logscale_fqdn= dependency.logscale.outputs.logscale_fqdn
-  logscale_fqdn_ingest= dependency.logscale.outputs.logscale_fqdn_ingest
-  
+  logscale_fqdn         = dependency.logscale.outputs.logscale_fqdn
+  logscale_fqdn_ingest  = dependency.logscale.outputs.logscale_fqdn_ingest
+
   # cluster_version = local.region.kubernetes.version
   # cluster_region = local.region.name
 
   # oidc_provider_arn = dependency.kubernetes_base.outputs.oidc_provider_arn
-  
+
   # iam_role_path     = "${local.platform.aws.iam_role_path_prefix}/${local.partition.name}/${local.region.name}/"
   # iam_policy_path     = "${local.platform.aws.iam_policy_path_prefix}/${local.partition.name}/${local.region.name}/"
   # iam_policy_name_prefix = "${local.platform.aws.iam_policy_name_prefix}_${local.partition.name}_${local.region.name}_"
 
   # vpc_id            = dependency.network.outputs.vpc_id
   # node_subnet_ids        = dependency.network.outputs.private_subnets
-  
+
   # additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
   # system_node_role_arn = dependency.kubernetes_base.outputs.system_node_role_arn
 
