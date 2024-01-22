@@ -1,13 +1,21 @@
 
-resource "random_password" "salt" {
-  length = 16
+resource "random_password" "key" {
+  length = 50
+  special = false
 }
-resource "random_password" "default" {
-  length = 24
+
+resource "kubernetes_secret" "secretkey" {
+  metadata {
+    name      = "authentik-secret-key"
+    namespace = "identity"
+  }
+
+  data = {
+    secretkey = random_password.key.result
+  }
+  type = "Opaque"
 }
-resource "random_password" "vc" {
-  length = 24
-}
+
 
 resource "dns_address_validation" "identity" {
   depends_on = [kubectl_manifest.flux2-releases]

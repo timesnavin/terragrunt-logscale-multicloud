@@ -42,4 +42,5 @@ dependency "kubernetes_addons" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
 domain_name = "ref.loglabs.net"
+admin_email = "ryan.faircloth@crowdstrike.com"
 }

@@ -1,20 +1,20 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: casdoor
+  name: authentik
   namespace: identity
 spec:
   interval: 10m
   timeout: 5m
   chart:
     spec:
-      chart: casdoor-helm-charts
-      version: "v1.507.0"
+      chart: authentik
+      version: "2023.10.6"
       sourceRef:
         kind: HelmRepository
-        name: casdoor
+        name: authentik
       interval: 5m
-  releaseName: casdoor
+  releaseName: authentik
   targetNamespace: identity
   install:
     remediation:
@@ -31,14 +31,45 @@ spec:
         target:
           kind: Deployment
   dependsOn:
-    - name: casdoor-db
-    - name: casdoor-redis
+    - name: authentik-db
+    # - name: authentik-redis-sentinel
   valuesFrom:
     - kind: Secret
-      name: casdoor.identity-db.credentials.postgresql.acid.zalan.do
+      name: authentik.identity-db.credentials.postgresql.acid.zalan.do
       valuesKey: password
-      targetPath: global.dbpass
+      targetPath: authentik.postgresql.password
+    - kind: Secret
+      name: authentik-secret-key
+      valuesKey: secretkey
+      targetPath: authentik.secret_key
+
   values:
+    authentik:
+      # This sends anonymous usage-data, stack traces on errors and
+      # performance data to sentry.io, and is fully opt-in
+      error_reporting:
+        enabled: false
+      postgresql:
+        host: identity-db
+    envFrom:
+      - secretRef:
+          name: authentik-bootstrap
+    envValueFrom:
+      AUTHENTIK_BOOTSTRAP_PASSWORD:
+        secretKeyRef:
+          key: password
+          name: authentik-bootstrap    
+      AUTHENTIK_BOOTSTRAP_TOKEN:
+        secretKeyRef:
+          key: token
+          name: authentik-bootstrap
+      AUTHENTIK_BOOTSTRAP_EMAIL:
+        secretKeyRef:
+          key: email
+          name: authentik-bootstrap          
+    redis:
+      enabled: true
+
     ingress:
       enabled: true
       annotations:
@@ -52,30 +83,8 @@ spec:
           paths:
             - path: /
               pathType: Prefix
-      className: alb-partition
-    config: |
-      appname = casdoor
-      httpport = {{ .Values.service.port }}
-      runmode = prod
-      SessionOn = true
-      copyrequestbody = true
-      driverName = postgres
-      dataSourceName = "user=casdoor password={{ .Values.global.dbpass }} host=identity-db port=5432 dbname=casdoor"
-      dbName =
-      redisEndpoint = identity-redis-leader-headless:6379
-      redisEndpoint =
-      defaultStorageProvider =
-      isCloudIntranet = false
-      authState = "casdoor"
-      socks5Proxy = ""
-      verificationCodeTimeout = 10
-      initScore = 0
-      logPostOnly = true
-      origin =
-      enableGzip = true
-      # not mentioned in docs but this is important
-      initDataFile = "./init_data.json"
-      logConfig = {"filename": "/dev/stdout"}
+      ingressClassName: alb-partition
+
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:

@@ -17,7 +17,7 @@ resource "kubernetes_config_map" "otel_vars" {
 
   data = {
     "values.yaml" = <<-YAML
-    humioservice: https://${var.logscale_fqdn}/api/v1/ingest/otlp
+    humioservice: https://${var.logscale_fqdn_ingest}/api/v1/ingest/otlp
     humiosecretprefix: "partition-logscale"
     components:
       app: false

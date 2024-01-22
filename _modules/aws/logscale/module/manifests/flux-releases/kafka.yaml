@@ -143,7 +143,7 @@ spec:
           memory: 1500Mi
       storage:
         type: persistent-claim
-        size: 50Gi
+        size: 150Gi
         deleteClaim: true
         # Must be SSD or NVME like storage IOPs is the primary node constraint
         class: gp3

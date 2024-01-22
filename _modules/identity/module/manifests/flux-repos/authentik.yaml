@@ -1,9 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: casdoor
+  name: authentik
   namespace: identity
 spec:
-  type: oci
   interval: 60m
-  url: oci://registry-1.docker.io/casbin
+  url: https://charts.goauthentik.io

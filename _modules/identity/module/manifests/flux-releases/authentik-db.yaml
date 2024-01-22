@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: casdoor-db
+  name: authentik-db
   namespace: identity
 spec:
   interval: 10m
@@ -15,7 +15,7 @@ spec:
         name: bedag
         namespace: flux-system
       interval: 5m
-  releaseName: identity-db
+  releaseName: authentik-db
   targetNamespace: identity
   install:
     createNamespace: true
@@ -51,9 +51,9 @@ spec:
           volume:
             size: "10Gi"
           users:
-            casdoor: []
+            authentik: []
           databases:
-            casdoor: casdoor
+            authentik: authentik
 
           resources:
             requests:

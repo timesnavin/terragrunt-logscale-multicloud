@@ -19,8 +19,7 @@ resource "kubectl_manifest" "flux2-releases" {
   depends_on = [
     kubernetes_namespace.identity,
     kubectl_manifest.flux2-repos,
-    kubernetes_secret.partition-logscale-all-humio-infra-k8s-logs
-
+    kubernetes_secret.secretkey
   ]
   for_each   = data.kubectl_path_documents.flux2-releases.manifests
   yaml_body  = each.value

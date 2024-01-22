@@ -79,10 +79,16 @@ spec:
     - kind: ConfigMap
       name: logscalevars
       valuesKey: fqdn_ingest
-      targetPath: humio.fqdnInputs      
+      targetPath: humio.fqdnInputs
   values:
     fullnameOverride: logscale
+
     humio:
+      extraENV:
+        # - name: SAML_DEBUG
+        #   value: "true"
+        - name: SAML_GROUP_MEMBERSHIP_ATTRIBUTE
+          value: Group
       image:
         tag: 1.118.2
       kafka:
@@ -93,13 +99,13 @@ spec:
       config:
         enableInternalLogger: "true"
       auth:
-        rootUser: logscaleadmin
+        rootUser: ryan.faircloth@crowdstrike.com
         method: saml
         saml:
-          signOnUrl: https://identity.ref.loglabs.net/login/saml/authorize/admin/loglabs-ref-logscale
+          signOnUrl: https://identity.ref.loglabs.net/application/saml/partition-logscale/sso/binding/redirect/
           # entityID: https://identity.ref.loglabs.net/login/saml/authorize/admin/loglabs-ref-logscale
-          entityID: https://identity.ref.loglabs.net
-          idpCertificate: MIIE3TCCAsWgAwIBAgIDAeJAMA0GCSqGSIb3DQEBCwUAMCgxDjAMBgNVBAoTBWFkbWluMRYwFAYDVQQDEw1jZXJ0LWJ1aWx0LWluMB4XDTI0MDExNzE2MTYxMFoXDTQ0MDExNzE2MTYxMFowKDEOMAwGA1UEChMFYWRtaW4xFjAUBgNVBAMTDWNlcnQtYnVpbHQtaW4wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDDXlyJr50IMP2PsPhB6gbzfEPFy9H/s19E2ykT8blcljeLrrx4gab0glKmQWryfFetb+47pjmASypCW55cJ2zAh9dH4r3UHw0Lb3V7LcpEv6RqqwLZvJi04bokLu8h06Wx1+LCnrQWUI9rpUtJl1k7Ac2Vzi+iLVpFfU+mV4rY/UEbTHewzfBFqspx7LI8kTUWfD1vT0QXuvvfxmnSr8rg8+XKDER66qWpi9k97HwBzyw7eVBJjHYH02rjAK7M2JDUyB3bXKE5ST192XhAkbIdfrSS6s4/vwvaDH1mDPIBZDsaD9ddDLoIq3lFev40XjWONepYRqQvHJ8IBUbgi30hPNuTR77xGr8SE8siHjHtiHd/xqZEV0HcqRTvhysoDHT2HR9spQ2u+LIW0OOikNr0rL6uLkHsETxjAZkkpkKsG/Rvdg/35Lb9E0oguRwg0dlbKt87YSIKuf6staSrkg1a8sWGfCUlP3fgDUvXIk+UmfviYfYb+BeQ/YC6NxeD2b7sgpHDGEo4lRj18S6e/czq4qg0suZ1o9C8vLo/7BI7Gkl6eXbfVhUrpgHyfXxTSdA13shbNEtoSv1Bd5cg3jsyKLO4CpxfoQaJGL8WpgMm8iSO9l1OchKlfVO4Ej/m/2Qs3P4CJy6y/Gf4MAauTi9FDZmwLFOpZ68jYXLNKGMxMQIDAQABoxAwDjAMBgNVHRMBAf8EAjAAMA0GCSqGSIb3DQEBCwUAA4ICAQBax2TJLkij7Aq6hFwlsFf666vNUe8taPyP/j++cV0lhN8RkY8qhEI5vEYyEnyAAZuc6oHii8nCTcvsYic+UmQh3apIp4I5PwWwtOytuYF/a51YReAncZdObwrZ0wWAEbVdZKaqAyfOOk4oRedZCx84coSoe9ClHkHw/2KgrvMGSjwBdiZ4CoYaq5dvQpcGZnd6iDPs1mFRozG+wnvqXCOYk8ZpuNOr4jhkgITRYyYGV06PFK/KPOk8qCi9AqROroGYdy2uvt7438Vl+Z7AQCoOh6otBrABx6KmBFHt8zCDOqdFRRI/o57Q/mBBmKJ8x3nLkpVJqf3i8Uv5Bn8u50j4y1vSW+3kbmB1tJhKJUhkDZJrBDmThnbpXiaD9Yalu8tBDNFqvcmV29OUv3qchAdE58QsdPb1xJPZOcdrNzOy9RZj+8lBTdU1lrq3yOfqxNulK/1W87Ekf54GU/kHTn5+xR5nZvE9A3escdT/x/9BsiETYZLhQwdbE63QdFBlo9kWnl2lj3UVz9zPsqVK43t+giiQqhW02hYp4nINGb7rHVTdqHAAW9vU5LOzXd7eicCRsoGi1f2odr7+ffrSuWP0aDCqgAFky4QBb6kWYKozKdtIP/fbem8v/ITwUhdR27oE2dWrveT9k1ycHq4wqQgmwa0UWOKA2icao5LRqy4Z9Q==
+          entityID: authentik
+          idpCertificate: MIIFVDCCAzygAwIBAgIRAPsOT5aynkQ7tWNkjQKuz8AwDQYJKoZIhvcNAQELBQAwHjEcMBoGA1UEAwwTYXV0aGVudGlrIDIwMjMuMTAuNjAeFw0yNDAxMjAxODEyMjdaFw0yNTAxMjAxODEyMjdaMFYxKjAoBgNVBAMMIWF1dGhlbnRpayBTZWxmLXNpZ25lZCBDZXJ0aWZpY2F0ZTESMBAGA1UECgwJYXV0aGVudGlrMRQwEgYDVQQLDAtTZWxmLXNpZ25lZDCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALxnmyn0Rc3XRVRyrIoZn+6BE9WjORqvKTT+n93tbdtXZ85ghc6pa8s/Tb28pbHD9KYM382lCv7LyDBYmHuWGjOl/h+C/cnICQiIMFpbSv0thXJ/rUD2pTJ0ka/vterMWu50wTCXh1vxITi6fxIWqyQJ90kKBZ9O5AkBgLF/K+C8GV+0HR2b6NsjZtWVOW6JmtqowdwsR64v0upZ0TtLNI/X7ujKdTlAH5Ycq0/gv41SNSFj2uomod+t19SWhhE7eoDfhKQaV7cOeHsTIPRd0YRpcBL16IdhjqQlEZeHnc0Pa3GbuZxS1l6/3rmszUbpaQaiy1VVAByVRoPFTrxRnmQwkiX1Ib4a2vZPAWMeVmQYxht53BqslY4HdoBcfQ70jhmm6rghI9jD0J/wcHLhW+eAVgZI67tB1XQjzN9nvxGhRZFWTkhKU8bJYFrmESGXU7N8lC4SQ03FLLHUO6HRVJN4IwU4K51n5vPOBl2CFQxAC+3IlKPmDRo+IFvYm8bkhIT3ExjY+RYJFVvpgY2dF9517W4yKYQ5DeWzAKCNS9YlWCvhZP8XAxuB4/+xKSLeJvpx/bUEfGXh3ZmFQbmImWL/3iv2uL7E5olcZK/cTgABcsnUkVGNBIQbEyjRfqo5ZHxZXqgSz9yw4Nlfc5FVXcIOcBXieBCk+nlh+ggDwgUbAgMBAAGjVTBTMFEGA1UdEQEB/wRHMEWCQ0FqenU1WTMyaUNQMVY1ZkVBaml1NFdsMDh4Vkp2UXVFRkpZWVp3MVQuc2VsZi1zaWduZWQuZ29hdXRoZW50aWsuaW8wDQYJKoZIhvcNAQELBQADggIBABMLQCj3nuGr1zaDm1Ig4fgteN6BTHgSdJ150BePOJ+GxPMZH4xJm7UbTHjtdZ6gWBA5UdhC3LNGOlsTStHmAbwbUkD5dYEYXXEGT0ZU6pCgmAWVf56fEV7+lkHcq+/zVeOU877R+W2s7no+dZl/Ev/sLmjMt+YrB9BMBSGiD1PKY72As/eWLXD+2yu8skBFDh2UB4XZkI3aoLrma4odRE0PEDjXk09frmsTrZ/2u8wSMyT/Lkrs7zfywp1Zn4mmQpCjrhA8uuW08ezzc7+WC9nj9RkKy6Yrrpxt5rwpCb39z4swUE7uKtgBnBw3g0po0YIrVQVVAdgzV4htjURBRFcWhzfWOHP0eDomnQZ+IOmZyWKynyY/74ZIzC/9yEcMoIfkh5Wk1dfnuTVbSyyioDeL3wqRMXIJqsoaRgaFkZ55bo/xFHHKicMjJO8Fs8Em2l3OPPW1kKjGsQkWWBXl8KDbdUhXFusNIiFzIEZazxUj7D/CBdllnaJAsPqY/QDSdUjjDJY90+zC0Vz9v3eE1/ZOCx0AAGQNUE5/kGDqFv7hZAHcUiH0WPDoyrnWNdFsCxTU/xRVmx3AN7hDBT8f8j1Uyv4oiQ8lxsRBRHIU01X35+Erd5StUDKycXNGboVpa9OeDYqrqDeBcMUaBLbCNT1ZxJxJ9NxbLDXASh/3cV+D
 
       nodeCount: 3
       #In general for these node requests and limits should match
