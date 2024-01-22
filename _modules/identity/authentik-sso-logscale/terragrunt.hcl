@@ -32,6 +32,10 @@ dependency "kubernetes_addons" {
   skip_outputs = true
 }
 
+dependency "dns_partition" {
+  config_path = "${get_terragrunt_dir()}/../../dns/"
+}
+
 dependency "authentik" {
   config_path = "${get_terragrunt_dir()}/../identity/"
 }
@@ -46,4 +50,8 @@ inputs = {
   app_group   = "parition"
   token = dependency.authentik.outputs.admin_token
   url = dependency.authentik.outputs.url
+
+  domain_name = dependency.dns_partition.outputs.zone_name
+  host_prefix = "partition"
+  tenant      = "logscale"
 }

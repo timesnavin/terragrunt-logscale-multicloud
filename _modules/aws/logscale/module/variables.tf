@@ -51,3 +51,17 @@ variable "host_prefix" {
 variable "tenant" {
 
 }
+
+variable "saml_url" {
+  type        = string
+  description = "(optional) describe your variable"
+}
+
+variable "saml_signing_certificate" {
+  type        = string
+  description = "(optional) describe your variable"
+}
+variable "saml_issuer" {
+  type = string
+  description = "(optional) describe your variable"
+}

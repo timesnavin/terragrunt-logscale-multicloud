@@ -13,6 +13,10 @@ terraform {
       source  = "goauthentik/authentik"
       version = "2023.10.0"
     }
+    # cyral = {
+    #   source  = "cyralinc/cyral"
+    #   version = "4.8.1"
+    # }
     random = {
       source  = "hashicorp/random"
       version = "3.6.0"

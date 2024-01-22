@@ -9,3 +9,18 @@
 # output "url" {
 #   value = "https://identity.${var.domain_name}"
 # }
+
+output "metadata" {
+  value = data.authentik_provider_saml_metadata.provider.metadata
+}
+output "url" {
+  value = resource.authentik_provider_saml.this.url_sso_redirect
+}
+
+output "signing_certificate" {
+  value = data.authentik_certificate_key_pair.generated.certificate_data
+}
+
+output "issuer" {
+  value = resource.authentik_provider_saml.this.issuer
+}

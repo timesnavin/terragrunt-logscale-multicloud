@@ -41,7 +41,9 @@ dependency "kubernetes_addons" {
 dependency "dns_partition" {
   config_path = "${get_terragrunt_dir()}/../../dns/"
 }
-
+dependency "sso" {
+  config_path = "${get_terragrunt_dir()}/../logscale-sso/"
+}
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -66,4 +68,8 @@ inputs = {
   domain_name = dependency.dns_partition.outputs.zone_name
   host_prefix = "partition"
   tenant      = "logscale"
+
+  saml_url = dependency.sso.outputs.url
+  saml_signing_certificate = dependency.sso.outputs.signing_certificate
+  saml_issuer = dependency.sso.outputs.issuer
 }
