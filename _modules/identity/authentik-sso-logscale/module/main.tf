@@ -27,7 +27,7 @@ resource "random_uuid" "slug" {
 
 resource "authentik_application" "name" {
   name = var.app_name
-  slug = resource.random_uuid.slug
+  slug = resource.random_uuid.slug.result
 
   protocol_provider = authentik_provider_saml.this
 }
