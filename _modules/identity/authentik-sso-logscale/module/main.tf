@@ -27,7 +27,7 @@ data "authentik_property_mapping_saml" "this" {
 }
 
 data "authentik_property_mapping_saml" "upn" {
-  managed = "goauthentik.io/providers/saml/upn"
+  managed = "goauthentik.io/providers/saml/username"
 }
 
 resource "authentik_provider_saml" "this" {

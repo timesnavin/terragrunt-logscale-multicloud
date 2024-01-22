@@ -98,11 +98,6 @@ spec:
     fullnameOverride: logscale
 
     humio:
-      extraENV:
-        # - name: SAML_DEBUG
-        #   value: "true"
-        - name: SAML_GROUP_MEMBERSHIP_ATTRIBUTE
-          value: Group
       image:
         tag: 1.118.2
       kafka:
@@ -115,6 +110,8 @@ spec:
       auth:
         rootUser: ryan.faircloth@crowdstrike.com
         method: saml
+        saml:
+          groupMembershipAttribute: http://schemas.xmlsoap.org/claims/Group
         # saml:
         #   signOnUrl: https://identity.ref.logsr.life/application/saml/partition-logscale/sso/binding/redirect/
         #   entityID: authentik
