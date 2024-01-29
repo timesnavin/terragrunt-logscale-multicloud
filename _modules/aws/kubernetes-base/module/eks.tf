@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "cluster" {
-  name_prefix =                var.cluster_name
+  name_prefix        = var.cluster_name
   path               = var.iam_role_path
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
@@ -24,7 +24,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
 
 resource "aws_iam_role_policy_attachment" "cluster_encryption" {
   # Encryption config not available on Outposts
-  
+
   policy_arn = aws_iam_policy.cluster_encryption.arn
   role       = aws_iam_role.cluster.name
 }
@@ -32,7 +32,7 @@ resource "aws_iam_role_policy_attachment" "cluster_encryption" {
 resource "aws_iam_policy" "cluster_encryption" {
   # Encryption config not available on Outposts
 
-  name        = "${var.cluster_name}-encryption-policy"
+  name = "${var.cluster_name}-encryption-policy"
   # name_prefix = var.cluster_encryption_policy_use_name_prefix ? local.cluster_encryption_policy_name : null
   # description = var.cluster_encryption_policy_description
   # path        = var.cluster_encryption_policy_path
@@ -48,12 +48,12 @@ resource "aws_iam_policy" "cluster_encryption" {
           "kms:DescribeKey",
         ]
         Effect   = "Allow"
-        Resource =  module.kms.key_arn 
+        Resource = module.kms.key_arn
       },
     ]
   })
 }
-  
+
 # Optionally, enable Security Groups for Pods
 # Reference: https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html
 resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
@@ -108,7 +108,10 @@ resource "aws_eks_cluster" "this" {
   ]
 
   vpc_config {
-    subnet_ids = var.control_plane_subnet_ids
+    subnet_ids = var.node_subnet_ids
+  }
+  kubernetes_network_config {
+    ip_family = "ipv6"
   }
 
   encryption_config {

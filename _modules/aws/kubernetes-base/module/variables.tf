@@ -20,11 +20,7 @@ variable "vpc_id" {
 
 }
 
-variable "control_plane_subnet_ids" {
-  description = "The control plane subnet IDs"
-  type        = list(string)
 
-}
 variable "node_subnet_ids" {
   description = "The node subnet IDs"
   type        = list(string)

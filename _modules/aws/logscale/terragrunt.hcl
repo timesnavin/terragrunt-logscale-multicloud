@@ -69,7 +69,7 @@ inputs = {
   host_prefix = "partition"
   tenant      = "logscale"
 
-  saml_url = dependency.sso.outputs.url
+  saml_url                 = dependency.sso.outputs.url
   saml_signing_certificate = dependency.sso.outputs.signing_certificate
-  saml_issuer = dependency.sso.outputs.issuer
+  saml_issuer              = dependency.sso.outputs.issuer
 }

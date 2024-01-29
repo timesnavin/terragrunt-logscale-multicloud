@@ -11,7 +11,8 @@
 # deployed version.
 
 terraform {
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/azs/module/"
+  //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes-region-cluster/module/"
 }
 
 
@@ -19,9 +20,29 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  region = yamldecode(file(find_in_parent_folders("region.yaml")))
+
+  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  platform  = yamldecode(file(find_in_parent_folders("platform.yaml")))
+  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
+
 }
 
+dependency "vpc" {
+  config_path = "${get_terragrunt_dir()}/../../vpc/"
+}
+# ---------------------------------------------------------------------------------------------------------------------
+# MODULE PARAMETERS
+# These are the variables we have to pass in to use the module. This defines the parameters that are common across all
+# environments.
+# ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  exclude_names = local.region.az_exclude_names
+  name    = dependency.vpc.outputs.name
+  vpc_id  = dependency.vpc.outputs.vpc_id
+  subnets = dependency.vpc.outputs.private_subnets
+
+  cluster_version = "1.29"
+
+  kms_key_administrators = local.platform.aws.kms.additional_key_owners
+  additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
+  
 }

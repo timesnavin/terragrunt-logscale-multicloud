@@ -1,0 +1,99 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: priorityclasses
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: raw
+      version: "2.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: bedag
+      interval: 5m
+  releaseName: priorityclasses
+  targetNamespace: flux-system
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  values:
+    resources:
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: operations-high
+        value: 100000000
+        globalDefault: false
+        description: "Partition Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: partition-high
+        value: 9900000
+        globalDefault: false
+        description: "Partition Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: partition-medium
+        value: 9500000
+        globalDefault: false
+        description: "Partition Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: partition-low
+        value: 9000000
+        globalDefault: false
+        description: "Partition Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: region-high
+        value: 8900000
+        globalDefault: false
+        description: "region Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: region-medium
+        value: 8500000
+        globalDefault: false
+        description: "region Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: region-low
+        value: 8000000
+        globalDefault: false
+        description: "region Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: tenant-high
+        value: 7900000
+        globalDefault: false
+        description: "tenant Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: tenant-medium
+        value: 7500000
+        globalDefault: false
+        description: "tenant Level Services only"
+      - apiVersion: scheduling.k8s.io/v1
+        kind: PriorityClass
+        metadata:
+          name: tenant-low
+        value: 7000000
+        globalDefault: false
+        description: "tenant Level Services only"

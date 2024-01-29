@@ -24,6 +24,6 @@ locals {
 
 
 inputs = {
-  parent_domain  = local.partition.dns.parent_domain
-  child_domain   = local.partition.name
+  parent_domain = local.partition.dns.parent_domain
+  child_domain  = local.partition.name
 }
