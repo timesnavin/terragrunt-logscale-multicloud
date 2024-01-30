@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/bucket/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/bucket-logscale/module/"
 }
 
 
@@ -23,9 +23,13 @@ locals {
 
 }
 
+dependency "bucket-logs" {
+  config_path = "${get_terragrunt_dir()}/../bucket-logs/"
+}
 
 
 inputs = {
 
   partition_name = local.partition.name
+  logs_s3_bucket_id = dependency.bucket-logs.outputs.bucket_id
 }

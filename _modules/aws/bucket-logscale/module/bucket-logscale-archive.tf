@@ -14,7 +14,7 @@ module "s3_logscale_archive" {
   }
 
   logging = {
-    target_bucket = module.log_bucket.s3_bucket_id
+    target_bucket = var.logs_s3_bucket_id
     target_prefix = "S3Logs/"
   }
 
