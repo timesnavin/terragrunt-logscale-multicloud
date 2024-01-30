@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/acm/cert-sub/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/acm/cert-provider/module/"
 }
 
 
@@ -21,8 +21,8 @@ terraform {
 locals {
 }
 
-dependency "parent_zone" {
-  config_path = "${get_terragrunt_dir()}/../dns/"
+dependency "partition_zone" {
+  config_path = "${get_terragrunt_dir()}/../../dns/"
   mock_outputs = {
     zone_name = "example.com"
     zone_id   = "A123456789"
@@ -30,7 +30,6 @@ dependency "parent_zone" {
 }
 
 inputs = {
-  domain  = dependency.parent_zone.outputs.zone_name
-  zone_id = dependency.parent_zone.outputs.zone_id
-
+  cert_domain  = dependency.partition_zone.outputs.zone_name
+  parent_zone_id = dependency.partition_zone.outputs.zone_id
 }
