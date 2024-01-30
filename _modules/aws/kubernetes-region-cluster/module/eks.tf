@@ -1,3 +1,12 @@
+data "aws_ami" "eks_default_arm" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amazon-eks-arm64-node-${var.cluster_version}-v*"]
+  }
+}
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
@@ -108,11 +117,12 @@ module "eks" {
         }
       )
     }
-    kube-proxy = {
-      before_compute = true
-    }
+    # kube-proxy = {
+    #   before_compute = true
+    # }
     vpc-cni = {
       before_compute           = true
+      addon_version            = "v1.16.2-eksbuild.1"
       service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
       configuration_values = jsonencode({
         env = {
@@ -153,11 +163,6 @@ module "eks" {
   )
 
   aws_auth_users = [
-    # {
-    #   userarn  = data.aws_caller_identity.current.arn
-    #   username = "admin-caller"
-    #   groups   = ["system:masters"]
-    # },
     {
       userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
       username = "admin-aws-root"
@@ -169,17 +174,34 @@ module "eks" {
   ]
 
   eks_managed_node_groups = {
-    initial = {
-      instance_types = ["m7g.xlarge",
-        "m6g.xlarge"
+    system = {
+      instance_types = ["m7g.2xlarge",
+        "m6g.2xlarge"
       ]
 
-      min_size     = 3
+      min_size     = 6
       max_size     = 9
       desired_size = 6
 
-      ami_type = "BOTTLEROCKET_ARM_64"
-      platform = "bottlerocket"
+      ami_type = "AL2_ARM_64"
+      platform = "linux"
+      # ami_id                     = data.aws_ami.eks_default_arm.image_id
+      # enable_bootstrap_user_data = true
+
+      # pre_bootstrap_user_data = <<-EOT
+      #   echo MTU="3498">>/etc/sysconfig/network-scripts/ifcfg-eth0
+      #   echo request subnet-mask, broadcast-address, time-offset, routers, domain-name, domain-search, domain-name-servers, host-name, nis-domain, nis-servers, ntp-servers;>/etc/dhcp/dhclient.conf
+      #   ip link set dev eth0 mtu 3498
+      #   ip link show eth0
+      #   x=$(( $(ethtool -l eth0 | grep Combined | tail -1 | sed 's|Combined:\s*||g') /2))
+      #   echo ethtool -L eth0 combined $x
+      #   ethtool -L eth0 combined 2
+      # EOT
+
+      # post_bootstrap_user_data = <<-EOT
+      #   ip link show eth0
+      #   ethtool -l eth0
+      # EOT
 
       metadata_options = {
         http_endpoint               = "enabled"

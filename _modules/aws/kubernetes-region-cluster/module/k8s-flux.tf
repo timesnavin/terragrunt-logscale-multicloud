@@ -1,5 +1,5 @@
 resource "helm_release" "flux2" {
-  depends_on       = [module.eks]
+  depends_on       = [helm_release.cilium]
   repository       = "https://fluxcd-community.github.io/helm-charts"
   chart            = "flux2"
   name             = "flux2"

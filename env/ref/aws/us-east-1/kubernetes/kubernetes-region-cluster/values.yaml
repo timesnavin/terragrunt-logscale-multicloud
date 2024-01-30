@@ -1,0 +1,24 @@
+cni:
+  chainingMode: aws-cni
+  exclusive: false
+routingMode: native
+enableIPv4Masquerade: false
+enableIPv6Masquerade: false
+endpointRoutes:
+  enabled: true
+ipv6:
+  enabled: true
+#kubeProxyReplacement: true
+#loadBalancer:
+#  acceleration: native
+#  mode: snat
+k8sServicePort: 443
+k8sServiceHost: f84e35a7aecf818986f8dd97cda29a35.gr7.us-east-1.eks.amazonaws.com
+operator:
+  podDisruptionBudget:
+    enabled: true
+hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true

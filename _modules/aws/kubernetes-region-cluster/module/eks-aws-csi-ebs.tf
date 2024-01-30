@@ -54,8 +54,6 @@ resource "kubectl_manifest" "ebs" {
           - paths: ["/spec/replicas"]
             target:
               kind: Deployment
-      dependsOn:
-        - name: cilium
       values:
         controller:
           serviceAccount:

@@ -56,8 +56,6 @@ resource "kubectl_manifest" "karpenter" {
           - paths: ["/spec/replicas"]
             target:
               kind: Deployment
-      dependsOn:
-        - name: cilium
       values:
         replicas: 2
         settings:
@@ -275,7 +273,7 @@ resource "kubectl_manifest" "node_pools" {
                     storageClass: "network"
                 spec:
                   nodeClassRef:
-                    name: bottle
+                    name: al2
                   requirements:
                     - key: "kubernetes.io/os"
                       operator: In
