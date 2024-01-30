@@ -7,6 +7,7 @@ resource "random_password" "bootstrap_token" {
 }
 
 resource "kubernetes_secret" "bootstrap" {
+  depends_on = [  ]
   metadata {
     name      = "authentik-bootstrap"
     namespace = "identity"

@@ -25,15 +25,12 @@ locals {
 }
 
 dependency "kubernetes_cluster" {
-  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-base/"
-}
-dependency "kubernetes_addons" {
-  config_path  = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-stacked/"
+  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-region-cluster/"
   skip_outputs = true
 }
 
 dependency "partition_zone" {
-    config_path = "${get_terragrunt_dir()}/../../dns/"
+  config_path = "${get_terragrunt_dir()}/../../dns/"
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS

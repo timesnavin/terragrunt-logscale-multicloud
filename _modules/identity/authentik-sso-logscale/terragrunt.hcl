@@ -48,8 +48,8 @@ inputs = {
   admin_email = "ryan.faircloth@crowdstrike.com"
   app_name    = "logscale"
   app_group   = "parition"
-  token = dependency.authentik.outputs.admin_token
-  url = dependency.authentik.outputs.url
+  token       = dependency.authentik.outputs.admin_token
+  url         = dependency.authentik.outputs.url
 
   domain_name = dependency.dns_partition.outputs.zone_name
   host_prefix = "partition"
