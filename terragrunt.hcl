@@ -7,9 +7,6 @@
 
 locals {
   backend    = yamldecode(file(find_in_parent_folders("backend.yaml")))
-  common     = yamldecode(file(find_in_parent_folders("common.yaml")))
-  platform   = yamldecode(file(find_in_parent_folders("platform.yaml")))
-  kubernetes = yamldecode(file(find_in_parent_folders("kubernetes.yaml")))
 }
 
 remote_state {
@@ -28,152 +25,152 @@ remote_state {
 }
 
 
-generate "provider_aws" {
-  path      = "provider_aws.tf"
-  if_exists = "overwrite_terragrunt"
-  disable   = local.platform.type == "aws" ? false : true
-  contents  = <<-EOF
+# generate "provider_aws" {
+#   path      = "provider_aws.tf"
+#   if_exists = "overwrite_terragrunt"
+#   disable   = local.platform.type == "aws" ? false : true
+#   contents  = <<-EOF
 
-    variable "provider_aws_tags" {
-      type = map
-    }
-    variable "provider_aws_region" {
-      type = string
-    }    
-    provider "aws" {
-        region = var.provider_aws_region
+#     variable "provider_aws_tags" {
+#       type = map
+#     }
+#     variable "provider_aws_region" {
+#       type = string
+#     }    
+#     provider "aws" {
+#         region = var.provider_aws_region
         
-        default_tags {
-            tags = var.provider_aws_tags
-        }
-    }
-EOF
-}
+#         default_tags {
+#             tags = var.provider_aws_tags
+#         }
+#     }
+# EOF
+# }
 
 
 
-generate "provider_aws_eks_helm" {
-  path      = "provider_aws_eks_helm.tf"
-  if_exists = "overwrite_terragrunt"
-  disable   = local.kubernetes.type == "eks" ? false : true
-  contents  = <<-EOF
+# generate "provider_aws_eks_helm" {
+#   path      = "provider_aws_eks_helm.tf"
+#   if_exists = "overwrite_terragrunt"
+#   disable   = local.kubernetes.type == "eks" ? false : true
+#   contents  = <<-EOF
   
-    variable "provider_aws_eks_cluster_name" {
-      type = string
-    }
-    variable "GITHUB_PAT" {
-      type = string
-    }
+#     variable "provider_aws_eks_cluster_name" {
+#       type = string
+#     }
+#     variable "GITHUB_PAT" {
+#       type = string
+#     }
 
-  data "aws_eks_cluster" "this" {
-    name = var.provider_aws_eks_cluster_name
-  }
-  provider "kubernetes" {
-    host                   = data.aws_eks_cluster.this.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+#   data "aws_eks_cluster" "this" {
+#     name = var.provider_aws_eks_cluster_name
+#   }
+#   provider "kubernetes" {
+#     host                   = data.aws_eks_cluster.this.endpoint
+#     cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"
-      # This requires the awscli to be installed locally where Terraform is executed
-      args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
-    }
-  }
-  data "aws_ecrpublic_authorization_token" "public_token" {
-    # provider = aws.virginia
-  }
+#     exec {
+#       api_version = "client.authentication.k8s.io/v1beta1"
+#       command     = "aws"
+#       # This requires the awscli to be installed locally where Terraform is executed
+#       args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
+#     }
+#   }
+#   data "aws_ecrpublic_authorization_token" "public_token" {
+#     # provider = aws.virginia
+#   }
 
-  provider "helm" {
-    kubernetes {
-      host                   = data.aws_eks_cluster.this.endpoint
-      cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+#   provider "helm" {
+#     kubernetes {
+#       host                   = data.aws_eks_cluster.this.endpoint
+#       cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 
-      exec {
-        api_version = "client.authentication.k8s.io/v1beta1"
-        command     = "aws"
-        # This requires the awscli to be installed locally where Terraform is executed
-        args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
-      }
-    }
-    registry {
-      url      = "oci://ghcr.io"
-      username = "_PAT_"
-      password = var.GITHUB_PAT
-    }
-    registry {
-      url      = "oci://public.ecr.aws"
-      password = data.aws_ecrpublic_authorization_token.public_token.password
-      username = data.aws_ecrpublic_authorization_token.public_token.user_name
-    }
-  }
+#       exec {
+#         api_version = "client.authentication.k8s.io/v1beta1"
+#         command     = "aws"
+#         # This requires the awscli to be installed locally where Terraform is executed
+#         args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
+#       }
+#     }
+#     registry {
+#       url      = "oci://ghcr.io"
+#       username = "_PAT_"
+#       password = var.GITHUB_PAT
+#     }
+#     registry {
+#       url      = "oci://public.ecr.aws"
+#       password = data.aws_ecrpublic_authorization_token.public_token.password
+#       username = data.aws_ecrpublic_authorization_token.public_token.user_name
+#     }
+#   }
 
-  provider "kubectl" {
-    load_config_file       = false
-    host                   = data.aws_eks_cluster.this.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+#   provider "kubectl" {
+#     load_config_file       = false
+#     host                   = data.aws_eks_cluster.this.endpoint
+#     cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"
-      # This requires the awscli to be installed locally where Terraform is executed
-      args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
-    }
-  }
-EOF
-}
+#     exec {
+#       api_version = "client.authentication.k8s.io/v1beta1"
+#       command     = "aws"
+#       # This requires the awscli to be installed locally where Terraform is executed
+#       args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
+#     }
+#   }
+# EOF
+# }
 
-generate "provider_azure" {
-  path      = "provider_azure.tf"
-  if_exists = "overwrite_terragrunt"
-  disable   = local.platform.type == "azure" ? false : true
-  contents  = <<-EOF
+# generate "provider_azure" {
+#   path      = "provider_azure.tf"
+#   if_exists = "overwrite_terragrunt"
+#   disable   = local.platform.type == "azure" ? false : true
+#   contents  = <<-EOF
 
-  provider "azurerm" {
-    features {}
+#   provider "azurerm" {
+#     features {}
  
-  }    
-  EOF
-}
+#   }    
+#   EOF
+# }
 
-generate "provider_gcp" {
-  path      = "provider_gcp.tf"
-  if_exists = "overwrite_terragrunt"
-  disable   = local.platform.type == "google" ? false : true
-  contents  = <<-EOF
+# generate "provider_gcp" {
+#   path      = "provider_gcp.tf"
+#   if_exists = "overwrite_terragrunt"
+#   disable   = local.platform.type == "google" ? false : true
+#   contents  = <<-EOF
 
-  variable "provider_google_project" {
-    type = string
-  }
-  variable "provider_google_region" {
-    type = string
-  }
-  variable "provider_google_credentials" {
-    type = string
-  }  
-  provider "google" {
-    credentials = var.provider_google_credentials
-    project     = var.provider_google_project
-    region = var.provider_google_region
-  }
-  provider "google-beta" {
-    credentials = var.provider_google_credentials
-    project     = var.provider_google_project
-    region = var.provider_google_region
-  }  
-  EOF
-}
-
-
-inputs = {
-  provider_aws_tags   = local.common.cloud.tags
-  provider_aws_region = local.platform.type == "aws" || local.kubernetes.type == "eks" ? local.platform.aws.region : ""
-
-  #provider_aws_eks_cluster_endpoint                   = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_endpoint : ""
-  #provider_aws_eks_cluster_certificate_authority_data = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_certificate_authority_data : ""
-  provider_aws_eks_cluster_name = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_name : ""
+#   variable "provider_google_project" {
+#     type = string
+#   }
+#   variable "provider_google_region" {
+#     type = string
+#   }
+#   variable "provider_google_credentials" {
+#     type = string
+#   }  
+#   provider "google" {
+#     credentials = var.provider_google_credentials
+#     project     = var.provider_google_project
+#     region = var.provider_google_region
+#   }
+#   provider "google-beta" {
+#     credentials = var.provider_google_credentials
+#     project     = var.provider_google_project
+#     region = var.provider_google_region
+#   }  
+#   EOF
+# }
 
 
-  provider_google_project     = local.platform.type == "google" ? local.platform.google.project_id : ""
-  provider_google_region      = local.platform.type == "google" ? local.platform.google.region : ""
-  provider_google_credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
-}
+# inputs = {
+#   provider_aws_tags   = local.common.cloud.tags
+#   provider_aws_region = local.platform.type == "aws" || local.kubernetes.type == "eks" ? local.platform.aws.region : ""
+
+#   #provider_aws_eks_cluster_endpoint                   = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_endpoint : ""
+#   #provider_aws_eks_cluster_certificate_authority_data = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_certificate_authority_data : ""
+#   provider_aws_eks_cluster_name = local.kubernetes.type == "eks" ? dependency.kubernetes_cluster.outputs.cluster_name : ""
+
+
+#   provider_google_project     = local.platform.type == "google" ? local.platform.google.project_id : ""
+#   provider_google_region      = local.platform.type == "google" ? local.platform.google.region : ""
+#   provider_google_credentials = file(find_in_parent_folders("env0_credential_configuration.json"))
+# }
