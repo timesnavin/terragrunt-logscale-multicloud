@@ -18,7 +18,7 @@ include "root" {
 # Include the envcommon configuration for the component. The envcommon configuration contains settings that are common
 # for the component across all environments.
 include "module" {
-  path   = "${dirname(find_in_parent_folders())}/_modules/aws/bucket/terragrunt.hcl"
+  path   = "${dirname(find_in_parent_folders())}/_modules/aws/bucket-logs/terragrunt.hcl"
   expose = true
 }
 
