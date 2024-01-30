@@ -1,8 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: HelmRepository
-metadata:
-  name: ot-operators
-  namespace: flux-system
-spec:
-  interval: 60m
-  url: https://ot-container-kit.github.io/helm-charts/

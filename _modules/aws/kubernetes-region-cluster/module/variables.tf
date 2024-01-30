@@ -2,6 +2,10 @@ variable "name" {
   type        = string
   description = "(optional) describe your variable"
 }
+variable "region" {
+  type = string
+  description = "(optional) describe your variable"
+}
 variable "cluster_version" {
   type        = string
   description = "(optional) describe your variable"
