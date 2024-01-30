@@ -52,7 +52,7 @@ spec:
           name: alb-partition
         spec:
           scheme: internet-facing
-          ipAddressType: ipv4
+          ipAddressType: dualstack
           group: 
             name: partition
           loadBalancerAttributes:
@@ -80,7 +80,7 @@ spec:
           name: alb-region
         spec:
           scheme: internet-facing
-          ipAddressType: ipv4
+          ipAddressType: dualstack
           group: 
             name: region
           loadBalancerAttributes:
