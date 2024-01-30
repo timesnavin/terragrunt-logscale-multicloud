@@ -25,3 +25,8 @@ variable "additional_aws_auth_roles" {
   type        = list(any)
   default     = []
 }
+
+variable "log_s3_bucket_id" {
+  type        = string
+  description = "(optional) describe your variable"
+}

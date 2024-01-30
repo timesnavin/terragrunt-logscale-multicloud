@@ -30,6 +30,10 @@ locals {
 dependency "vpc" {
   config_path = "${get_terragrunt_dir()}/../../vpc/"
 }
+dependency "bucket" {
+  config_path = "${get_terragrunt_dir()}/../../bucket-logs/"
+
+}
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -45,4 +49,5 @@ inputs = {
   kms_key_administrators = local.platform.aws.kms.additional_key_owners
   additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
   
+  log_s3_bucket_id = dependency.bucket.outputs.log_s3_bucket_id
 }
