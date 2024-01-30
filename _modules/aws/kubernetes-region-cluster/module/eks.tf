@@ -117,9 +117,6 @@ module "eks" {
         }
       )
     }
-    # kube-proxy = {
-    #   before_compute = true
-    # }
     vpc-cni = {
       before_compute           = true
       addon_version            = "v1.16.2-eksbuild.1"
@@ -179,29 +176,13 @@ module "eks" {
         "m6g.2xlarge"
       ]
 
-      min_size     = 6
+      min_size     = 0
       max_size     = 9
       desired_size = 6
 
       ami_type = "AL2_ARM_64"
       platform = "linux"
-      # ami_id                     = data.aws_ami.eks_default_arm.image_id
-      # enable_bootstrap_user_data = true
 
-      # pre_bootstrap_user_data = <<-EOT
-      #   echo MTU="3498">>/etc/sysconfig/network-scripts/ifcfg-eth0
-      #   echo request subnet-mask, broadcast-address, time-offset, routers, domain-name, domain-search, domain-name-servers, host-name, nis-domain, nis-servers, ntp-servers;>/etc/dhcp/dhclient.conf
-      #   ip link set dev eth0 mtu 3498
-      #   ip link show eth0
-      #   x=$(( $(ethtool -l eth0 | grep Combined | tail -1 | sed 's|Combined:\s*||g') /2))
-      #   echo ethtool -L eth0 combined $x
-      #   ethtool -L eth0 combined 2
-      # EOT
-
-      # post_bootstrap_user_data = <<-EOT
-      #   ip link show eth0
-      #   ethtool -l eth0
-      # EOT
 
       metadata_options = {
         http_endpoint               = "enabled"
@@ -214,11 +195,11 @@ module "eks" {
           value  = "true"
           effect = "PREFER_NO_SCHEDULE"
         },
-        # {
-        #   key    = "node.cilium.io/agent-not-ready"
-        #   value  = "true"
-        #   effect = "NO_EXECUTE"
-        # }
+        {
+          key    = "node.cilium.io/agent-not-ready"
+          value  = "true"
+          effect = "NO_EXECUTE"
+        }
       ]
     }
 
