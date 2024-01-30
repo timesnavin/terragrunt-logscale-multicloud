@@ -132,3 +132,18 @@ resource "kubectl_manifest" "ebs" {
 
   YAML
 }
+
+
+resource "kubernetes_annotations" "remove_gp2_default" {
+  depends_on = [kubectl_manifest.flux2-releases]
+
+  api_version = "storage.k8s.io/v1"
+  kind        = "StorageClass"
+  metadata {
+    name = "gp2"
+  }
+  annotations = {
+    "storageclass.kubernetes.io/is-default-class" = "false"
+  }
+  force = true
+}
