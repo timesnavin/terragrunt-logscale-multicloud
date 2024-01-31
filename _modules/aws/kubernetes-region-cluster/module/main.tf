@@ -9,9 +9,9 @@ provider "kubernetes" {
     args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
   }
 }
-data "aws_ecrpublic_authorization_token" "public_token" {
-  # provider = aws.virginia
-}
+# data "aws_ecrpublic_authorization_token" "public_token" {
+#   # provider = aws.virginia
+# }
 
 provider "helm" {
   kubernetes {

@@ -57,9 +57,9 @@ generate "provider_aws_eks_helm" {
       args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
     }
   }
-  data "aws_ecrpublic_authorization_token" "public_token" {
-    # provider = aws.virginia
-  }
+  # data "aws_ecrpublic_authorization_token" "public_token" {
+  #   # provider = aws.virginia
+  # }
 
   provider "kubectl" {
     load_config_file       = false
