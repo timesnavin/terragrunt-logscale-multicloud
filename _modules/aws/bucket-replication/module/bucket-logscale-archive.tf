@@ -83,7 +83,7 @@ resource "aws_s3_bucket_replication_configuration" "blue_green" {
     status = "Enabled"
 
     filter {
-      prefix = "/"
+      prefix = ""
     }
 
     delete_marker_replication {
@@ -110,7 +110,7 @@ resource "aws_s3_bucket_replication_configuration" "green_blue" {
 
 
     filter {
-      prefix = "/"
+      prefix = ""
     }
 
     delete_marker_replication {
