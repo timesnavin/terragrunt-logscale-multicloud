@@ -21,7 +21,7 @@ module "eks" {
 
   cluster_addons = {
     coredns = {
-      addon_version               = "v1.10.1-eksbuild.6"
+      addon_version               = "v1.10.1-eksbuild.7"
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
       preserve                    = true
