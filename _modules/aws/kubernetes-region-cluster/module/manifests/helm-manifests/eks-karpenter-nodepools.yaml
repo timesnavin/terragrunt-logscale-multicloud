@@ -32,7 +32,7 @@ spec:
         target:
           kind: Deployment
   dependsOn:
-    - name: karpenter-node-classes      
+    - name: karpenter-node-classes
   values:
     templates:
       - |
@@ -88,13 +88,9 @@ spec:
           name: storage
         spec:
           template:
-            metadata:
-              # Labels are arbitrary key-values that are applied to all nodes
-              labels:
-                storageClass: "nvme"
             spec:
               nodeClassRef:
-                name: ubuntu
+                name: al2-storage
               requirements:
                 - key: "kubernetes.io/arch"
                   operator: In

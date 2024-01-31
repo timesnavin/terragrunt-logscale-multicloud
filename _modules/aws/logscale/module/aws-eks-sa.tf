@@ -5,7 +5,7 @@ module "irsa" {
   version = "5.33.0"
 
   role_name_prefix = "${local.namespace}-logscale"
-  role_path        = var.iam_role_path
+  # role_path        = var.iam_role_path
 
   role_policy_arns = {
     "object" = module.iam_iam-policy.arn
@@ -24,7 +24,7 @@ module "iam_iam-policy" {
   version = "5.33.0"
 
   name_prefix = "${local.namespace}_${var.service_account}"
-  path        = var.iam_policy_path
+  # path        = var.iam_policy_path
 
 
   policy = jsonencode({

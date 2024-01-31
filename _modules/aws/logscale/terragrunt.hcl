@@ -28,14 +28,10 @@ locals {
 
 }
 dependency "bucket" {
-  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/bucket/"
+  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/bucket-logscale/"
 }
 dependency "kubernetes_cluster" {
-  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-base/"
-}
-dependency "kubernetes_addons" {
-  config_path  = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-stacked/"
-  skip_outputs = true
+  config_path = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/kubernetes/kubernetes-region-cluster/"
 }
 
 dependency "dns_partition" {
@@ -52,10 +48,6 @@ dependency "sso" {
 inputs = {
   //domain_name_platform = dependency.partition_zone.outputs.zone_name
   oidc_provider_arn = dependency.kubernetes_cluster.outputs.oidc_provider_arn
-
-  iam_role_path          = "${local.platform.aws.iam_role_path_prefix}/${local.partition.name}/${local.global.region}/"
-  iam_policy_path        = "${local.platform.aws.iam_policy_path_prefix}/${local.partition.name}/${local.global.region}/"
-  iam_policy_name_prefix = "${local.platform.aws.iam_policy_name_prefix}_${local.partition.name}_${local.global.region}_"
 
   additional_kms_owners = local.platform.aws.kms.additional_key_owners
 

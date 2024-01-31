@@ -2,6 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: kafka
+  namespace: ${namespace}
 spec:
   interval: 10m
   timeout: 5m
@@ -29,17 +30,6 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  dependsOn:
-    - name: aws-ebs
-      namespace: flux-system
-    - name: karpenter-nodes
-      namespace: flux-system
-    - name: cert-manager
-      namespace: flux-system
-    - name: strimzi
-      namespace: flux-system
-    # - name: strimzi-drain-cleaner
-    #   namespace: flux-system
   values:
     fullnameOverride: kafka
     cruiseControl:
@@ -146,7 +136,7 @@ spec:
         size: 150Gi
         deleteClaim: true
         # Must be SSD or NVME like storage IOPs is the primary node constraint
-        class: gp3
+        class: cluster-block-base-ext4
 
       autoscaling:
         enabled: false
@@ -218,7 +208,7 @@ spec:
         size: 5Gi
         deleteClaim: true
         # Must be SSD or NVME like storage IOPs is the primary node constraint
-        class: gp3
+        class: cluster-block-base-ext4
 
       autoscaling:
         enabled: false

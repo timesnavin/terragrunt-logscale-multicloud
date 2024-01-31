@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: logscale-content
-  namespace: tenant-ops
+  namespace: ${namespace}
 spec:
   interval: 10m
   timeout: 5m
@@ -32,15 +32,6 @@ spec:
           kind: Deployment
   dependsOn:
     - name: logscale
-  # valuesFrom:
-  #   - kind: ConfigMap
-  #     name: clustervars
-  #     valuesKey: aws_s3_log_bucket
-  #     targetPath: settings.logbucket
-  #   - kind: ConfigMap
-  #     name: clustervars
-  #     valuesKey: aws_eks_cluster_name
-  #     targetPath: settings.clusterName
   values:
     templates:
       - |

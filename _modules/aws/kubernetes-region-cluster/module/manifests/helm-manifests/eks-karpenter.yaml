@@ -37,6 +37,8 @@ spec:
       clusterName: ${cluster_name}
       clusterEndpoint: ${cluster_endpoint}
       interruptionQueueName: ${queue_name}
+      aws:
+        enablePodENU: true
     serviceAccount:
       annotations:
         eks.amazonaws.com/role-arn: ${irsa_arn}

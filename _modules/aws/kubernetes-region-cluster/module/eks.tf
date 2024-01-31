@@ -203,7 +203,6 @@ module "eks" {
       ]
     }
 
-
   }
   node_security_group_tags = {
     # NOTE - if creating multiple security groups with this module, only tag the

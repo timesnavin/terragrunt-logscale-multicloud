@@ -33,21 +33,3 @@ resource "kubernetes_config_map" "logscale_vars" {
   }
 }
 
-
-data "kubernetes_config_map" "clustervars" {
-  metadata {
-    name      = "clustervars"
-    namespace = "flux-system"
-  }
-}
-
-
-resource "kubernetes_config_map" "cluster_vars" {
-  depends_on = [kubernetes_namespace.logscale]
-  metadata {
-    name      = "clustervars"
-    namespace = local.namespace
-  }
-
-  data = data.kubernetes_config_map.clustervars.data
-}

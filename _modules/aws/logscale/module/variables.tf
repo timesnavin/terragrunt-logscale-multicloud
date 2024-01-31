@@ -1,11 +1,11 @@
 
 
-variable "iam_role_path" {
+# variable "iam_role_path" {
 
-}
-variable "iam_policy_path" {
-  default = "/"
-}
+# }
+# variable "iam_policy_path" {
+#   default = "/"
+# }
 
 
 variable "oidc_provider_arn" {
