@@ -13,15 +13,12 @@
 include "root" {
   path = find_in_parent_folders()
 }
-include "root" {
-  path = find_in_parent_folders("terragrunt_aws_eks_tenant.hcl")
-}
 
 
 # Include the envcommon configuration for the component. The envcommon configuration contains settings that are common
 # for the component across all environments.
 include "module" {
-  path   = "${dirname(find_in_parent_folders())}/_modules/aws/logscale/terragrunt.hcl"
+  path   = "${dirname(find_in_parent_folders())}/_modules/identity/authentik-sso-logscale/terragrunt.hcl"
   expose = true
 }
 

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: logscale
-      version: "7.0.0-next.123"
+      version: "7.0.0-next.126"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib-ls
@@ -39,7 +39,7 @@ spec:
 
     humio:
       image:
-        tag: 1.118.2
+        tag: 1.123.0
       kafka:
         manager: external
         prefixEnable: true

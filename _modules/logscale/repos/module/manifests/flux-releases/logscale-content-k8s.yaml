@@ -58,3 +58,15 @@ spec:
           allowDataDeletion: ${allowDataDeletion}
           retention:
             timeInDays: 30
+      - |
+        apiVersion: core.humio.com/v1alpha1
+        kind: HumioRepository
+        metadata:
+          name: metrics-kubernetes
+        spec:
+          managedClusterName: ${cluster_name}
+          name: "metrics-kubernetes"
+          description: "Kubernetes metrics"
+          allowDataDeletion: ${allowDataDeletion}
+          retention:
+            timeInDays: 30
