@@ -23,17 +23,14 @@ locals {
 }
 
 dependency "partition_zone" {
-  config_path = "${get_terragrunt_dir()}/../dns/"
+  config_path = "${get_terragrunt_dir()}/../../../dns/"
   mock_outputs = {
     zone_name = "example.com"
     zone_id   = "A123456789"
   }
-
 }
 
-
 inputs = {
-  parent_domain  = local.partition.dns.parent_domain
+  cert_domain  = dependency.partition_zone.outputs.zone_name
   parent_zone_id = dependency.partition_zone.outputs.zone_id
-  child_domain   = local.partition.name
 }

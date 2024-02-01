@@ -1,7 +1,7 @@
 # Create an application with a provider attached and policies applied
 locals {
-  fqdn      = "${var.host_prefix}-${var.tenant}.${var.domain_name}"
-  namespace = "${var.host_prefix}-${var.tenant}"
+  fqdn      = "${var.tenant}-${var.app_name}.${var.domain_name}"
+  namespace = "${var.tenant}-${var.app_name}"
 }
 
 
@@ -66,8 +66,8 @@ resource "random_uuid" "slug" {
 }
 
 resource "authentik_application" "name" {
-  name = var.app_name
-  slug = resource.random_uuid.slug.result
-
+  name              = var.app_name
+  slug              = resource.random_uuid.slug.result
+  group             = var.tenant
   protocol_provider = authentik_provider_saml.this.id
 }

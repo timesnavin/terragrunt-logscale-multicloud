@@ -5,6 +5,7 @@ resource "random_password" "key" {
 }
 
 resource "kubernetes_secret" "secretkey" {
+  depends_on = [kubernetes_namespace.identity]
   metadata {
     name      = "authentik-secret-key"
     namespace = "identity"

@@ -1,0 +1,58 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: logscale-content
+  namespace: ${namespace}
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: raw
+      version: "2.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: bedag
+        namespace: flux-system
+      interval: 5m
+  releaseName: logscale-content
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  driftDetection:
+    mode: warn
+    ignore:
+      - paths: ["/spec/replicas"]
+        target:
+          kind: Deployment
+  dependsOn:
+    - name: logscale
+  values:
+    templates:
+      - |
+        apiVersion: core.humio.com/v1alpha1
+        kind: HumioRepository
+        metadata:
+          name: infra-kubernetes
+        spec:
+          managedClusterName: logscale
+          name: "infra-kubernetes"
+          description: "Kubernetes infrastructure logs"
+          allowDataDeletion: false
+          retention:
+            timeInDays: 30
+      - |
+        apiVersion: core.humio.com/v1alpha1
+        kind: HumioIngestToken
+        metadata:
+          name: infra-kubernetes-otel
+        spec:
+          managedClusterName: logscale
+          name: otel
+          repositoryName: infra-kubernetes
+          tokenSecretName: infra-kubernetes-otel

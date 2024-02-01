@@ -1,0 +1,242 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: logscale
+  namespace: ${namespace}
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: logscale
+      version: "7.0.0-next.123"
+      sourceRef:
+        kind: HelmRepository
+        name: logscale-contrib-ls
+        namespace: flux-system
+      interval: 5m
+  releaseName: logscale
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  driftDetection:
+    mode: warn
+    ignore:
+      - paths: ["/spec/replicas"]
+        target:
+          kind: Deployment
+  dependsOn:
+    - name: kafka-topics
+  values:
+    platform:
+      provider: aws
+    fullnameOverride: logscale
+
+    humio:
+      image:
+        tag: 1.118.2
+      kafka:
+        manager: external
+        prefixEnable: true
+        bootstrap: kafka-kafka-bootstrap:9092
+        topicPrefix: ${kafka_prefix}
+      buckets:
+        prefix: ${bucket_prefix}
+        storage: ${bucket_storage}
+        region: ${region}
+        type: aws
+      fqdnInputs: ${fqdn_ingest}
+      fqdn: ${fqdn}
+      license: ${logscale_license}
+      config:
+        enableInternalLogger: "true"
+      serviceAccount:
+        name: ${logscale_sa_name}
+        annotations:
+          eks.amazonaws.com/role-arn: ${logscale_sa_arn}
+      auth:
+        rootUser: akadmin
+        method: saml
+        saml:
+          groupMembershipAttribute: http://schemas.xmlsoap.org/claims/Group
+          signOnUrl: ${saml_url}
+          entityID: ${saml_issuer}
+          idpCertificate: ${saml_signing_certificate}
+
+      nodeCount: 3
+      #In general for these node requests and limits should match
+      resources:
+        requests:
+          memory: 24Gi
+          cpu: 2
+        limits:
+          memory: 24Gi
+          cpu: 2
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "kubernetes.io/arch"
+                    operator: "In"
+                    values: ["amd64"]
+                  - key: "kubernetes.io/os"
+                    operator: "In"
+                    values: ["linux"]
+                  - key: "karpenter.k8s.aws/instance-local-nvme"
+                    operator: Gt
+                    values:
+                      - "910"
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: humio.com/node-pool
+                    operator: In
+                    values:
+                      - "logscale"
+                      - "logscale-ingest-only"
+                      - "logscale-http-only"
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - "zookeeper"
+                      - "kafka"
+              topologyKey: "kubernetes.io/hostname"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchExpressions:
+              - key: humio.com/node-pool
+                operator: In
+                values:
+                  - logscale
+      tolerations:
+        - key: topolvm.io/local
+          operator: "Equal"
+          value: "true"
+      dataVolumePersistentVolumeClaimSpecTemplate:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: "900Gi"
+        # storageClassName: "gp3"
+        # storageClassName: "cluster-block-base-ext4"
+        storageClassName: "instancestore-nvme-ext4"
+
+      frontEndDataVolumePersistentVolumeClaimSpecTemplate:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: "10Gi"
+        storageClassName: "cluster-block-base-ext4"
+      priorityClass: partition-high
+
+      ingress:
+        ui:
+          className: alb-partition
+          enabled: true
+          tls: true
+          annotations:
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+            alb.ingress.kubernetes.io/ssl-redirect: "443"
+        inputs:
+          className: alb-partition
+          enabled: true
+          tls: true
+          annotations:
+            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+            alb.ingress.kubernetes.io/ssl-redirect: "443"
+
+      nodepools:
+        ingest:
+          priorityClass: partition-medium
+          nodeCount: 3
+          resources:
+            limits:
+              cpu: "2"
+              memory: 3Gi
+            requests:
+              cpu: "2"
+              memory: 3Gi
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: "kubernetes.io/arch"
+                        operator: "In"
+                        values: ["amd64"]
+                      - key: "kubernetes.io/os"
+                        operator: "In"
+                        values: ["linux"]
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: humio.com/node-pool
+                        operator: In
+                        values:
+                          - "logscale"
+                          - "logscale-ingest-only"
+                          - "logscale-http-only"
+                  topologyKey: "kubernetes.io/hostname"
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: topology.kubernetes.io/zone
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchExpressions:
+                  - key: humio.com/node-pool
+                    operator: In
+                    values:
+                      - logscale-ingest-only
+        ui:
+          priorityClass: partition-low
+          nodeCount: 3
+          resources:
+            limits:
+              cpu: "2"
+              memory: 3Gi
+            requests:
+              cpu: "2"
+              memory: 3Gi
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: "kubernetes.io/arch"
+                        operator: "In"
+                        values: ["amd64"]
+                      - key: "kubernetes.io/os"
+                        operator: "In"
+                        values: ["linux"]
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: humio.com/node-pool
+                        operator: In
+                        values:
+                          - "logscale"
+                          - "logscale-ingest-only"
+                          - "logscale-http-only"
+                  topologyKey: "kubernetes.io/hostname"
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: topology.kubernetes.io/zone
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchExpressions:
+                  - key: humio.com/node-pool
+                    operator: In
+                    values:
+                      - "logscale-http-only"

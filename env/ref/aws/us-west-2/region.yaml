@@ -1,0 +1,16 @@
+name: us-west-2
+az_exclude_names: []
+  # - us-east-1e
+kubernetes:
+  version: 1.28
+  aws_auth_roles:
+    - rolearn: "arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write"
+      username: "admin-write"
+      groups:
+        - system:masters
+    - rolearn: "arn:aws:iam::042445652404:role/env0-ci"
+      username: "env-0"
+      groups:
+        - system:masters
+  aws_auth_accounts:
+    - 042445652404
