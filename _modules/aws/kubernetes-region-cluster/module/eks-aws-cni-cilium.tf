@@ -14,7 +14,7 @@ resource "helm_release" "cilium" {
   chart      = "cilium"
   name       = "cilium"
   namespace  = "kube-system"
-  version    = "1.15.0-rc.1"
+  version    = "1.15.0"
   values = [<<YAML
 cni:
   chainingMode: aws-cni
