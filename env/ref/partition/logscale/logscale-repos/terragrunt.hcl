@@ -13,12 +13,14 @@
 include "root" {
   path = find_in_parent_folders()
 }
-
+include "root" {
+  path = find_in_parent_folders("terragrunt_aws_eks_partition.hcl")
+}
 
 # Include the envcommon configuration for the component. The envcommon configuration contains settings that are common
 # for the component across all environments.
 include "module" {
-  path   = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes-observed/terragrunt.hcl"
+  path   = "${dirname(find_in_parent_folders())}/_modules/logscale/repos/terragrunt.hcl"
   expose = true
 }
 

@@ -6,8 +6,8 @@
 
 
 locals {
-  common     = yamldecode(file(find_in_parent_folders("common.yaml")))
-  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
+  common = yamldecode(file(find_in_parent_folders("common.yaml")))
+  region = yamldecode(file(find_in_parent_folders("region.yaml")))
 }
 
 
@@ -36,5 +36,5 @@ EOF
 
 inputs = {
   provider_aws_tags   = local.common.cloud.tags
-  provider_aws_region = local.region.name  
+  provider_aws_region = local.region.name
 }

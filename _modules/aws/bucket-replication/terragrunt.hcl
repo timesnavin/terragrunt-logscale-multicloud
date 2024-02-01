@@ -19,7 +19,7 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  partition  = yamldecode(file(find_in_parent_folders("partition.yaml")))
   blue_green = yamldecode(file("${path_relative_to_include()}/blue_green.yaml"))
 
 }
@@ -33,10 +33,10 @@ dependency "bucket-green" {
 
 
 inputs = {
-  bucket_id_blue = dependency.bucket-blue.outputs.logscale_storage_bucket_id
+  bucket_id_blue  = dependency.bucket-blue.outputs.logscale_storage_bucket_id
   bucket_id_green = dependency.bucket-green.outputs.logscale_storage_bucket_id
 
-  bucket_arn_blue = dependency.bucket-blue.outputs.logscale_storage_bucket_arn
+  bucket_arn_blue  = dependency.bucket-blue.outputs.logscale_storage_bucket_arn
   bucket_arn_green = dependency.bucket-green.outputs.logscale_storage_bucket_arn
 
   replication_role_name_prefix = "${local.partition.name}-${local.blue_green.blue.name}-${local.blue_green.green.name}"

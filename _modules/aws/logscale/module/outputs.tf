@@ -10,3 +10,10 @@ output "logscale_fqdn" {
 output "logscale_fqdn_ingest" {
   value = local.fqdn_ingest
 }
+
+output "cluster_name" {
+  value = "logscale"
+}
+output "namespace" {
+  value = local.namespace
+}

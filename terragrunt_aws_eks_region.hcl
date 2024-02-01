@@ -8,6 +8,7 @@
 locals {
   common    = yamldecode(file(find_in_parent_folders("common.yaml")))
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
 }
 
 generate "provider_aws" {
@@ -39,9 +40,6 @@ generate "provider_aws_eks_helm" {
     variable "provider_aws_eks_cluster_name" {
       type = string
     }
-    variable "GITHUB_PAT" {
-      type = string
-    }
 
   data "aws_eks_cluster" "this" {
     name = var.provider_aws_eks_cluster_name
@@ -57,9 +55,7 @@ generate "provider_aws_eks_helm" {
       args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name]
     }
   }
-  # data "aws_ecrpublic_authorization_token" "public_token" {
-  #   # provider = aws.virginia
-  # }
+
 
   provider "kubectl" {
     load_config_file       = false
@@ -78,6 +74,6 @@ EOF
 
 inputs = {
   provider_aws_tags             = local.common.cloud.tags
-  provider_aws_region           = local.partition.shared.provider.region
-  provider_aws_eks_cluster_name = "${local.partition.name}-${local.partition.shared.provider.region}"
+  provider_aws_region           = local.region.name
+  provider_aws_eks_cluster_name = "${local.partition.name}-${local.region.name}"
 }

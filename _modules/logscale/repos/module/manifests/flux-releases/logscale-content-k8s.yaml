@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: logscale-content
+  name: logscale-content-k8s
   namespace: ${namespace}
 spec:
   interval: 10m
@@ -15,7 +15,7 @@ spec:
         name: bedag
         namespace: flux-system
       interval: 5m
-  releaseName: logscale-content
+  releaseName: logscale-content-k8s
   install:
     remediation:
       retries: 3
@@ -40,19 +40,33 @@ spec:
         metadata:
           name: infra-kubernetes
         spec:
-          managedClusterName: logscale
+          managedClusterName: ${cluster_name}
           name: "infra-kubernetes"
           description: "Kubernetes infrastructure logs"
-          allowDataDeletion: false
+          allowDataDeletion: ${allowDataDeletion}
           retention:
             timeInDays: 30
       - |
         apiVersion: core.humio.com/v1alpha1
-        kind: HumioIngestToken
+        kind: HumioRepository
         metadata:
-          name: infra-kubernetes-otel
+          name: apps-kubernetes
         spec:
-          managedClusterName: logscale
-          name: otel
-          repositoryName: infra-kubernetes
-          tokenSecretName: infra-kubernetes-otel
+          managedClusterName: ${cluster_name}
+          name: "apps-kubernetes"
+          description: "Kubernetes apps logs"
+          allowDataDeletion: ${allowDataDeletion}
+          retention:
+            timeInDays: 30
+      - |
+        apiVersion: core.humio.com/v1alpha1
+        kind: HumioRepository
+        metadata:
+          name: metrics-kubernetes
+        spec:
+          managedClusterName: ${cluster_name}
+          name: "metrics-kubernetes"
+          description: "Kubernetes metrics"
+          allowDataDeletion: ${allowDataDeletion}
+          retention:
+            timeInDays: 30

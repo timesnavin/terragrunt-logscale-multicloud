@@ -6,7 +6,7 @@
 
 
 locals {
-  backend    = yamldecode(file(find_in_parent_folders("backend.yaml")))
+  backend = yamldecode(file(find_in_parent_folders("backend.yaml")))
 }
 
 remote_state {

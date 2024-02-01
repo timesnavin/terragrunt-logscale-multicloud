@@ -12,44 +12,28 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes-region-cluster/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/logscale/repos/module/"
 }
-
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-
-  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
-  platform  = yamldecode(file(find_in_parent_folders("platform.yaml")))
-  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
+  platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
+  tenant   = yamldecode(file(find_in_parent_folders("tenant.yaml")))
 
 }
-
-dependency "vpc" {
-  config_path = "${get_terragrunt_dir()}/../../vpc/"
+dependency "logscale" {
+  config_path = "${get_terragrunt_dir()}/../logscale/"
 }
-dependency "bucket" {
-  config_path = "${get_terragrunt_dir()}/../../bucket-logs/"
 
-}
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  name    = dependency.vpc.outputs.name
-  vpc_id  = dependency.vpc.outputs.vpc_id
-  subnets = dependency.vpc.outputs.private_subnets
+  cluster_name = dependency.logscale.outputs.cluster_name
+  namespace    = dependency.logscale.outputs.namespace
 
-  cluster_version = "1.28"
-
-  kms_key_administrators    = local.platform.aws.kms.additional_key_owners
-  additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
-
-  log_s3_bucket_id = dependency.bucket.outputs.log_s3_bucket_id
-
-  region = local.region.name
 }

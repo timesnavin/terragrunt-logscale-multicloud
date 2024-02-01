@@ -12,7 +12,7 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/kubernetes-observed/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/otel/module/"
 }
 
 
@@ -27,17 +27,13 @@ locals {
 
 }
 dependency "kubernetes_base" {
-  config_path = "${get_terragrunt_dir()}/../kubernetes-base/"
+  config_path = "${get_terragrunt_dir()}/../kubernetes-region-cluster/"
   mock_outputs = {
     cluster_name = "foo"
   }
 }
-dependency "kubernetes_stacked" {
-  config_path  = "${get_terragrunt_dir()}/../kubernetes-base/"
-  skip_outputs = true
-}
 dependency "logscale" {
-  config_path = "${get_terragrunt_dir()}/../../../../partition/logscale/"
+  config_path = "${get_terragrunt_dir()}/../../../../partition/logscale/logscale/"
 }
 
 
@@ -48,31 +44,9 @@ dependency "logscale" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  cluster_name          = dependency.kubernetes_base.outputs.cluster_name
-  logscale_ingest_token = dependency.logscale.outputs.otel-token
-  logscale_fqdn         = dependency.logscale.outputs.logscale_fqdn
-  logscale_fqdn_ingest  = dependency.logscale.outputs.logscale_fqdn_ingest
+  cluster_name         = dependency.kubernetes_base.outputs.cluster_name
+  namespace            = dependency.logscale.outputs.namespace
+  logscale_fqdn        = dependency.logscale.outputs.logscale_fqdn
+  logscale_fqdn_ingest = dependency.logscale.outputs.logscale_fqdn_ingest
 
-  # cluster_version = local.region.kubernetes.version
-  # cluster_region = local.region.name
-
-  # oidc_provider_arn = dependency.kubernetes_base.outputs.oidc_provider_arn
-
-  # iam_role_path     = "${local.platform.aws.iam_role_path_prefix}/${local.partition.name}/${local.region.name}/"
-  # iam_policy_path     = "${local.platform.aws.iam_policy_path_prefix}/${local.partition.name}/${local.region.name}/"
-  # iam_policy_name_prefix = "${local.platform.aws.iam_policy_name_prefix}_${local.partition.name}_${local.region.name}_"
-
-  # vpc_id            = dependency.network.outputs.vpc_id
-  # node_subnet_ids        = dependency.network.outputs.private_subnets
-
-  # additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
-  # system_node_role_arn = dependency.kubernetes_base.outputs.system_node_role_arn
-
-  # external_dns_route53_zone_arns = [
-  #   dependency.zone_partition.outputs.zone_arn,
-  #   dependency.zone_provider.outputs.zone_arn,
-  #   dependency.zone_region.outputs.zone_arn
-  # ]
-
-  # log_s3_bucket_id = dependency.bucket.outputs.log_s3_bucket_id
 }
