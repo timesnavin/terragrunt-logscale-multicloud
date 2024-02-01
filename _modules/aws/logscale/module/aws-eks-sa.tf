@@ -2,7 +2,7 @@
 module "irsa" {
 
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.33.0"
+  version = "5.33.1"
 
   role_name_prefix = "${local.namespace}-logscale"
   # role_path        = var.iam_role_path
@@ -21,7 +21,7 @@ module "irsa" {
 
 module "iam_iam-policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.33.0"
+  version = "5.33.1"
 
   name_prefix = "${local.namespace}_${var.service_account}"
   # path        = var.iam_policy_path
