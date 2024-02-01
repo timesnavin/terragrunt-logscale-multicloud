@@ -20,17 +20,18 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  global = yamldecode(file(find_in_parent_folders("global.yaml")))
+  tenant    = yamldecode(file(find_in_parent_folders("tenant.yaml")))
 
 }
 
 dependency "dns_partition" {
-  config_path = "${get_terragrunt_dir()}/../../dns/"
+  config_path = "${get_terragrunt_dir()}/../../../dns/"
 }
 
 dependency "authentik" {
-  config_path = "${get_terragrunt_dir()}/../identity/"
+  config_path = "${get_terragrunt_dir()}/../../../partition/identity/"
 }
+
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -39,11 +40,10 @@ dependency "authentik" {
 inputs = {
   admin_email = "ryan.faircloth@crowdstrike.com"
   app_name    = "logscale"
-  app_group   = "parition"
   token       = dependency.authentik.outputs.admin_token
   url         = dependency.authentik.outputs.url
 
   domain_name = dependency.dns_partition.outputs.zone_name
   host_prefix = "partition"
-  tenant      = "logscale"
+  tenant      = local.tenant.name
 }

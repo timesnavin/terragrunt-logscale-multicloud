@@ -5,7 +5,7 @@ data "kubectl_path_documents" "flux2-repos" {
 }
 
 locals {
-  fqdn        = "${var.host_prefix}-${var.tenant}.${var.domain_name}"
-  fqdn_ingest = "${var.host_prefix}-${var.tenant}-ingest.${var.domain_name}"
-  namespace   = "${var.host_prefix}-${var.tenant}"
+  fqdn        = "${var.tenant}-logscale.${var.domain_name}"
+  fqdn_ingest = "${var.tenant}-logscale-ingest.${var.domain_name}"
+  namespace   = "${var.tenant}-logscale"
 }

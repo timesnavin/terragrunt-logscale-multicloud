@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: logscale
-      version: "7.0.0-next.119"
+      version: "7.0.0-next.123"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib-ls
@@ -32,8 +32,6 @@ spec:
           kind: Deployment
   dependsOn:
     - name: kafka-topics
-  valuesFrom:
-
   values:
     platform:
       provider: aws
@@ -62,7 +60,7 @@ spec:
         annotations:
           eks.amazonaws.com/role-arn: ${logscale_sa_arn}
       auth:
-        rootUser: ryan.faircloth@crowdstrike.com
+        rootUser: akadmin
         method: saml
         saml:
           groupMembershipAttribute: http://schemas.xmlsoap.org/claims/Group

@@ -6,7 +6,7 @@ resource "kubectl_manifest" "logscale" {
     "./manifests/helm-manifests/logscale.yaml",
     {
       namespace                = local.namespace
-      region                   = "us-east-1"
+      region                   = var.region
       platformType             = "aws"
       bucket_prefix            = "${local.namespace}/"
       bucket_storage           = var.logscale_storage_bucket_id

@@ -6,7 +6,10 @@
 # variable "iam_policy_path" {
 #   default = "/"
 # }
-
+variable "region" {
+  type = string
+  description = "(optional) describe your variable"
+}
 
 variable "oidc_provider_arn" {
   type        = string
@@ -43,10 +46,7 @@ variable "domain_name" {
   type        = string
   description = "(optional) describe your variable"
 }
-variable "host_prefix" {
-  type        = string
-  description = "(optional) describe your variable"
-}
+
 
 variable "tenant" {
 
