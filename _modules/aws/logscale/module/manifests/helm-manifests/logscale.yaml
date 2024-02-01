@@ -158,13 +158,13 @@ spec:
       nodepools:
         ingest:
           priorityClass: partition-medium
-          nodeCount: 3
+          nodeCount: 2
           resources:
             limits:
-              cpu: "2"
+              cpu: "1"
               memory: 4Gi
             requests:
-              cpu: "2"
+              cpu: "1"
               memory: 4Gi
           affinity:
             nodeAffinity:
@@ -200,13 +200,13 @@ spec:
                       - logscale-ingest-only
         ui:
           priorityClass: partition-low
-          nodeCount: 3
+          nodeCount: 2
           resources:
             limits:
-              cpu: "2"
+              cpu: "1"
               memory: 4Gi
             requests:
-              cpu: "2"
+              cpu: "1"
               memory: 4Gi
           affinity:
             nodeAffinity:
