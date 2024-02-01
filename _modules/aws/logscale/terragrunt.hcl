@@ -20,8 +20,8 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  platform  = yamldecode(file(find_in_parent_folders("platform.yaml")))
-  tenant    = yamldecode(file(find_in_parent_folders("tenant.yaml")))
+  platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
+  tenant   = yamldecode(file(find_in_parent_folders("tenant.yaml")))
 
 }
 dependency "bucket" {
@@ -55,8 +55,8 @@ inputs = {
   logscale_archive_bucket_id = dependency.bucket.outputs.logscale_archive_bucket_id
 
   domain_name = dependency.dns_partition.outputs.zone_name
-  
-  tenant      = local.tenant.name
+
+  tenant                   = local.tenant.name
   saml_url                 = dependency.sso.outputs.url
   saml_signing_certificate = dependency.sso.outputs.signing_certificate
   saml_issuer              = dependency.sso.outputs.issuer

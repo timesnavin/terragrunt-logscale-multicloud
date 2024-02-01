@@ -20,7 +20,7 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  tenant    = yamldecode(file(find_in_parent_folders("tenant.yaml")))
+  tenant = yamldecode(file(find_in_parent_folders("tenant.yaml")))
 
 }
 

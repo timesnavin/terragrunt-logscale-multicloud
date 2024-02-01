@@ -19,8 +19,8 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  platform  = yamldecode(file(find_in_parent_folders("platform.yaml")))
-  tenant    = yamldecode(file(find_in_parent_folders("tenant.yaml")))
+  platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
+  tenant   = yamldecode(file(find_in_parent_folders("tenant.yaml")))
 
 }
 dependency "logscale" {
@@ -34,6 +34,6 @@ dependency "logscale" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
   cluster_name = dependency.logscale.outputs.cluster_name
-  namespace  = dependency.logscale.outputs.namespace
-  
+  namespace    = dependency.logscale.outputs.namespace
+
 }

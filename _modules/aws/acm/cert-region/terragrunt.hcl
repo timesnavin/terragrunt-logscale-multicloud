@@ -30,6 +30,6 @@ dependency "partition_zone" {
 }
 
 inputs = {
-  cert_domain  = dependency.partition_zone.outputs.zone_name
+  cert_domain    = dependency.partition_zone.outputs.zone_name
   parent_zone_id = dependency.partition_zone.outputs.zone_id
 }

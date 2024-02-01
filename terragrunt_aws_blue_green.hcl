@@ -8,6 +8,7 @@
 locals {
   common     = yamldecode(file(find_in_parent_folders("common.yaml")))
   blue_green = yamldecode(file("${path_relative_to_include()}/blue_green.yaml"))
+  partition  = yamldecode(file(find_in_parent_folders("partition.yaml")))
 }
 
 
@@ -55,8 +56,8 @@ EOF
 }
 
 inputs = {
-  provider_aws_tags   = local.common.cloud.tags
-  provider_aws_region = "us-east-1"
-  provider_aws_blue_region = local.blue_green.blue.name
-  provider_aws_green_region= local.blue_green.green.name
+  provider_aws_tags         = local.common.cloud.tags
+  provider_aws_region       = local.partition.shared.provider.region
+  provider_aws_blue_region  = local.blue_green.blue.name
+  provider_aws_green_region = local.blue_green.green.name
 }

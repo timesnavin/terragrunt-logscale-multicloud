@@ -46,9 +46,9 @@ inputs = {
 
   cluster_version = "1.28"
 
-  kms_key_administrators = local.platform.aws.kms.additional_key_owners
+  kms_key_administrators    = local.platform.aws.kms.additional_key_owners
   additional_aws_auth_roles = local.region.kubernetes.aws_auth_roles
-  
+
   log_s3_bucket_id = dependency.bucket.outputs.log_s3_bucket_id
 
   region = local.region.name
