@@ -67,6 +67,13 @@ spec:
         secretKeyRef:
           key: email
           name: authentik-bootstrap          
+    email:
+      host: ${smtp_server}
+      port: ${smtp_port}
+      username: ${smtp_user}
+      password: ${smtp_password}
+      use_tls: ${smtp_tls}
+      from: ${from_email}
     redis:
       enabled: true
 
