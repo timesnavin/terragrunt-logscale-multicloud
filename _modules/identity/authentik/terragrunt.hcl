@@ -32,6 +32,9 @@ dependency "kubernetes_cluster" {
 dependency "partition_zone" {
   config_path = "${get_terragrunt_dir()}/../../dns/"
 }
+dependency "smtp" {
+  config_path  = "${get_terragrunt_dir()}/../../${local.global.provider}/${local.global.region}/ses/"
+}
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -40,4 +43,10 @@ dependency "partition_zone" {
 inputs = {
   domain_name = dependency.partition_zone.outputs.zone_name
   admin_email = "ryan.faircloth@crowdstrike.com"
+
+  smtp_user = dependency.smtp.outputs.smtp_user
+  smtp_password= dependency.smtp.outputs.smtp_password
+  smtp_server= dependency.smtp.outputs.smtp_server
+  from_email = "NoReplyIdentityServices@${dependency.partition_zone.outputs.zone_name}"
+
 }
