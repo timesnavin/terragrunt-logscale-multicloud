@@ -36,6 +36,11 @@ dependency "dns_partition" {
 }
 dependency "sso" {
   config_path = "${get_terragrunt_dir()}/../logscale-sso/"
+    mock_outputs = {
+    url = "https:///example.com"
+    signing_certificate   = "A123456789"
+    issuer = "temp"
+  }
 }
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
