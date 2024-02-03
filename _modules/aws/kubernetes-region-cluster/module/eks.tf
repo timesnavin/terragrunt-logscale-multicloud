@@ -10,7 +10,7 @@ data "aws_ami" "eks_default_arm" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.0.0"
+  version = "20.0.1"
 
   cluster_name                   = var.name
   cluster_version                = var.cluster_version
@@ -24,6 +24,7 @@ module "eks" {
       addon_version               = "v1.10.1-eksbuild.7"
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
+      preserve                    = true
       configuration_values = jsonencode(
         {
           replicaCount = 3
@@ -117,11 +118,9 @@ module "eks" {
       )
     }
     vpc-cni = {
-      before_compute              = true
-      addon_version               = "v1.16.2-eksbuild.1"
-      service_account_role_arn    = module.vpc_cni_irsa.iam_role_arn
-      resolve_conflicts_on_create = "OVERWRITE"
-      resolve_conflicts_on_update = "OVERWRITE"
+      before_compute           = true
+      addon_version            = "v1.16.2-eksbuild.1"
+      service_account_role_arn = module.vpc_cni_irsa.iam_role_arn
       configuration_values = jsonencode({
         env = {
           ENABLE_PREFIX_DELEGATION = "true"
@@ -133,8 +132,8 @@ module "eks" {
   vpc_id     = var.vpc_id
   subnet_ids = var.subnets
 
-  enable_cluster_creator_admin_permissions = true
-  kms_key_administrators                   = var.kms_key_administrators
+  kms_key_administrators = var.kms_key_administrators
+
 
   cluster_enabled_log_types = [
     "api",
@@ -145,7 +144,31 @@ module "eks" {
   ]
   cloudwatch_log_group_retention_in_days = 3
 
-  #additional_aws_auth_roles
+  manage_aws_auth_configmap = true
+  aws_auth_roles = concat(
+    # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
+    [{
+      rolearn  = module.karpenter.role_arn
+      username = "system:node:{{EC2PrivateDNSName}}"
+      groups = [
+        "system:bootstrappers",
+        "system:nodes",
+      ]
+      }
+    ],
+    var.additional_aws_auth_roles
+  )
+
+  aws_auth_users = [
+    {
+      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+      username = "admin-aws-root"
+      groups   = ["system:masters"]
+    }
+  ]
+  aws_auth_accounts = [
+    data.aws_caller_identity.current.account_id
+  ]
 
   eks_managed_node_groups = {
     system = {
