@@ -144,31 +144,8 @@ module "eks" {
   ]
   cloudwatch_log_group_retention_in_days = 3
 
-  manage_aws_auth_configmap = true
-  aws_auth_roles = concat(
-    # We need to add in the Karpenter node IAM role for nodes launched by Karpenter
-    [{
-      rolearn  = module.karpenter.role_arn
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups = [
-        "system:bootstrappers",
-        "system:nodes",
-      ]
-      }
-    ],
-    var.additional_aws_auth_roles
-  )
-
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
-      username = "admin-aws-root"
-      groups   = ["system:masters"]
-    }
-  ]
-  aws_auth_accounts = [
-    data.aws_caller_identity.current.account_id
-  ]
+  enable_cluster_creator_admin_permissions = false
+  access_entries = var.access_entries
 
   eks_managed_node_groups = {
     system = {
