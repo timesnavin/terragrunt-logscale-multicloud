@@ -21,7 +21,7 @@ resource "kubectl_manifest" "keda" {
     kubectl_manifest.flux2-repos,
     kubectl_manifest.karpenter
   ]
-   yaml_body = templatefile("./manifests/helm-manifests/eks-keda.yaml", { iam_role_arn = module.keda_irsa.iam_role_arn, cluster_name = module.eks.cluster_name })
+  yaml_body = templatefile("./manifests/helm-manifests/eks-keda.yaml", { iam_role_arn = module.keda_irsa.iam_role_arn, cluster_name = module.eks.cluster_name })
 
 }
 

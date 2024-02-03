@@ -6,14 +6,14 @@ module "karpenter" {
   cluster_name           = module.eks.cluster_name
   irsa_oidc_provider_arn = module.eks.oidc_provider_arn
 
-  iam_role_use_name_prefix = true
+  create_node_iam_role = false
+  node_iam_role_arn    = module.eks.eks_managed_node_groups["system"].iam_role_arn
+  # Since the nodegroup role will already have an access entry
+  create_access_entry = false
 
-  # In v0.32.0/v1beta1, Karpenter now creates the IAM instance profile
-  # so we disable the Terraform creation and add the necessary permissions for Karpenter IRSA
-  enable_karpenter_instance_profile_creation = true
 
   # Used to attach additional IAM policies to the Karpenter node IAM role
-  iam_role_additional_policies = {
+  node_iam_role_additional_policies = {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
 }
@@ -28,7 +28,7 @@ resource "kubectl_manifest" "karpenter" {
       cluster_name     = module.eks.cluster_name,
       cluster_endpoint = module.eks.cluster_endpoint
       queue_name       = module.karpenter.queue_name,
-      irsa_arn         = module.karpenter.irsa_arn
+      irsa_arn         = module.karpenter.iam_role_arn
     }
   )
 }
@@ -50,7 +50,7 @@ resource "kubectl_manifest" "node_classes" {
   yaml_body = templatefile(
     "./manifests/helm-manifests/eks-karpenter-nodeclasses.yaml",
     {
-      role_name              = module.karpenter.role_name
+      role_name              = module.karpenter.node_iam_role_name
       subnet_selector        = local.karpenter_subnets
       node_security_group_id = module.eks.node_security_group_id,
       cluster_name           = module.eks.cluster_name

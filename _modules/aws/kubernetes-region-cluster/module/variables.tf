@@ -3,7 +3,7 @@ variable "name" {
   description = "(optional) describe your variable"
 }
 variable "region" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 variable "cluster_version" {
