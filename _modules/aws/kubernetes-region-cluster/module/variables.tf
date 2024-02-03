@@ -3,7 +3,7 @@ variable "name" {
   description = "(optional) describe your variable"
 }
 variable "region" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 variable "cluster_version" {
@@ -24,10 +24,10 @@ variable "kms_key_administrators" {
   type        = list(string)
   description = "(optional) describe your variable"
 }
-variable "additional_aws_auth_roles" {
+variable "access_entries" {
   description = "Additional AWS IAM roles to add to the aws-auth configmap"
-  type        = list(any)
-  default     = []
+  type        = map(any)
+  default     = null
 }
 
 variable "log_s3_bucket_id" {

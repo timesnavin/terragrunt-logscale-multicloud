@@ -35,6 +35,6 @@ resource "kubectl_manifest" "alb_ic_config" {
     time_sleep.karpenter,
     kubectl_manifest.alb_ic
   ]
-    yaml_body = templatefile("./manifests/helm-manifests/eks-aws-ic-alb-config.yaml", { log_s3_bucket_id=var.log_s3_bucket_id })
+  yaml_body = templatefile("./manifests/helm-manifests/eks-aws-ic-alb-config.yaml", { log_s3_bucket_id = var.log_s3_bucket_id })
 
 }

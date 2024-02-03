@@ -41,7 +41,7 @@ spec:
         enablePodENU: true
     serviceAccount:
       annotations:
-        eks.amazonaws.com/role-arn: ${irsa_arn}
+        eks.amazonaws.com/role-arn: ${iam_role_arn}
     controller:
       resources:
         requests:

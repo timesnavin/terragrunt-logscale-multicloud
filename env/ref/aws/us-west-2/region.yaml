@@ -2,14 +2,22 @@ name: us-west-2
 az_exclude_names: []
 kubernetes:
   version: 1.28
-  aws_auth_roles:
-    - rolearn: "arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write"
-      username: "admin-write"
-      groups:
-        - system:masters
-    - rolearn: "arn:aws:iam::042445652404:role/env0-ci"
-      username: "env-0"
-      groups:
-        - system:masters
-  aws_auth_accounts:
-    - 042445652404
+  access_entries:
+    env0:
+      kubernetes_groups: []
+      principal_arn: arn:aws:iam::042445652404:role/env0-ci
+      policy_associations:
+        cluster-admin:
+          policy_arn: "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope:
+            type: cluster
+            namespaces: []
+    accountRoot:
+      kubernetes_groups: []
+      principal_arn: arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write
+      policy_associations:
+        cluster-admin:
+          policy_arn: "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope:
+            type: cluster
+            namespaces: []

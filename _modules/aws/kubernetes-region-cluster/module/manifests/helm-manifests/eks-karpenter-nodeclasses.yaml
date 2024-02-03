@@ -33,23 +33,10 @@ spec:
         apiVersion: karpenter.k8s.aws/v1beta1
         kind: EC2NodeClass
         metadata:
-          name: bottle
-        spec:
-          amiFamily: Bottlerocket
-          role: ${role_name}
-          subnetSelectorTerms: ${jsonencode(subnet_selector)}
-          securityGroupSelectorTerms:
-          - id: ${node_security_group_id}
-          tags:
-            karpenter.sh/discovery: ${cluster_name}
-      - |
-        apiVersion: karpenter.k8s.aws/v1beta1
-        kind: EC2NodeClass
-        metadata:
           name: al2
         spec:
           amiFamily: AL2
-          role: ${role_name}
+          role: ${node_iam_role_name}
           subnetSelectorTerms: ${jsonencode(subnet_selector)}
           securityGroupSelectorTerms:
           - id: ${node_security_group_id}
@@ -62,7 +49,7 @@ spec:
           name: al2-storage
         spec:
           amiFamily: AL2
-          role: ${role_name}
+          role: ${node_iam_role_name}
           subnetSelectorTerms: ${jsonencode(subnet_selector)}
           securityGroupSelectorTerms:
           - id: ${node_security_group_id}
@@ -70,16 +57,3 @@ spec:
             karpenter.sh/discovery: ${cluster_name}
           userData: |
               yum install nvme-cli -y
-      - |
-        apiVersion: karpenter.k8s.aws/v1beta1
-        kind: EC2NodeClass
-        metadata:
-          name: ubuntu
-        spec:
-          amiFamily: Ubuntu
-          role: ${role_name}
-          subnetSelectorTerms: ${jsonencode(subnet_selector)}
-          securityGroupSelectorTerms:
-          - id: ${node_security_group_id}
-          tags:
-            karpenter.sh/discovery: ${cluster_name}
