@@ -9,10 +9,10 @@ module "karpenter" {
   enable_irsa            = true
   irsa_oidc_provider_arn = module.eks.oidc_provider_arn
 
-  create_node_iam_role = false
-  # Since the nodegroup role will already have an access entry
-  create_access_entry = false
-  node_iam_role_arn    = module.eks.eks_managed_node_groups["system"].iam_role_arn
+  # create_node_iam_role = false
+  # # Since the nodegroup role will already have an access entry
+  # create_access_entry = false
+  # node_iam_role_arn    = module.eks.eks_managed_node_groups["system"].iam_role_arn
  
   # Used to attach additional IAM policies to the Karpenter node IAM role
   node_iam_role_additional_policies = {
@@ -52,7 +52,7 @@ resource "kubectl_manifest" "node_classes" {
   yaml_body = templatefile(
     "./manifests/helm-manifests/eks-karpenter-nodeclasses.yaml",
     {
-      node_iam_role_name = module.eks.eks_managed_node_groups["system"].iam_role_name
+      node_iam_role_name = module.karpenter.node_iam_role_name
       subnet_selector        = local.karpenter_subnets
       node_security_group_id = module.eks.node_security_group_id,
       cluster_name           = module.eks.cluster_name
