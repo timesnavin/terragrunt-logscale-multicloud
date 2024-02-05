@@ -72,10 +72,10 @@ spec:
       #In general for these node requests and limits should match
       resources:
         requests:
-          memory: 16Gi
-          cpu: 2
+          memory: 8Gi
+          cpu: 1
         limits:
-          memory: 16Gi
+          memory: 12Gi
           cpu: 2
       affinity:
         nodeAffinity:
@@ -91,7 +91,7 @@ spec:
                   - key: "karpenter.k8s.aws/instance-local-nvme"
                     operator: Gt
                     values:
-                      - "910"
+                      - "190"
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
@@ -126,7 +126,7 @@ spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: "900Gi"
+            storage: "190Gi"
         # storageClassName: "gp3"
         # storageClassName: "cluster-block-base-ext4"
         storageClassName: "instancestore-nvme-ext4"
