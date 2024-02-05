@@ -43,11 +43,19 @@ resource "aws_iam_policy" "send_mail" {
   policy = data.aws_iam_policy_document.send_mail.json
 }
 
+locals {
+ arnforraw = replace(aws_sesv2_email_identity.main.arn,aws_sesv2_email_identity.main.email_identity,"*")
+}
 data "aws_iam_policy_document" "send_mail" {
   statement {
     actions   = ["ses:SendRawEmail"]
-    resources = [aws_sesv2_email_identity.main.arn]
+    resources = [
+      # aws_sesv2_email_identity.main.arn,
+      local.arnforraw,
+      aws_sesv2_configuration_set.main.arn
+      ]
   }
+
 }
 
 resource "random_string" "random" {

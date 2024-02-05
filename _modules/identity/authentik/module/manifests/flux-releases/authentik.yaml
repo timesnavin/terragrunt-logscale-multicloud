@@ -51,6 +51,13 @@ spec:
         enabled: false
       postgresql:
         host: identity-db
+      email:
+        host: ${smtp_server}
+        port: ${smtp_port}
+        username: ${smtp_user}
+        password: ${smtp_password}
+        use_tls: ${smtp_tls}
+        from: ${from_email}
     envFrom:
       - secretRef:
           name: authentik-bootstrap
@@ -58,7 +65,7 @@ spec:
       AUTHENTIK_BOOTSTRAP_PASSWORD:
         secretKeyRef:
           key: password
-          name: authentik-bootstrap    
+          name: authentik-bootstrap
       AUTHENTIK_BOOTSTRAP_TOKEN:
         secretKeyRef:
           key: token
@@ -66,14 +73,19 @@ spec:
       AUTHENTIK_BOOTSTRAP_EMAIL:
         secretKeyRef:
           key: email
-          name: authentik-bootstrap          
-    email:
-      host: ${smtp_server}
-      port: ${smtp_port}
-      username: ${smtp_user}
-      password: ${smtp_password}
-      use_tls: ${smtp_tls}
-      from: ${from_email}
+          name: authentik-bootstrap
+
+    pdb:
+      server:
+        enabled: true
+        maxUnavailable: 1
+      # worker:
+      #   enabled: true
+      #   minAvailable: 1
+
+    replicas: 2
+    worker:
+      replicas: 1
     redis:
       enabled: true
 
