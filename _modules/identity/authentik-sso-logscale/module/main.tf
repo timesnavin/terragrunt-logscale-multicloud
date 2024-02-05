@@ -40,27 +40,11 @@ resource "authentik_provider_saml" "this" {
   audience          = "https://${local.fqdn}/api/v1/saml/metadata"
   property_mappings = data.authentik_property_mapping_saml.this.ids
   name_id_mapping   = data.authentik_property_mapping_saml.upn.id
-  # property_mappings = [
-  #   "authentik default SAML Mapping: Email",
-  #   "authentik default SAML Mapping: Groups",
-  #   "authentik default SAML Mapping: Name"
-  # ]
 }
 
 data "authentik_provider_saml_metadata" "provider" {
   provider_id = authentik_provider_saml.this.id
 }
-
-# resource "authentik_policy_expression" "policy" {
-#   name       = "policy"
-#   expression = "return True"
-# }
-
-# resource "authentik_policy_binding" "app-access" {
-#   target = authentik_application.name.uuid
-#   policy = authentik_policy_expression.policy.id
-#   order  = 0
-# }
 
 resource "random_uuid" "slug" {
 }
