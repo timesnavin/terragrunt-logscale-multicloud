@@ -65,4 +65,6 @@ inputs = {
   saml_url                 = dependency.sso.outputs.url
   saml_signing_certificate = dependency.sso.outputs.signing_certificate
   saml_issuer              = dependency.sso.outputs.issuer
+
+  LogScaleRoot = try(local.tenant.logscale.root,"akaadmin")
 }

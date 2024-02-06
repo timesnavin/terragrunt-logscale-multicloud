@@ -60,7 +60,7 @@ spec:
         annotations:
           eks.amazonaws.com/role-arn: ${logscale_sa_arn}
       auth:
-        rootUser: akadmin
+        rootUser: ${rootUser}
         method: saml
         saml:
           groupMembershipAttribute: http://schemas.xmlsoap.org/claims/Group
@@ -158,7 +158,7 @@ spec:
       nodepools:
         ingest:
           priorityClass: partition-medium
-          nodeCount: 2
+          nodeCount: 1
           resources:
             limits:
               cpu: "1"
@@ -200,7 +200,7 @@ spec:
                       - logscale-ingest-only
         ui:
           priorityClass: partition-low
-          nodeCount: 2
+          nodeCount: 1
           resources:
             limits:
               cpu: "1"

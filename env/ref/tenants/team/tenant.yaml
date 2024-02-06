@@ -1,3 +1,5 @@
 name: team
 platform: aws
 region: us-east-1
+logscale:
+  root: ryan.faircloth@crowdstrike.com

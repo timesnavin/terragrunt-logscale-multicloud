@@ -65,3 +65,8 @@ variable "saml_issuer" {
   type = string
   description = "(optional) describe your variable"
 }
+
+variable "LogScaleRoot" {
+  type = string
+  description = "(optional) describe your variable"
+}

@@ -1,3 +1,5 @@
 name: emu
 platform: aws
 region: us-west-2
+logscale:
+  root: mohamad.nabulsi@crowdstrike.com
