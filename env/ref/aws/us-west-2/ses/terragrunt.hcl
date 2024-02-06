@@ -14,7 +14,7 @@ include "root" {
   path = find_in_parent_folders()
 }
 include "root" {
-  path = find_in_parent_folders("terragrunt_aws_regional.hcl")
+  path = "${dirname(find_in_parent_folders())}/_providers/terragrunt_aws_regional.hcl"
 }
 
 # Include the envcommon configuration for the component. The envcommon configuration contains settings that are common

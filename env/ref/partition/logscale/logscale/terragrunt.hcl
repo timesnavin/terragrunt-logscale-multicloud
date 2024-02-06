@@ -15,7 +15,7 @@ locals {
 
 }
 include "root" {
-  path = find_in_parent_folders("terragrunt_aws_eks_partition.hcl")
+  path = "${dirname(find_in_parent_folders())}/_providers/terragrunt_aws_eks_partition.hcl"
 }
 
 include "root" {
