@@ -6,3 +6,6 @@ shared:
   provider:
     name: aws
     region: us-east-1
+gcp:
+  project_id: cs-logscale-ps
+  region: us-central1

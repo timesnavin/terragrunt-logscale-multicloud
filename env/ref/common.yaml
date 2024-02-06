@@ -1,9 +1,9 @@
 cloud:
   tags:
-    owner: ryan.faircloth
+    owner: ryanfaircloth
     project: logsrlife
     partition: ref
 kubernetes:
   labels:
-    owner: ryan.faircloth
+    owner: ryanfaircloth
     project: logsrlife
