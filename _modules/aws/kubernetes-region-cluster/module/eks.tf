@@ -20,6 +20,13 @@ module "eks" {
   cluster_ip_family = "ipv6"
 
   cluster_addons = {
+    eks-pod-identity-agent = {
+      addon_version = "v1.1.0-eksbuild.1"
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
+      preserve                    = true
+      before_compute           = true
+    }
     coredns = {
       addon_version               = "v1.10.1-eksbuild.7"
       resolve_conflicts_on_create = "OVERWRITE"
