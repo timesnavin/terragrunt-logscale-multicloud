@@ -30,8 +30,6 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  dependsOn:
-    - name: kafka-topics
   values:
     platform:
       provider: aws
@@ -40,11 +38,15 @@ spec:
     humio:
       image:
         tag: 1.123.0
+      trustManagerConfigMap: cluster-trust-bundle
       kafka:
         manager: external
         prefixEnable: true
-        bootstrap: kafka-kafka-bootstrap:9092
-        topicPrefix: ${kafka_prefix}
+        bootstrap: ${kafkaCluster}-kafka-bootstrap.${kafka_namespace}.svc:9093
+        topicPrefix: ${tenant}-logscale-${kafka_prefix}
+        extraConfig: |
+          security.protocol=SSL
+          ssl.truststore.location=/data/truststore/bundle.jks
       buckets:
         prefix: ${bucket_prefix}
         storage: ${bucket_storage}
@@ -162,10 +164,10 @@ spec:
           resources:
             limits:
               cpu: "1"
-              memory: 4Gi
+              memory: 8Gi
             requests:
               cpu: "1"
-              memory: 4Gi
+              memory: 8Gi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -204,10 +206,10 @@ spec:
           resources:
             limits:
               cpu: "1"
-              memory: 4Gi
+              memory: 8Gi
             requests:
               cpu: "1"
-              memory: 4Gi
+              memory: 8Gi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

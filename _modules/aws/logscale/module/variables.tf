@@ -70,3 +70,9 @@ variable "LogScaleRoot" {
   type = string
   description = "(optional) describe your variable"
 }
+
+variable "dedicated_kafka" {
+  type = bool
+  default = false
+  description = "(optional) describe your variable"
+}

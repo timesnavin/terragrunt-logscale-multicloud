@@ -1,21 +1,21 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: kafka-topics
-  namespace: ${namespace}
+  name: ${tenant}-logscale
+  namespace: ${kafka_namespace}
 spec:
   interval: 10m
   timeout: 5m
   chart:
     spec:
       chart: logscale-strimzi-kafka-topics
-      version: "2.0.5"
+      version: "3.0.0-next.3"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib
         namespace: flux-system
       interval: 5m
-  releaseName: kafka-topics
+  releaseName: ${tenant}-logscale
   install:
     remediation:
       retries: 3
@@ -26,14 +26,9 @@ spec:
     enable: false
   driftDetection:
     mode: enabled
-    ignore:
-      - paths: ["/spec/replicas"]
-        target:
-          kind: Deployment
   dependsOn:
     - name: kafka
   values:
-    fullnameOverride: logscale-topics
     config:
-      clusterName: kafka
-      prefix: g000
+      clusterName: ${kafkaCluster}
+      prefix: ${prefix}

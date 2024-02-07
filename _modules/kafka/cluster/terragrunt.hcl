@@ -12,18 +12,13 @@
 
 terraform {
   //source = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=v19.21.0"
-  source = "${dirname(find_in_parent_folders())}/_modules/aws/otel/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/kafka/cluster/module/"
 }
-
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  provider  = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
-  platform  = yamldecode(file(find_in_parent_folders("platform.yaml")))
-  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
 
 }
 dependency "kubernetes_base" {
@@ -32,12 +27,6 @@ dependency "kubernetes_base" {
     cluster_name = "foo"
   }
 }
-dependency "logscale" {
-  config_path = "${get_terragrunt_dir()}/../../../../partition/logscale/logscale/"
-}
-
-
-
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -45,7 +34,6 @@ dependency "logscale" {
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
   cluster_name         = dependency.kubernetes_base.outputs.cluster_name
-  namespace            = dependency.logscale.outputs.namespace
-  logscale_fqdn        = dependency.logscale.outputs.logscale_fqdn
-  logscale_fqdn_ingest = dependency.logscale.outputs.logscale_fqdn_ingest
+  namespace            = "region-kafka"
+  
 }
