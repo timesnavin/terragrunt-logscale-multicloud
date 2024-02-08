@@ -6,9 +6,9 @@
 
 
 locals {
-  common = yamldecode(file(find_in_parent_folders("common.yaml")))
+  common    = yamldecode(file(find_in_parent_folders("common.yaml")))
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
-  region = yamldecode(file(find_in_parent_folders("region.yaml")))
+  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
 }
 
 
@@ -43,7 +43,7 @@ EOF
 
 
 inputs = {
-  provider_gcp_labels   = local.common.cloud.tags
-  provider_gcp_region = local.region.name
+  provider_gcp_labels  = local.common.cloud.tags
+  provider_gcp_region  = local.region.name
   provider_gcp_project = local.partition.gcp.project_id
 }

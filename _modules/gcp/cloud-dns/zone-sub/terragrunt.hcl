@@ -36,5 +36,5 @@ inputs = {
   parent_domain  = dependency.parent_zone.outputs.zone_name
   parent_zone_id = dependency.parent_zone.outputs.zone_id
   child_domain   = local.domain
-  project_id = local.partition.gcp.project_id
+  project_id     = local.partition.gcp.project_id
 }

@@ -20,7 +20,7 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
-  region = yamldecode(file(find_in_parent_folders("region.yaml")))
+  region    = yamldecode(file(find_in_parent_folders("region.yaml")))
 }
 
 dependency "parent_zone" {
@@ -32,10 +32,10 @@ dependency "parent_zone" {
 }
 
 inputs = {
-  partition = local.partition.name  
-  domain  = dependency.parent_zone.outputs.zone_name
+  partition      = local.partition.name
+  domain         = dependency.parent_zone.outputs.zone_name
   domain_zone_id = dependency.parent_zone.outputs.zone_id
-  region = local.region.name
+  region         = local.region.name
 
   email_user_name_prefix = "${local.partition.name}-${local.region.name}"
 }

@@ -23,8 +23,8 @@ locals {
   platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
   tenant   = yamldecode(file(find_in_parent_folders("tenant.yaml")))
 
-  kafka_namespace =  try(local.tenant.kafka.deployment,"regional") == "regional" ? "region-kafka" : "${local.tenant.name}-kafka"
-  kafka_name =  try(local.tenant.kafka.deployment,"regional") == "regional" ? "regional" : local.tenant.name
+  kafka_namespace = try(local.tenant.kafka.deployment, "regional") == "regional" ? "region-kafka" : "${local.tenant.name}-kafka"
+  kafka_name      = try(local.tenant.kafka.deployment, "regional") == "regional" ? "regional" : local.tenant.name
 
 }
 dependency "bucket" {
@@ -39,10 +39,10 @@ dependency "dns_partition" {
 }
 dependency "sso" {
   config_path = "${get_terragrunt_dir()}/../logscale-sso/"
-    mock_outputs = {
-    url = "https:///example.com"
-    signing_certificate   = "A123456789"
-    issuer = "temp"
+  mock_outputs = {
+    url                 = "https:///example.com"
+    signing_certificate = "A123456789"
+    issuer              = "temp"
   }
 }
 # ---------------------------------------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ inputs = {
   saml_signing_certificate = dependency.sso.outputs.signing_certificate
   saml_issuer              = dependency.sso.outputs.issuer
 
-  LogScaleRoot = try(local.tenant.logscale.root,"akaadmin")
-  kafka_name = local.kafka_name
+  LogScaleRoot    = try(local.tenant.logscale.root, "akaadmin")
+  kafka_name      = local.kafka_name
   kafka_namespace = local.kafka_namespace
 }

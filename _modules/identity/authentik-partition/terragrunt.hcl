@@ -36,7 +36,7 @@ dependency "partition_zone" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  token       = dependency.authentik.outputs.admin_token
-  url         = dependency.authentik.outputs.url
+  token      = dependency.authentik.outputs.admin_token
+  url        = dependency.authentik.outputs.url
   from_email = "NoReplyIdentityServices@${dependency.partition_zone.outputs.zone_name}"
 }

@@ -20,9 +20,9 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
   is_regional = fileexists("${get_terragrunt_dir()}/../kubernetes-region-cluster/terragrunt.hcl")
-  tenant   = try(yamldecode(file(find_in_parent_folders("tenant.yaml"))),{})
-  namespace =  local.is_regional ? "region-kafka" : "${local.tenant.name}-kafka"
-  kafka_name =  local.is_regional ? "regional" : local.tenant.name
+  tenant      = try(yamldecode(file(find_in_parent_folders("tenant.yaml"))), {})
+  namespace   = local.is_regional ? "region-kafka" : "${local.tenant.name}-kafka"
+  kafka_name  = local.is_regional ? "regional" : local.tenant.name
 }
 dependency "kubernetes_base" {
   config_path = local.is_regional ? "${get_terragrunt_dir()}/../kubernetes-region-cluster/terragrunt.hcl" : "${get_terragrunt_dir()}/../../../${local.tenant.platform}/${local.tenant.region}/kubernetes/kubernetes-region-cluster/"
@@ -36,7 +36,7 @@ dependency "kubernetes_base" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  cluster_name         = dependency.kubernetes_base.outputs.cluster_name
-  namespace            = local.namespace
-  kafka_name = local.kafka_name
+  cluster_name = dependency.kubernetes_base.outputs.cluster_name
+  namespace    = local.namespace
+  kafka_name   = local.kafka_name
 }
