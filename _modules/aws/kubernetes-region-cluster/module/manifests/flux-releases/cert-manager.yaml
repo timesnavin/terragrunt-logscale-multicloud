@@ -36,63 +36,139 @@ spec:
     - name: prometheus-operator-crds
   values:
     installCRDs: true
-    replicaCount: 2
+
     global:
       priorityClassName: "system-cluster-critical"
-    podDisruptionBudget:
-      enabled: true
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: app.kubernetes.io/component
-                  operator: In
-                  values:
-                    - controller
-                - key: app.kubernetes.io/instance
-                  operator: In
-                  values:
-                    - cert-manager
-            topologyKey: kubernetes.io/hostname
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: kubernetes.io/os
-                  operator: In
-                  values:
-                    - linux
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            preference:
-              matchExpressions:
-                - key: role
-                  operator: NotIn
-                  values:
-                    - system
-          - weight: 100
-            preference:
-              matchExpressions:
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - arm64
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/component: controller
-            app.kubernetes.io/instance: cert-manager
-        matchLabelKeys:
-          - pod-template-hash
 
+    controller:
+      replicaCount: 2
+      resources:
+        requests:
+          cpu: 15m
+          memory: 105M
+        limits:
+          cpu: 79211m
+          memory: 262G
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - controller
+                  - key: app.kubernetes.io/instance
+                    operator: In
+                    values:
+                      - cert-manager
+              topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: role
+                    operator: NotIn
+                    values:
+                      - system
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - arm64
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: controller
+              app.kubernetes.io/instance: cert-manager
+          matchLabelKeys:
+            - pod-template-hash
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
+    cainjector:
+      replicaCount: 2
+      resources:
+        requests:
+          cpu: 15m
+          memory: 105M
+        limits:
+          cpu: 118811m
+          memory: 845G
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - cainjector
+                  - key: app.kubernetes.io/instance
+                    operator: In
+                    values:
+                      - cert-manager
+              topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: role
+                    operator: NotIn
+                    values:
+                      - system
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - arm64
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: cainjector
+              app.kubernetes.io/instance: cert-manager
+          matchLabelKeys:
+            - pod-template-hash
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1    
     webhook:
       replicaCount: 2
       podDisruptionBudget:
         enabled: true
+      resources:
+          requests:
+            cpu: 15m
+            memory: 105M
+          limits:
+            cpu: 190091m
+            memory: 408G        
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -138,58 +214,6 @@ spec:
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: webhook
-              app.kubernetes.io/instance: cert-manager
-          matchLabelKeys:
-            - pod-template-hash
-    cainjector:
-      replicaCount: 2
-      podDisruptionBudget:
-        enabled: true
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/component
-                    operator: In
-                    values:
-                      - cainjector
-                  - key: app.kubernetes.io/instance
-                    operator: In
-                    values:
-                      - cert-manager
-              topologyKey: kubernetes.io/hostname
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/os
-                    operator: In
-                    values:
-                      - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: role
-                    operator: NotIn
-                    values:
-                      - system
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/component: cainjector
               app.kubernetes.io/instance: cert-manager
           matchLabelKeys:
             - pod-template-hash

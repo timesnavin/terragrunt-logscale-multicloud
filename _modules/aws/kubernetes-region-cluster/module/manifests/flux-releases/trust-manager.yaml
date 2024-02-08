@@ -41,6 +41,13 @@ spec:
       priorityClassName: "system-cluster-critical"
     podDisruptionBudget:
       enabled: true
+    resources:
+      requests:
+        cpu: 15m
+        memory: 105M
+      limits:
+        cpu: 950411m
+        memory: 2037G
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
