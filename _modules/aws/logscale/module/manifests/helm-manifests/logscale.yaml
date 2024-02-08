@@ -80,14 +80,14 @@ spec:
           entityID: ${saml_issuer}
           idpCertificate: ${saml_signing_certificate}
 
-      nodeCount: 3
+      nodeCount: 2
       #In general for these node requests and limits should match
       resources:
         requests:
-          memory: 8Gi
+          memory: 12Gi
           cpu: 1
         limits:
-          memory: 12Gi
+          memory: 16Gi
           cpu: 2
       affinity:
         nodeAffinity:
