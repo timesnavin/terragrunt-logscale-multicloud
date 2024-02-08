@@ -35,10 +35,11 @@ spec:
         target:
           kind: ClusterRole
   values:
-
     admissionController:
       replicas: 3
       priorityClassName: "system-cluster-critical"
+      podDisruptionBudget:
+        enabled: true
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -83,6 +84,8 @@ spec:
             - pod-template-hash
     backgroundController:
       replicas: 2
+      podDisruptionBudget:
+        enabled: true
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -126,6 +129,8 @@ spec:
           matchLabelKeys:
             - pod-template-hash
     cleanupController:
+      podDisruptionBudget:
+        enabled: true
       replicas: 2
       resources:
         requests:
@@ -178,6 +183,8 @@ spec:
             - pod-template-hash
     reportsController:
       replicas: 2
+      podDisruptionBudget:
+        enabled: true
       resources:
         requests:
           cpu: 100m
