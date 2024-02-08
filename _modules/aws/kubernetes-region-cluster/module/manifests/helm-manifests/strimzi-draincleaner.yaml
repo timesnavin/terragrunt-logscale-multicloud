@@ -36,7 +36,7 @@ spec:
     - name: cert-manager
   values:
     watchAnyNamespace: true
-    replicas: 2
+    replicaCount: 2
     affinity:
       resources:
         requests:
