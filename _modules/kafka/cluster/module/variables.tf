@@ -7,3 +7,7 @@ variable "cluster_name" {
   description = "(optional) describe your variable"
 }
 
+variable "kafka_name" {
+  type = string
+  description = "(optional) describe your variable"
+}

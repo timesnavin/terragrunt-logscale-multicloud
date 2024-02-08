@@ -23,6 +23,9 @@ locals {
   platform = yamldecode(file(find_in_parent_folders("platform.yaml")))
   tenant   = yamldecode(file(find_in_parent_folders("tenant.yaml")))
 
+  kafka_namespace =  try(local.tenant.kafka.deployment,"regional") == "regional" ? "region-kafka" : "${local.tenant.name}-kafka"
+  kafka_name =  try(local.tenant.kafka.deployment,"regional") == "regional" ? "regional" : local.tenant.name
+
 }
 dependency "bucket" {
   config_path = "${get_terragrunt_dir()}/../../../${local.tenant.platform}/${local.tenant.region}/bucket-logscale/"
@@ -67,4 +70,6 @@ inputs = {
   saml_issuer              = dependency.sso.outputs.issuer
 
   LogScaleRoot = try(local.tenant.logscale.root,"akaadmin")
+  kafka_name = local.kafka_name
+  kafka_namespace = local.kafka_namespace
 }

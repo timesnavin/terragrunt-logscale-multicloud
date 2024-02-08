@@ -8,9 +8,9 @@ resource "kubectl_manifest" "logscale" {
       namespace                = local.namespace
       region                   = var.region
       platformType             = "aws"
-      kafka_namespace=local.kafka_namespace
+      kafka_namespace=var.kafka_namespace
       tenant = var.tenant
-      kafkaCluster = local.kafkaCluster
+      kafka_name = var.kafka_name
       kafka_prefix             = "g000"
       bucket_prefix            = "${local.namespace}/"
       bucket_storage           = var.logscale_storage_bucket_id

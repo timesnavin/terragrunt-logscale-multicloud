@@ -14,6 +14,7 @@ data "kubectl_path_documents" "flux2-releases" {
   vars = {
     namespace         = var.namespace
     cluster_name = var.cluster_name    
+    kafka_name = var.kafka_name
   }
 }
 

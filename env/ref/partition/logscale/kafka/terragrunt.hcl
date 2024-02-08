@@ -10,10 +10,6 @@
 
 # Include the root `terragrunt.hcl` configuration. The root configuration contains settings that are common across all
 # components and environments, such as how to configure remote state.
-locals {
-  global = yamldecode(file(find_in_parent_folders("global.yaml")))
-
-}
 include "root" {
   path = find_in_parent_folders()
 }
@@ -25,7 +21,7 @@ include "root" {
 # Include the envcommon configuration for the component. The envcommon configuration contains settings that are common
 # for the component across all environments.
 include "module" {
-  path   = "${dirname(find_in_parent_folders())}/_modules/aws/logscale/terragrunt.hcl"
+  path   = "${dirname(find_in_parent_folders())}/_modules/kafka/cluster/terragrunt.hcl"
   expose = true
 }
 
