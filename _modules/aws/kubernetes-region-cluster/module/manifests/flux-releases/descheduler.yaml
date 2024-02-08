@@ -36,8 +36,22 @@ spec:
     kind: Deployment
 
     deschedulerPolicy:
+      ignorePvcPods: false
+      evictLocalStoragePods: true
       evictSystemCriticalPods: true
-
+      strategies:
+        LowNodeUtilization:
+            enabled: true
+            params:
+              nodeResourceUtilizationThresholds:
+                thresholds:
+                  cpu: 20
+                  memory: 20
+                  pods: 20
+                targetThresholds:
+                  cpu: 75
+                  memory: 75
+                  pods: 100
     # Specifies the replica count for Deployment
     # Set leaderElection if you want to use more than 1 replica
     # Set affinity.podAntiAffinity rule if you want to schedule onto a node
