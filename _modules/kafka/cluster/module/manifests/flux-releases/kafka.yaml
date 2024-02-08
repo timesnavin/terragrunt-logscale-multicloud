@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: kafka-strimzi-cluster
-      version: "2.1.2"
+      version: "3.0.0"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib
@@ -24,14 +24,9 @@ spec:
       retries: 3
   test:
     enable: false
-  driftDetection:
-    mode: enabled
-    ignore:
-      - paths: ["/spec/replicas"]
-        target:
-          kind: Deployment
   values:
-    fullnameOverride: kafka
+    fullnameOverride: ${kafka_name}
+
     cruiseControl:
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
@@ -120,6 +115,19 @@ spec:
 
     kafka:
       replicas: 3
+      authorization:
+        enabled: true
+      listeners:
+        internal:
+          tls:
+            authentication:
+              enabled: true
+              type: scram-sha-512
+            certManager:
+              enabled: true
+              issuerRef:
+                name: cluster-ca-issuer
+            # secretName: kafka-tls
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
         # choice for the user. This also increases chances charts run on environments with little

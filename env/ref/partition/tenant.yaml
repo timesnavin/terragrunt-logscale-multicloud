@@ -1,3 +1,5 @@
 name: partition
 platform: aws
 region: us-east-1
+kafka:
+  deployment: tenant

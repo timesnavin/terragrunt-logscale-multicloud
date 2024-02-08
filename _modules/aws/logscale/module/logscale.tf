@@ -8,11 +8,14 @@ resource "kubectl_manifest" "logscale" {
       namespace                = local.namespace
       region                   = var.region
       platformType             = "aws"
+      kafka_namespace=var.kafka_namespace
+      tenant = var.tenant
+      kafka_name = var.kafka_name
+      kafka_prefix             = "g000"
       bucket_prefix            = "${local.namespace}/"
       bucket_storage           = var.logscale_storage_bucket_id
       bucket_export            = var.logscale_export_bucket_id
       bucket_archive           = var.logscale_archive_bucket_id
-      kafka_prefix             = "g000"
       logscale_sa_arn          = module.irsa.iam_role_arn
       logscale_sa_name         = var.service_account
       logscale_license         = var.logscale_license

@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: logscale
-      version: "7.0.0-next.126"
+      version: "7.0.0-next.130"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib-ls
@@ -30,8 +30,6 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  dependsOn:
-    - name: kafka-topics
   values:
     platform:
       provider: aws
@@ -40,11 +38,25 @@ spec:
     humio:
       image:
         tag: 1.123.0
+      trustManagerConfigMap: cluster-trust-bundle
+      extraENV:
+        - name: KAFKA_JAAS
+          valueFrom:
+            secretKeyRef:
+              name: ${tenant}-logscale
+              key: sasl.jaas.config
       kafka:
         manager: external
         prefixEnable: true
-        bootstrap: kafka-kafka-bootstrap:9092
-        topicPrefix: ${kafka_prefix}
+        bootstrap: ${kafka_name}-kafka-bootstrap.${kafka_namespace}.svc:9093
+        topicPrefix: ${tenant}-logscale-${kafka_prefix}
+        extraConfig: |
+          config.providers=env
+          config.providers.env.class=org.apache.kafka.common.config.provider.EnvVarConfigProvider
+          ssl.truststore.location=/data/truststore/bundle.jks  
+          security.protocol=SASL_SSL 
+          sasl.mechanism=SCRAM-SHA-512
+          sasl.jaas.config=$${env:KAFKA_JAAS}
       buckets:
         prefix: ${bucket_prefix}
         storage: ${bucket_storage}
@@ -162,10 +174,10 @@ spec:
           resources:
             limits:
               cpu: "1"
-              memory: 4Gi
+              memory: 8Gi
             requests:
               cpu: "1"
-              memory: 4Gi
+              memory: 8Gi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -204,10 +216,10 @@ spec:
           resources:
             limits:
               cpu: "1"
-              memory: 4Gi
+              memory: 8Gi
             requests:
               cpu: "1"
-              memory: 4Gi
+              memory: 8Gi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
