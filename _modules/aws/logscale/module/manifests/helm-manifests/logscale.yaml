@@ -121,9 +121,10 @@ spec:
                       - "kafka"
               topologyKey: "kubernetes.io/hostname"
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
+        - maxSkew: 2
+          minDomains: 2
           whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchExpressions:
               - key: humio.com/node-pool
@@ -201,9 +202,10 @@ spec:
                           - "logscale-http-only"
                   topologyKey: "kubernetes.io/hostname"
           topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: topology.kubernetes.io/zone
+            - maxSkew: 2
+              minDomains: 2
               whenUnsatisfiable: DoNotSchedule
+              topologyKey: topology.kubernetes.io/zone
               labelSelector:
                 matchExpressions:
                   - key: humio.com/node-pool
@@ -243,9 +245,10 @@ spec:
                           - "logscale-http-only"
                   topologyKey: "kubernetes.io/hostname"
           topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: topology.kubernetes.io/zone
+            - maxSkew: 2
+              minDomains: 2
               whenUnsatisfiable: DoNotSchedule
+              topologyKey: topology.kubernetes.io/zone
               labelSelector:
                 matchExpressions:
                   - key: humio.com/node-pool

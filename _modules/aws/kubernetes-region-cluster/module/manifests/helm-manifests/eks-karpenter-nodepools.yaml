@@ -75,7 +75,8 @@ spec:
                   value: "true"
                   effect: NoExecute
               kubelet:
-                podsPerCore: 4
+                podsPerCore: 20
+                maxPods: 100
           limits:
             cpu: 1000
           disruption:
@@ -113,6 +114,8 @@ spec:
                 - key: "karpenter.k8s.aws/instance-cpu"
                   operator: Gt
                   values: ["4"]
+                - key: "karpenter.k8s.aws/instance-local-nvme"
+                  operator: Exists
               startupTaints:
                 - key: node.cilium.io/agent-not-ready
                   value: "true"
@@ -128,7 +131,8 @@ spec:
               #     value: "true"
               #     effect: PreferNoSchedule
               kubelet:
-                podsPerCore: 4
+                podsPerCore: 20
+                maxPods: 100
           limits:
             cpu: 1000
           disruption:

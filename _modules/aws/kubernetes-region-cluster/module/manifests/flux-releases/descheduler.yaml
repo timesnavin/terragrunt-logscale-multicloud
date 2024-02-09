@@ -41,17 +41,17 @@ spec:
       evictSystemCriticalPods: true
       strategies:
         LowNodeUtilization:
-            enabled: true
-            params:
-              nodeResourceUtilizationThresholds:
-                thresholds:
-                  cpu: 20
-                  memory: 20
-                  pods: 20
-                targetThresholds:
-                  cpu: 75
-                  memory: 75
-                  pods: 100
+          enabled: true
+          params:
+            nodeResourceUtilizationThresholds:
+              thresholds:
+                cpu: 20
+                memory: 20
+                pods: 20
+              targetThresholds:
+                cpu: 75
+                memory: 75
+                pods: 100
     # Specifies the replica count for Deployment
     # Set leaderElection if you want to use more than 1 replica
     # Set affinity.podAntiAffinity rule if you want to schedule onto a node
@@ -100,25 +100,11 @@ spec:
                   operator: In
                   values:
                     - linux
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            preference:
-              matchExpressions:
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - arm64
-          - weight: 10
-            preference:
-              matchExpressions:
-                - key: storageClass
-                  operator: In
-                  values:
-                    - network
     topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
+      - maxSkew: 2
+        minDomains: 2
         whenUnsatisfiable: DoNotSchedule
+        topologyKey: topology.kubernetes.io/zone
         labelSelector:
           matchLabels:
             app.kubernetes.io/component: descheduler

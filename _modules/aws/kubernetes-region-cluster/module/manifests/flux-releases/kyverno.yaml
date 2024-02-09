@@ -57,26 +57,11 @@ spec:
                     operator: In
                     values:
                       - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: storageClass
-                    operator: In
-                    values:
-                      - network
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
+        - maxSkew: 2
+          minDomains: 2
           whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: admission-controller
@@ -103,26 +88,11 @@ spec:
                     operator: In
                     values:
                       - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: storageClass
-                    operator: In
-                    values:
-                      - network
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
+        - maxSkew: 2
+          minDomains: 2
           whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: background-controller
@@ -156,26 +126,11 @@ spec:
                     operator: In
                     values:
                       - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: storageClass
-                    operator: In
-                    values:
-                      - network
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
+        - maxSkew: 2
+          minDomains: 2
           whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: cleanup-controller
@@ -209,26 +164,11 @@ spec:
                     operator: In
                     values:
                       - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-
-            - weight: 10
-              preference:
-                matchExpressions:
-                  - key: storageClass
-                    operator: In
-                    values:
-                      - network
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
+        - maxSkew: 2
+          minDomains: 2
           whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: reports-controller

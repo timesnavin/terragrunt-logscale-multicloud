@@ -66,20 +66,6 @@ module "eks" {
                   }
                 ]
               }
-              "preferredDuringSchedulingIgnoredDuringExecution" : [
-                {
-                  "weight" : 100
-                  "preference" : {
-                    "matchExpressions" : [
-                      {
-                        "key" : "kubernetes.io/arch"
-                        "operator" : "In"
-                        "values" : ["arm64"]
-                      }
-                    ]
-                  }
-                }
-              ]
             },
             "podAntiAffinity" : {
               "preferredDuringSchedulingIgnoredDuringExecution" : [
@@ -111,9 +97,10 @@ module "eks" {
           ]
           "topologySpreadConstraints" = [
             {
-              "maxSkew"           = 1,
+              "maxSkew"           = 2,
               "topologyKey"       = "topology.kubernetes.io/zone",
               "whenUnsatisfiable" = "DoNotSchedule",
+              "minDomains"        = 2
               "labelSelector" = {
                 "matchLabels" = {
                   "k8s-app" : "kube-dns"

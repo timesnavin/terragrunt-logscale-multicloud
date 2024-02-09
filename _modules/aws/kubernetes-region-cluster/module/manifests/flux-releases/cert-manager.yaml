@@ -71,25 +71,11 @@ spec:
                     operator: In
                     values:
                       - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: role
-                    operator: NotIn
-                    values:
-                      - system
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
+        - maxSkew: 2
+          minDomains: 2
           whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: controller
@@ -130,25 +116,12 @@ spec:
                     operator: In
                     values:
                       - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: role
-                    operator: NotIn
-                    values:
-                      - system
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
+
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
+        - maxSkew: 2
+          minDomains: 2
           whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: cainjector
@@ -163,12 +136,12 @@ spec:
       podDisruptionBudget:
         enabled: true
       resources:
-          requests:
-            cpu: 15m
-            memory: 105M
-          limits:
-            cpu: 190091m
-            memory: 408G
+        requests:
+          cpu: 15m
+          memory: 105M
+        limits:
+          cpu: 190091m
+          memory: 408G
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -191,26 +164,12 @@ spec:
                     operator: In
                     values:
                       - linux
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: role
-                    operator: NotIn
-                    values:
-                      - system
-            - weight: 100
-              preference:
-                matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
 
       topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: topology.kubernetes.io/zone
+        - maxSkew: 2
+          minDomains: 2
           whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
               app.kubernetes.io/component: webhook

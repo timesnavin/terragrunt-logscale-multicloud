@@ -46,12 +46,3 @@ spec:
                   operator: In
                   values:
                     - amd64
-        preferredDuringSchedulingIgnoredDuringExecution:
-
-          - weight: 10
-            preference:
-              matchExpressions:
-                - key: storageClass
-                  operator: In
-                  values:
-                    - network

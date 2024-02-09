@@ -44,18 +44,3 @@ spec:
                   operator: In
                   values:
                     - linux
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            preference:
-              matchExpressions:
-                - key: role
-                  operator: NotIn
-                  values:
-                    - system
-          - weight: 100
-            preference:
-              matchExpressions:
-                - key: kubernetes.io/arch
-                  operator: In
-                  values:
-                    - arm64

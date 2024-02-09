@@ -60,25 +60,12 @@ spec:
                   operator: In
                   values:
                     - amd64
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 50
-            preference:
-              matchExpressions:
-                - key: computeClass
-                  operator: In
-                  values:
-                    - general
-          - weight: 10
-            preference:
-              matchExpressions:
-                - key: storageClass
-                  operator: In
-                  values:
-                    - network
+
     topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
+      - maxSkew: 2
+        minDomains: 2
         whenUnsatisfiable: DoNotSchedule
+        topologyKey: topology.kubernetes.io/zone
         labelSelector:
           matchLabels:
             app.kubernetes.io/name: postgres-operator-ui
