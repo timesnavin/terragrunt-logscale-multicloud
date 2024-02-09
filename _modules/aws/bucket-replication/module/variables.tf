@@ -1,6 +1,6 @@
 variable "replication_role_name_prefix" {
-    type = string
-    description = "(optional) describe your variable"
+  type        = string
+  description = "(optional) describe your variable"
 }
 variable "bucket_id_green" {
   type        = string

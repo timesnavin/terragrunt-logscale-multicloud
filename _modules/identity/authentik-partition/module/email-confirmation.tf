@@ -1,10 +1,10 @@
 
 resource "authentik_stage_email" "confirmation-email" {
-  name = "confirmation-email"
-  from_address = var.from_email
+  name                     = "confirmation-email"
+  from_address             = var.from_email
   activate_user_on_success = true
-  subject = "Account Confirmation"
-  template = "email/account_confirmation.html"
+  subject                  = "Account Confirmation"
+  template                 = "email/account_confirmation.html"
 }
 
 resource "authentik_flow" "enrollment" {

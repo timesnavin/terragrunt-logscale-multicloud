@@ -2,19 +2,19 @@ variable "cluster_name" {
 
 }
 variable "namespace" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 variable "logscaleinstance" {
-  type = string
-  default = "logscale"
+  type        = string
+  default     = "logscale"
   description = "(optional) describe your variable"
 }
 variable "logscale_fqdn" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 variable "logscale_fqdn_ingest" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }

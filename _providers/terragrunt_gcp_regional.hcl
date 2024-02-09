@@ -26,17 +26,17 @@ generate "provider_gcp" {
     variable "provider_gcp_region" {
       type = string
     }
-    provider "google" {        
+    provider "google" {
         default_labels = var.provider_gcp_labels
         project = var.provider_gcp_project
         region = var.provider_gcp_region
     }
-    provider "google-beta" {        
+    provider "google-beta" {
         //default_labels = var.provider_gcp_labels
         project = var.provider_gcp_project
         region = var.provider_gcp_region
     }
-    
+
 EOF
 }
 

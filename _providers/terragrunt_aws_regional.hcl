@@ -21,10 +21,10 @@ generate "provider_aws" {
     }
     variable "provider_aws_region" {
       type = string
-    }    
+    }
     provider "aws" {
         region = var.provider_aws_region
-        
+
         default_tags {
             tags = var.provider_aws_tags
         }

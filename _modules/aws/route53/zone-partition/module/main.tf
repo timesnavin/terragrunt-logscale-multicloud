@@ -10,7 +10,7 @@ module "zone" {
 }
 
 data "aws_route53_zone" "selected" {
-  name         = "${var.parent_domain}."
+  name = "${var.parent_domain}."
 }
 
 module "delegation_records" {

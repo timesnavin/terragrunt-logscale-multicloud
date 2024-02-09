@@ -20,7 +20,7 @@ generate "provider_aws" {
       type = map
     }
      provider "aws" {
-        # Note this is hard coded for public partition AWS cloud "global" 
+        # Note this is hard coded for public partition AWS cloud "global"
         # Resources are generally managed here
         region = "us-east-1"
         default_tags {

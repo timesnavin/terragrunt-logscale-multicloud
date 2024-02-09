@@ -1,7 +1,7 @@
 resource "aws_sesv2_configuration_set" "main" {
   configuration_set_name = var.partition
 
-   delivery_options {
+  delivery_options {
     tls_policy = "REQUIRE"
   }
 
@@ -20,8 +20,8 @@ resource "aws_sesv2_configuration_set" "main" {
 }
 
 resource "aws_sesv2_email_identity" "main" {
-  email_identity = var.domain
-    configuration_set_name = aws_sesv2_configuration_set.main.configuration_set_name
+  email_identity         = var.domain
+  configuration_set_name = aws_sesv2_configuration_set.main.configuration_set_name
 
 }
 
@@ -44,24 +44,24 @@ resource "aws_iam_policy" "send_mail" {
 }
 
 locals {
- arnforraw = replace(aws_sesv2_email_identity.main.arn,aws_sesv2_email_identity.main.email_identity,"*")
+  arnforraw = replace(aws_sesv2_email_identity.main.arn, aws_sesv2_email_identity.main.email_identity, "*")
 }
 data "aws_iam_policy_document" "send_mail" {
   statement {
-    actions   = ["ses:SendRawEmail"]
+    actions = ["ses:SendRawEmail"]
     resources = [
       # aws_sesv2_email_identity.main.arn,
       local.arnforraw,
       aws_sesv2_configuration_set.main.arn
-      ]
+    ]
   }
 
 }
 
 resource "random_string" "random" {
-  length           = 8
-  special          = false
-  upper = false  
+  length  = 8
+  special = false
+  upper   = false
 }
 
 module "iam_ses_user" {
@@ -72,8 +72,8 @@ module "iam_ses_user" {
 
   create_iam_user_login_profile = false
   create_iam_access_key         = true
-  password_reset_required = false
-  policy_arns                   = [
+  password_reset_required       = false
+  policy_arns = [
     aws_iam_policy.send_mail.arn
-    ]
+  ]
 }

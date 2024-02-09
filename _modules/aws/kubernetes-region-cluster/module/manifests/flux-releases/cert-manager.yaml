@@ -157,7 +157,7 @@ spec:
             - pod-template-hash
       podDisruptionBudget:
         enabled: true
-        minAvailable: 1    
+        minAvailable: 1
     webhook:
       replicaCount: 2
       podDisruptionBudget:
@@ -168,7 +168,7 @@ spec:
             memory: 105M
           limits:
             cpu: 190091m
-            memory: 408G        
+            memory: 408G
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

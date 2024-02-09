@@ -25,4 +25,3 @@ resource "kubectl_manifest" "external-dns" {
   ]
   yaml_body = templatefile("./manifests/helm-manifests/eks-aws-external-dns.yaml", { iam_role_arn = module.edns_irsa.iam_role_arn })
 }
-

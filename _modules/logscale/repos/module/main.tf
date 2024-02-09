@@ -3,7 +3,7 @@ data "kubectl_path_documents" "flux2-releases" {
   pattern = "./manifests/flux-releases/*.yaml"
   vars = {
     namespace         = var.namespace
-    cluster_name = var.cluster_name
+    cluster_name      = var.cluster_name
     allowDataDeletion = false
   }
 }

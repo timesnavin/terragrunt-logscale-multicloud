@@ -42,7 +42,7 @@ spec:
       resources:
         requests:
           cpu: 10m
-          memory: 40Mi  
+          memory: 40Mi
     watchAnyNamespace: true
     affinity:
       podAntiAffinity:

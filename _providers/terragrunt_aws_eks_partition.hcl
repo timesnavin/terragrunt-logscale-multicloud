@@ -20,10 +20,10 @@ generate "provider_aws" {
     }
     variable "provider_aws_region" {
       type = string
-    }    
+    }
     provider "aws" {
         region = var.provider_aws_region
-        
+
         default_tags {
             tags = var.provider_aws_tags
         }
@@ -35,7 +35,7 @@ generate "provider_aws_eks_helm" {
   path      = "provider_aws_eks_helm.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<-EOF
-  
+
     variable "provider_aws_eks_cluster_name" {
       type = string
     }

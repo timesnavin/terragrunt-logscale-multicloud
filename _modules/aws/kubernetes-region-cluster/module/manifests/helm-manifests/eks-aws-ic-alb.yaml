@@ -32,7 +32,7 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  
+
   values:
     enableCertManager: true
     replicas: 2

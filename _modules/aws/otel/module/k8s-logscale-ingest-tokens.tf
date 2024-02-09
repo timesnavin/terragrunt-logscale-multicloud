@@ -13,8 +13,8 @@ resource "kubectl_manifest" "infra-token" {
       managedClusterName: ${var.logscaleinstance}
       name: ${var.cluster_name}-infra-kubernetes
       repositoryName: infra-kubernetes
-      tokenSecretName: ${var.cluster_name}-infra-kubernetes-ingest-token  
-YAML  
+      tokenSecretName: ${var.cluster_name}-infra-kubernetes-ingest-token
+YAML
 }
 
 resource "kubectl_manifest" "apps-token" {
@@ -30,8 +30,8 @@ resource "kubectl_manifest" "apps-token" {
       managedClusterName: ${var.logscaleinstance}
       name: ${var.cluster_name}-apps-kubernetes
       repositoryName: apps-kubernetes
-      tokenSecretName: ${var.cluster_name}-apps-kubernetes-ingest-token  
-YAML  
+      tokenSecretName: ${var.cluster_name}-apps-kubernetes-ingest-token
+YAML
 }
 
 
@@ -48,8 +48,8 @@ resource "kubectl_manifest" "metrics-token" {
       managedClusterName: ${var.logscaleinstance}
       name: ${var.cluster_name}-metrics-kubernetes
       repositoryName: metrics-kubernetes
-      tokenSecretName: ${var.cluster_name}-metrics-kubernetes-ingest-token  
-YAML  
+      tokenSecretName: ${var.cluster_name}-metrics-kubernetes-ingest-token
+YAML
 }
 
 resource "time_sleep" "tokencreation" {
@@ -59,9 +59,9 @@ resource "time_sleep" "tokencreation" {
     kubectl_manifest.metrics-token
   ]
   triggers = {
-    infra = kubectl_manifest.infra-token.yaml_body
-    apps  = kubectl_manifest.apps-token.yaml_body
-    metrics  = kubectl_manifest.metrics-token.yaml_body
+    infra   = kubectl_manifest.infra-token.yaml_body
+    apps    = kubectl_manifest.apps-token.yaml_body
+    metrics = kubectl_manifest.metrics-token.yaml_body
   }
   create_duration = "30s"
 }

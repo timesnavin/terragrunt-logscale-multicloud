@@ -96,7 +96,7 @@ spec:
       - key: ebs.csi.aws.com/agent-not-ready
         operator: Exists
       - key: efs.csi.aws.com/agent-not-ready
-        operator: Exists            
+        operator: Exists
     node:
       tolerations:
       - key: CriticalAddonsOnly
@@ -104,4 +104,4 @@ spec:
       - key: ebs.csi.aws.com/agent-not-ready
         operator: Exists
       - key: efs.csi.aws.com/agent-not-ready
-        operator: Exists            
+        operator: Exists

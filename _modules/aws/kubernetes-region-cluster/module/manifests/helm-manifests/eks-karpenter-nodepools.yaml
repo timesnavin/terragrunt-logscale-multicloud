@@ -52,7 +52,7 @@ spec:
               requirements:
                 - key: "kubernetes.io/os"
                   operator: In
-                  values: ["linux"]              
+                  values: ["linux"]
                 - key: "karpenter.k8s.aws/instance-encryption-in-transit-supported"
                   operator: In
                   values: ["true"]
@@ -63,17 +63,17 @@ spec:
                   operator: DoesNotExist
                 - key: "karpenter.k8s.aws/instance-category"
                   operator: In
-                  values: ["c", "m", "r"]                                  
+                  values: ["c", "m", "r"]
               startupTaints:
                 - key: node.cilium.io/agent-not-ready
                   value: "true"
-                  effect: NoExecute    
+                  effect: NoExecute
                 - key: ebs.csi.aws.com/agent-not-ready
                   value: "true"
-                  effect: NoExecute    
+                  effect: NoExecute
                 - key: efs.csi.aws.com/agent-not-ready
                   value: "true"
-                  effect: NoExecute    
+                  effect: NoExecute
               kubelet:
                 podsPerCore: 4
           limits:
@@ -94,10 +94,10 @@ spec:
               requirements:
                 - key: "kubernetes.io/arch"
                   operator: In
-                  values: ["amd64"]              
+                  values: ["amd64"]
                 - key: "kubernetes.io/os"
                   operator: In
-                  values: ["linux"]              
+                  values: ["linux"]
                 - key: "karpenter.k8s.aws/instance-encryption-in-transit-supported"
                   operator: In
                   values: ["true"]
@@ -116,17 +116,17 @@ spec:
               startupTaints:
                 - key: node.cilium.io/agent-not-ready
                   value: "true"
-                  effect: NoExecute    
+                  effect: NoExecute
                 - key: ebs.csi.aws.com/agent-not-ready
                   value: "true"
-                  effect: NoExecute    
+                  effect: NoExecute
                 - key: efs.csi.aws.com/agent-not-ready
                   value: "true"
-                  effect: NoExecute   
+                  effect: NoExecute
               # taints:
               #   - key: topolvm.io/local
               #     value: "true"
-              #     effect: PreferNoSchedule   
+              #     effect: PreferNoSchedule
               kubelet:
                 podsPerCore: 4
           limits:

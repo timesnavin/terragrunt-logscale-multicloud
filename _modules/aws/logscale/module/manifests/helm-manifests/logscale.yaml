@@ -53,8 +53,8 @@ spec:
         extraConfig: |
           config.providers=env
           config.providers.env.class=org.apache.kafka.common.config.provider.EnvVarConfigProvider
-          ssl.truststore.location=/data/truststore/bundle.jks  
-          security.protocol=SASL_SSL 
+          ssl.truststore.location=/data/truststore/bundle.jks
+          security.protocol=SASL_SSL
           sasl.mechanism=SCRAM-SHA-512
           sasl.jaas.config=$${env:KAFKA_JAAS}
       buckets:

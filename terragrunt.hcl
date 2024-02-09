@@ -23,4 +23,3 @@ remote_state {
     dynamodb_table = "${local.backend.table}"
   }
 }
-

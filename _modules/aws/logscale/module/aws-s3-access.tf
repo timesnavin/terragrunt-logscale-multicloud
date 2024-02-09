@@ -32,4 +32,3 @@ resource "kubernetes_config_map" "logscale_vars" {
     saml_url                 = var.saml_url
   }
 }
-

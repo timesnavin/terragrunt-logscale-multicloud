@@ -55,4 +55,3 @@
 #                   values:
 #                     - redis-sentinel
 #             topologyKey: "kubernetes.io/hostname"
-  

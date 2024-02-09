@@ -37,7 +37,7 @@ spec:
       aws_region: ${region}
     enableJsonLogging: true
     replicas: 2
-    configKubernetes:    
+    configKubernetes:
     #   enable_finalizers: true
       enable_pod_antiaffinity: true
     affinity:

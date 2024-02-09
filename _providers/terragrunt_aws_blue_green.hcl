@@ -22,16 +22,16 @@ generate "provider_aws" {
     }
     variable "provider_aws_region" {
       type = string
-    }    
+    }
     variable "provider_aws_blue_region" {
       type = string
-    }        
+    }
     variable "provider_aws_green_region" {
       type = string
-    }        
+    }
     provider "aws" {
         region = var.provider_aws_region
-        
+
         default_tags {
             tags = var.provider_aws_tags
         }
@@ -39,7 +39,7 @@ generate "provider_aws" {
     provider "aws" {
         alias = "blue"
         region = var.provider_aws_blue_region
-        
+
         default_tags {
             tags = var.provider_aws_tags
         }
@@ -47,7 +47,7 @@ generate "provider_aws" {
     provider "aws" {
         alias = "green"
         region = var.provider_aws_green_region
-        
+
         default_tags {
             tags = var.provider_aws_tags
         }

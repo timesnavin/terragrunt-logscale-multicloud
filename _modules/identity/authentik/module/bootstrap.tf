@@ -7,7 +7,7 @@ resource "random_password" "bootstrap_token" {
 }
 
 resource "kubernetes_secret" "bootstrap" {
-  depends_on = [  ]
+  depends_on = []
   metadata {
     name      = "authentik-bootstrap"
     namespace = "identity"
@@ -15,8 +15,8 @@ resource "kubernetes_secret" "bootstrap" {
 
   data = {
     password = random_password.bootstrap_password.result
-    token = random_password.bootstrap_token.result
-    email = var.admin_email
+    token    = random_password.bootstrap_token.result
+    email    = var.admin_email
   }
   type = "Opaque"
 }

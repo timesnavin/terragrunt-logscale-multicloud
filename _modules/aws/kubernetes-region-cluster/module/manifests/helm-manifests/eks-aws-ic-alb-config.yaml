@@ -53,7 +53,7 @@ spec:
         spec:
           scheme: internet-facing
           ipAddressType: dualstack
-          group: 
+          group:
             name: partition
           loadBalancerAttributes:
             - key: access_logs.s3.enabled
@@ -81,7 +81,7 @@ spec:
         spec:
           scheme: internet-facing
           ipAddressType: dualstack
-          group: 
+          group:
             name: region
           loadBalancerAttributes:
             - key: access_logs.s3.enabled

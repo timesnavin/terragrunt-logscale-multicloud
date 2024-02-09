@@ -35,7 +35,7 @@ spec:
         apiVersion: opentelemetry.io/v1alpha1
         kind: OpenTelemetryCollector
         metadata:
-          name: otel-cluster-events            
+          name: otel-cluster-events
         spec:
           serviceAccount: otel-collector-cluster
           # image: otel/opentelemetry-collector-contrib:0.56.0
@@ -54,7 +54,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: metrics-kubernetes-ingest-token
-                  key: token                  
+                  key: token
           config: |
             exporters:
               otlphttp/k8s_logs:
@@ -64,13 +64,13 @@ spec:
               otlphttp/k8s_metrics:
                 endpoint: https://${fqdn_ingest}/api/v1/ingest/otlp
                 headers:
-                  Authorization: Bearer $HUMIO_TOKEN_K8S_METRICS                    
+                  Authorization: Bearer $HUMIO_TOKEN_K8S_METRICS
             receivers:
               k8s_events:
               k8s_cluster:
                 node_conditions_to_report:
                   [Ready, DiskPressure, MemoryPressure, PIDPressure, NetworkUnavailable]
-                allocatable_types_to_report: [cpu, memory]              
+                allocatable_types_to_report: [cpu, memory]
               k8sobjects:
                 auth_type: serviceAccount
                 objects:
@@ -80,7 +80,7 @@ spec:
                     interval: 15m
                   - name: events
                     mode: watch
-                    group: events.k8s.io                
+                    group: events.k8s.io
             processors:
               memory_limiter:
                 check_interval: 1s

@@ -7,7 +7,7 @@
 #   default = "/"
 # }
 variable "region" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 
@@ -62,20 +62,20 @@ variable "saml_signing_certificate" {
   description = "(optional) describe your variable"
 }
 variable "saml_issuer" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 
 variable "LogScaleRoot" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 
 variable "kafka_name" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }
 variable "kafka_namespace" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }

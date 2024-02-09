@@ -21,10 +21,10 @@ generate "provider_aws" {
     }
     variable "provider_aws_region" {
       type = string
-    }    
+    }
     provider "aws" {
         region = var.provider_aws_region
-        
+
         default_tags {
             tags = var.provider_aws_tags
         }
@@ -36,7 +36,7 @@ generate "provider_aws_eks_helm" {
   path      = "provider_aws_eks_helm.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<-EOF
-  
+
     variable "provider_aws_eks_cluster_name" {
       type = string
     }
@@ -81,11 +81,11 @@ generate "partition_aws" {
 
    variable "partition_aws_region" {
       type = string
-    }    
+    }
     provider "aws" {
         alias = "partition"
         region = var.partition_aws_region
-        
+
         default_tags {
             tags = var.provider_aws_tags
         }
@@ -97,7 +97,7 @@ generate "partition_aws_eks_helm" {
   path      = "partition_aws_eks_helm.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<-EOF
-  
+
   variable "partition_aws_eks_cluster_name" {
     type = string
   }

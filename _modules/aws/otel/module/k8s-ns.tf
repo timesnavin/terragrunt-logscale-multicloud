@@ -23,7 +23,7 @@ resource "kubernetes_namespace" "ns" {
 #       app: false
 #       cluster: false
 #       nodes: true
-#       serviceaccount: true   
+#       serviceaccount: true
 # YAML
 #   }
 # }

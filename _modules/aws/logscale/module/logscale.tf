@@ -8,9 +8,9 @@ resource "kubectl_manifest" "logscale" {
       namespace                = local.namespace
       region                   = var.region
       platformType             = "aws"
-      kafka_namespace=var.kafka_namespace
-      tenant = var.tenant
-      kafka_name = var.kafka_name
+      kafka_namespace          = var.kafka_namespace
+      tenant                   = var.tenant
+      kafka_name               = var.kafka_name
       kafka_prefix             = "g000"
       bucket_prefix            = "${local.namespace}/"
       bucket_storage           = var.logscale_storage_bucket_id
@@ -24,7 +24,7 @@ resource "kubectl_manifest" "logscale" {
       saml_issuer              = var.saml_issuer
       saml_signing_certificate = base64encode(var.saml_signing_certificate)
       saml_url                 = var.saml_url
-      rootUser = var.LogScaleRoot
+      rootUser                 = var.LogScaleRoot
 
   })
 }

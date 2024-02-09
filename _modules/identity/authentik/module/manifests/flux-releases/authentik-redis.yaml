@@ -42,7 +42,7 @@
 #         requests:
 #           cpu: 101m
 #           memory: 128Mi
-      
+
 #     affinity:
 #         podAntiAffinity:
 #           requiredDuringSchedulingIgnoredDuringExecution:
@@ -52,7 +52,7 @@
 #                     operator: In
 #                     values:
 #                       - redis-replication
-#               topologyKey: "kubernetes.io/hostname"              
+#               topologyKey: "kubernetes.io/hostname"
 #     storage:
 #       volumeClaimTemplate:
 #         spec:

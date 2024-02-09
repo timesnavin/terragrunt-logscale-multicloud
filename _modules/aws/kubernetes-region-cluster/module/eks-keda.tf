@@ -24,4 +24,3 @@ resource "kubectl_manifest" "keda" {
   yaml_body = templatefile("./manifests/helm-manifests/eks-keda.yaml", { iam_role_arn = module.keda_irsa.iam_role_arn, cluster_name = module.eks.cluster_name })
 
 }
-

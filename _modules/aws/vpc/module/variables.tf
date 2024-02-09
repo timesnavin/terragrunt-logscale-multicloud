@@ -24,6 +24,6 @@ variable "public_subnets" {
   description = "(optional) describe your variable"
 }
 variable "cidr" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
 }

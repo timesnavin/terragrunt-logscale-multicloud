@@ -9,4 +9,3 @@ aws:
     additional_key_owners:
       - "arn:aws:iam::042445652404:role/CS-Okta-Full-Admins-Write"
       - "arn:aws:iam::042445652404:role/env0-ci"
-
