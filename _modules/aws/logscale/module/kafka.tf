@@ -7,7 +7,7 @@ resource "kubectl_manifest" "kafka-topics" {
       kafka_name         = var.kafka_name
       kafka_namespace    = var.kafka_namespace
       tenant             = var.tenant
-      prefix             = "g000"
+      prefix             = "g001"
       logscale_namespace = local.namespace
     }
   )
