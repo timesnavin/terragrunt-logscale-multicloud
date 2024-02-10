@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: authentik-db
-  namespace: flux-releases-partition
+  namespace: identity
 spec:
   interval: 10m
   timeout: 5m
