@@ -1,5 +1,5 @@
 name: penguin
 platform: aws
-region: us-east-1
+region: us-west-2
 logscale:
   root: andre.mair@crowdstrike.com
