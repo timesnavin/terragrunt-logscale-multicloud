@@ -10,6 +10,11 @@ locals {
   #k8shost=flatten(data.kubernetes_endpoints_v1.api_endpoints.subset[*].address[*].ip)[0]
 }
 resource "helm_release" "cilium" {
+  depends_on = [
+    module.eks.access_entries,
+    module.eks.access_policy_associations,
+    module.eks.cloudwatch_log_group_arn
+  ]
   repository = "https://helm.cilium.io/"
   chart      = "cilium"
   name       = "cilium"
