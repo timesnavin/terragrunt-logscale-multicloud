@@ -2,7 +2,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: zalando-pg-ui
-  namespace: flux-system
+  namespace: flux-repos
 spec:
   interval: 60m
   url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui
@@ -11,7 +11,7 @@ apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: zalando-pg
-  namespace: flux-system
+  namespace: flux-repos
 spec:
   interval: 60m
   url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator

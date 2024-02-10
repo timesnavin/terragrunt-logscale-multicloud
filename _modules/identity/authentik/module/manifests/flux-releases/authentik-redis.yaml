@@ -2,7 +2,7 @@
 # kind: HelmRelease
 # metadata:
 #   name: authentik-redis
-#   namespace: identity
+#   namespace: flux-releases-partition
 # spec:
 #   interval: 10m
 #   timeout: 5m
@@ -13,12 +13,11 @@
 #       sourceRef:
 #         kind: HelmRepository
 #         name: ot-operators
-#         namespace: flux-system
+#         namespace: flux-releases-region
 #       interval: 5m
 #   releaseName: identity-redis
 #   targetNamespace: identity
 #   install:
-#     createNamespace: true
 #     remediation:
 #       retries: 3
 #   upgrade:
@@ -34,7 +33,7 @@
 #           kind: Deployment
 #   dependsOn:
 #     - name: redis-operator
-#       namespace: flux-system
+#       namespace: flux-releases-region
 #   values:
 #     redisReplication:
 #       clusterSize: 3

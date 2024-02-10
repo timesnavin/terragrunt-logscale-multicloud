@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib
-        namespace: flux-system
+        namespace: flux-repos
       interval: 5m
   releaseName: ${tenant}-logscale
   install:

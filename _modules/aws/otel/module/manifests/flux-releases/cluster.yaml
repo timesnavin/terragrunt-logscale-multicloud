@@ -13,12 +13,11 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bedag
-        namespace: flux-system
+        namespace: flux-repos
       interval: 5m
   releaseName: otel-cluster
   targetNamespace: otel-system
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -28,7 +27,7 @@ spec:
     enable: false
   dependsOn:
     - name: otel-operator
-      namespace: flux-system
+      namespace: flux-releases-region
   values:
     templates:
       - |

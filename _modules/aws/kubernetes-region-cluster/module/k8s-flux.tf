@@ -1,10 +1,13 @@
 resource "helm_release" "flux2" {
-  depends_on       = [helm_release.cilium]
+  depends_on = [
+    helm_release.cilium
+
+  ]
   repository       = "https://fluxcd-community.github.io/helm-charts"
   chart            = "flux2"
   name             = "flux2"
   namespace        = "flux-system"
-  create_namespace = true
+  create_namespace = false
   version          = "2.12.2"
   values = [<<YAML
 logLevel: debug

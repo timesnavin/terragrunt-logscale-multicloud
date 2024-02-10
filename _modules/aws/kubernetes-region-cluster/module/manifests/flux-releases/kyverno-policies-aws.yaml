@@ -2,7 +2,7 @@
 # kind: HelmRelease
 # metadata:
 #   name: kyverno-policies-aws
-#   namespace: flux-system
+#   namespace: flux-releases-region
 # spec:
 #   interval: 10m
 #   timeout: 5m
@@ -13,11 +13,11 @@
 #       sourceRef:
 #         kind: HelmRepository
 #         name: bedag
+#         namespace: flux-repos
 #       interval: 5m
 #   releaseName: kyverno-policies
 #   targetNamespace: kyverno
 #   install:
-#     createNamespace: true
 #     remediation:
 #       retries: 3
 #   upgrade:

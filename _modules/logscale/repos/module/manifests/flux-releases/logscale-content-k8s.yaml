@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bedag
-        namespace: flux-system
+        namespace: flux-repos
       interval: 5m
   releaseName: logscale-content-k8s
   install:

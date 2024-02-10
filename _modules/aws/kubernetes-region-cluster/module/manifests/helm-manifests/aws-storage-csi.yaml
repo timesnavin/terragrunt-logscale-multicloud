@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: aws-storage-csi
-  namespace: flux-system
+  namespace: flux-releases-region
 spec:
   interval: 10m
   timeout: 5m
@@ -13,11 +13,11 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bedag
+        namespace: flux-repos
       interval: 5m
   releaseName: aws-storage-csi
   targetNamespace: kube-system
   install:
-    createNamespace: false
     remediation:
       retries: 3
   upgrade:

@@ -11,6 +11,7 @@ locals {
 }
 resource "helm_release" "cilium" {
   depends_on = [
+    module.eks.eks_managed_node_groups,
     module.eks.access_entries,
     module.eks.access_policy_associations,
     module.eks.cloudwatch_log_group_arn

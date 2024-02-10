@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: authentik-db
-  namespace: identity
+  namespace: flux-releases-partition
 spec:
   interval: 10m
   timeout: 5m
@@ -13,12 +13,11 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bedag
-        namespace: flux-system
+        namespace: flux-repos
       interval: 5m
   releaseName: authentik-db
   targetNamespace: identity
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -34,7 +33,7 @@ spec:
           kind: Deployment
   dependsOn:
     - name: zalando
-      namespace: flux-system
+      namespace: flux-releases-region
   values:
     resources:
       - kind: "postgresql"

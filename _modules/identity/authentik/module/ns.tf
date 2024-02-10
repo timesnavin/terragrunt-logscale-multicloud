@@ -3,8 +3,6 @@ resource "kubernetes_namespace" "identity" {
     annotations = {
       name = "identity"
     }
-
-
     name = "identity"
   }
 }
