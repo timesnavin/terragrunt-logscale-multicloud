@@ -39,6 +39,8 @@ spec:
       enabled: true
       updater:
         enabled: true
+      admissionController:
+        enabled: false
     controller:
       affinity:
         podAntiAffinity:
