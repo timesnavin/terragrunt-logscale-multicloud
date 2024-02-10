@@ -147,7 +147,6 @@ spec:
                     operator: In
                     values:
                       - kafka
-                      - zookeeper
               topologyKey: kubernetes.io/hostname
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -160,8 +159,7 @@ spec:
 
       topologySpreadConstraints:
         - maxSkew: 2
-          minDomains: 2
-          whenUnsatisfiable: DoNotSchedule
+          whenUnsatisfiable: ScheduleAnyway
           topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
@@ -204,7 +202,6 @@ spec:
                   - key: app.kubernetes.io/name
                     operator: In
                     values:
-                      - kafka
                       - zookeeper
               topologyKey: kubernetes.io/hostname
         nodeAffinity:
@@ -218,8 +215,7 @@ spec:
 
       topologySpreadConstraints:
         - maxSkew: 2
-          minDomains: 2
-          whenUnsatisfiable: DoNotSchedule
+          whenUnsatisfiable: ScheduleAnyway
           topologyKey: topology.kubernetes.io/zone
           labelSelector:
             matchLabels:
