@@ -72,4 +72,5 @@ inputs = {
   LogScaleRoot    = try(local.tenant.logscale.root, "akaadmin")
   kafka_name      = local.kafka_name
   kafka_namespace = local.kafka_namespace
+  kafka_prefix_increment = try(local.tenant.logscale.kafka.prefixIncrement,"0")
 }

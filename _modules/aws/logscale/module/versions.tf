@@ -27,6 +27,10 @@ terraform {
       source  = "hashicorp/null"
       version = ">= 3.0"
     }
+    counters = {
+      source  = "RutledgePaulV/counters"
+      version = "0.0.5"
+    }
   }
 }
 
