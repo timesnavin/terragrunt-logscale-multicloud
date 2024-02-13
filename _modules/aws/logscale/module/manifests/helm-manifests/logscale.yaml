@@ -39,7 +39,7 @@ spec:
 
     humio:
       image:
-        tag: 1.125.0
+        tag: 1.124.0
       trustManagerConfigMap: cluster-trust-bundle
       extraENV:
         - name: KAFKA_JAAS

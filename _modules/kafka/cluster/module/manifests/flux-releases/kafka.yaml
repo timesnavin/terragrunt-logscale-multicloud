@@ -99,7 +99,7 @@ spec:
         # targetMemoryUtilizationPercentage: 80
 
     kafka:
-      replicas: 3
+      replicas: 4
       authorization:
         enabled: true
       listeners:
