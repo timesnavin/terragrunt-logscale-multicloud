@@ -6,8 +6,8 @@ module "s3_logscale_archive" {
   bucket_prefix = "${var.partition_name}-logscale-archive"
   acl           = "private"
 
-  control_object_ownership = true
-  object_ownership         = "ObjectWriter"
+  control_object_ownership = false
+  object_ownership         = "BucketOwnerEnforced"
 
   versioning = {
     enabled = true
