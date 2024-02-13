@@ -1,8 +1,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: otel-cluster
-  namespace: otel-system
+  name: otel-system-events
+  namespace: flux-releases-region
 spec:
   interval: 10m
   timeout: 5m
@@ -15,7 +15,7 @@ spec:
         name: bedag
         namespace: flux-repos
       interval: 5m
-  releaseName: otel-cluster
+  releaseName: otel-events
   targetNamespace: otel-system
   install:
     remediation:
@@ -44,26 +44,22 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
-            - name: HUMIO_TOKEN_K8S_LOGS
-              valueFrom:
-                secretKeyRef:
-                  name: infra-kubernetes-ingest-token
-                  key: token
-            - name: HUMIO_TOKEN_K8S_METRICS
-              valueFrom:
-                secretKeyRef:
-                  name: metrics-kubernetes-ingest-token
-                  key: token
+            # - name: HUMIO_TOKEN_K8S_LOGS
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: infra-kubernetes-ingest-token
+            #       key: token
+            # - name: HUMIO_TOKEN_K8S_METRICS
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: metrics-kubernetes-ingest-token
+            #       key: token
           config: |
             exporters:
-              otlphttp/k8s_logs:
-                endpoint: https://${fqdn_ingest}/api/v1/ingest/otlp
-                headers:
-                  Authorization: Bearer $HUMIO_TOKEN_K8S_LOGS
-              otlphttp/k8s_metrics:
-                endpoint: https://${fqdn_ingest}/api/v1/ingest/otlp
-                headers:
-                  Authorization: Bearer $HUMIO_TOKEN_K8S_METRICS
+                otlphttp:
+                  endpoint: http://otel-cluster-partition-collector:4318
+                  tls:
+                    insecure: true
             receivers:
               k8s_events:
               k8s_cluster:
@@ -102,8 +98,8 @@ spec:
                 metrics:
                   receivers: [k8s_cluster]
                   processors: [batch]
-                  exporters: [otlphttp/k8s_metrics]
+                  exporters: [otlphttp]
                 logs:
                   receivers: [k8s_events,k8sobjects,k8s_cluster]
                   processors: [batch]
-                  exporters: [otlphttp/k8s_logs]
+                  exporters: [otlphttp]

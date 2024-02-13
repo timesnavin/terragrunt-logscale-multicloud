@@ -1,0 +1,98 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: otel-system-partition
+  namespace: flux-releases-region
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: raw
+      version: "2.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: bedag
+        namespace: flux-repos
+      interval: 5m
+  releaseName: otel-partition
+  targetNamespace: otel-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  dependsOn:
+    - name: otel-operator
+      namespace: flux-releases-region
+  values:
+    templates:
+      - |
+        apiVersion: opentelemetry.io/v1alpha1
+        kind: OpenTelemetryCollector
+        metadata:
+          name: otel-cluster-partition
+        spec:
+          serviceAccount: otel-collector-cluster
+          # image: otel/opentelemetry-collector-contrib:0.56.0
+          mode: deployment
+          env:
+            - name: K8S_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: HUMIO_TOKEN_K8S_LOGS
+              valueFrom:
+                secretKeyRef:
+                  name: infra-kubernetes-ingest-token
+                  key: token
+          config: |
+            exporters:
+              otlphttp/k8s_logs:
+                endpoint: https://${fqdn_ingest}/api/v1/ingest/otlp
+                headers:
+                  Authorization: Bearer $HUMIO_TOKEN_K8S_LOGS
+              debug:
+            receivers:
+              otlp:
+                protocols:
+                  http:
+                  # grpc:
+
+            processors:
+              memory_limiter:
+                check_interval: 1s
+                limit_percentage: 75
+                spike_limit_percentage: 15
+              batch:
+                send_batch_size: 1000
+                timeout: 5s
+            extensions:
+              health_check:
+                endpoint: 0.0.0.0:13133
+              pprof:
+                endpoint: :1888
+              zpages:
+                endpoint: :55679
+
+            service:
+              extensions: [pprof, zpages, health_check]
+              pipelines:
+                # metrics:
+                #   receivers:
+                #   - otlp
+                #   processors:
+                #   - batch
+                #   exporters:
+                #   - otlphttp/k8s_logs
+                logs:
+                  receivers:
+                  - otlp
+                  processors:
+                  - batch
+                  exporters:
+                  - otlphttp/k8s_logs
+                  - debug

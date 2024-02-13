@@ -33,16 +33,9 @@ spec:
           kind: Deployment
   values:
     replicaCount: 2
-    manager:
-      resources:
-        requests:
-          cpu: 10m
-          memory: 40Mi
-    kubeRBACProxy:
-      resources:
-        requests:
-          cpu: 10m
-          memory: 40Mi
+    pdb:
+      creat: true
+
     watchAnyNamespace: true
     affinity:
       podAntiAffinity:

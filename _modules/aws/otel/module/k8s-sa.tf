@@ -1,7 +1,4 @@
 resource "kubectl_manifest" "sa-cluster" {
-  depends_on = [
-    kubernetes_namespace.ns
-  ]
   yaml_body = <<-YAML
     apiVersion: v1
     kind: ServiceAccount
@@ -18,6 +15,14 @@ resource "kubectl_manifest" "sa-clusterrole" {
     metadata:
       name: otel-collector-cluster
     rules:
+      - apiGroups:
+          - 'events.k8s.io'
+        resources:
+          - events
+        verbs:
+          - get
+          - list
+          - watch
       - apiGroups:
           - ''
         resources:

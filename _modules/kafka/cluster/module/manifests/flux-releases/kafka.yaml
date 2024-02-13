@@ -57,7 +57,6 @@ spec:
                     values:
                       - linux
 
-
     topicOperator:
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
@@ -119,14 +118,14 @@ spec:
         # resources, such as Minikube. If you do want to specify resources, uncomment the following
         # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
         limits:
-          cpu: 1
-          memory: 2000Mi
+          cpu: 2
+          memory: 4Gi
         requests:
-          cpu: 100m
-          memory: 1500Mi
+          cpu: 1
+          memory: 2Gi
       storage:
         type: persistent-claim
-        size: 150Gi
+        size: 1500Gi
         deleteClaim: true
         # Must be SSD or NVME like storage IOPs is the primary node constraint
         class: cluster-block-base-ext4
