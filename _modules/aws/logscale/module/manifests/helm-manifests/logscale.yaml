@@ -39,9 +39,15 @@ spec:
 
     humio:
       image:
-        tag: 1.124.0
+        tag: 1.125.0
       trustManagerConfigMap: cluster-trust-bundle
       extraENV:
+        - name: HUMIO_MAX_DIRECT_MEMORY_SIZE_MB
+          value: "1024"
+        - name: MAX_SERIES_LIMIT
+          value: "1000"
+        - name: ENABLE_IOC_SERVICE
+          value: "false"
         - name: KAFKA_JAAS
           valueFrom:
             secretKeyRef:
@@ -86,11 +92,11 @@ spec:
       #In general for these node requests and limits should match
       resources:
         requests:
-          memory: 32Gi
+          memory: 12Gi
           cpu: 1
         limits:
-          memory: 32Gi
-          cpu: 2
+          memory: 24Gi
+          cpu: 4
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -175,12 +181,12 @@ spec:
           priorityClass: partition-medium
           nodeCount: 1
           resources:
-            limits:
-              cpu: "1"
-              memory: 32Gi
             requests:
               cpu: "1"
-              memory: 32Gi
+              memory: 8Gi
+            limits:
+              cpu: "2"
+              memory: 12Gi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -218,12 +224,12 @@ spec:
           priorityClass: partition-low
           nodeCount: 1
           resources:
-            limits:
-              cpu: "1"
-              memory: 32Gi
             requests:
               cpu: "1"
-              memory: 32Gi
+              memory: 8Gi
+            limits:
+              cpu: "2"
+              memory: 12Gi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
