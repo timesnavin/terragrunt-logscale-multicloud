@@ -222,6 +222,13 @@ spec:
                   # ## - run_id: "0"
                   # ## - stream: "stdout"
                   # ## - fluent.tag: "containers.loggercontainer"
+                  - type: remove
+                    field: body.logtag
+                  - type: remove
+                    field: body.time
+                  - type: move
+                    from: body.log
+                    to: body
                   - id: move-attributes
                     type: move
                     from: body.stream
