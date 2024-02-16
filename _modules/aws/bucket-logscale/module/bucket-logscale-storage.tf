@@ -6,7 +6,7 @@ module "s3_logscale_storage" {
   bucket_prefix = "${var.partition_name}-logscale-storage"
   acl           = "private"
 
-  control_object_ownership = false
+  control_object_ownership = true
   object_ownership         = "BucketOwnerEnforced"
 
   versioning = {
