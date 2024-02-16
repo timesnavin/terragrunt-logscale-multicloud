@@ -30,7 +30,7 @@ spec:
       namespace: flux-releases-region
   values:
     templates:
-      - |
+      - |-
         apiVersion: opentelemetry.io/v1alpha1
         kind: OpenTelemetryCollector
         metadata:
@@ -249,10 +249,64 @@ spec:
                   - type: move
                     from: attributes["log.file.path"]
                     to: body["log.file.path"]
-                  - type: move
-                    from: body.log
-                    to: body
 
+                  - id: get-log-format
+                    type: router
+                    routes:
+                      - output: log-format-json
+                        expr: 'body.log matches "^{.*}$"'
+                    default: final
+                  # The entire body is json
+                  - id: log-format-json
+                    type: json_parser
+                    parse_from: body.log
+                    parse_to: body
+                    output: remove-log-body
+                  - id: remove-log-body
+                    type: remove
+                    field: body.log
+                  - id: get-log-format-final
+                    type: noop
+
+
+                  - id: get-body-message-format
+                    type: router
+                    routes:
+                      - output: body-message-format-kv-cs
+                        expr: 'body.message matches "((?:[^=, ]+=[^,]+, )+[^=]+=.+)$"'
+                    default: final
+
+                  # message trailer is semi structure data
+                  # in form of kv pairs with a , seperator
+                  - id: body-message-format-kv-cs
+                    type: regex_parser
+                    parse_from: body.message
+                    parse_to: body.oteltmp.message
+                    regex: '(?mU)(?:(?P<header>.*) ?)(?P<data>(?:[^=, ]+=[^,]+, )+[^=]+=.+)$'
+                  - type: key_value_parser
+                    parse_from: body.oteltmp.message.data
+                    parse_to: body
+                    pair_delimiter: ","
+                  - type: remove
+                    field: body.oteltmp.message.data
+                  - type: remove
+                    field: body.oteltmp.message.header
+                  - type: move
+                    from: body.oteltmp.message
+                    to: body.message
+                    if: 'body.oteltmp.message.header matches "^..."'
+
+                  # # the message tail is kv inside of csv
+                  # - id: log-format-kv-cs
+                  #   type: regex_parser
+                  #   parse_from: body.
+                  #   regex: '^Host=(?P<host>[^,]+), Type=(?P<type>.*)$'
+                  # - id: move-body-log
+                  #   type: move
+                  #   from: body.log
+                  #   to: body
+                  - id: final
+                    type: noop
             processors:
               memory_limiter:
                 check_interval: 1s
@@ -265,13 +319,37 @@ spec:
                 detectors:
                 - env
                 - eks
-                - ec2
-                - system
+                # - system
+                # - env
                 system:
                   hostname_sources: ["os"]
                 timeout: 2s
                 override: false
               k8sattributes:
+                passthrough: false
+                filter:
+                  node_from_env_var: K8S_NODE_NAME
+                extract:
+                  metadata:
+                    - k8s.pod.name
+                    - k8s.pod.uid
+                    - k8s.deployment.name
+                    - k8s.namespace.name
+                    - k8s.node.name
+                    - k8s.pod.start_time
+                  labels:
+                    - tag_name: app.label.component
+                      key: app.kubernetes.io/component
+                      from: pod
+                pod_association:
+                  - sources:
+                      - from: resource_attribute
+                        name: k8s.pod.ip
+                  - sources:
+                      - from: resource_attribute
+                        name: k8s.pod.uid
+                  - sources:
+                      - from: connection
             extensions:
               health_check:
                 endpoint: 0.0.0.0:13133

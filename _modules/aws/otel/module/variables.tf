@@ -18,3 +18,7 @@ variable "logscale_fqdn_ingest" {
   type        = string
   description = "(optional) describe your variable"
 }
+variable "oidc_provider_arn" {
+  type        = string
+  description = "(optional) describe your variable"
+}

@@ -48,4 +48,6 @@ inputs = {
   namespace            = dependency.logscale.outputs.namespace
   logscale_fqdn        = dependency.logscale.outputs.logscale_fqdn
   logscale_fqdn_ingest = dependency.logscale.outputs.logscale_fqdn_ingest
+
+  oidc_provider_arn = dependency.kubernetes_base.outputs.oidc_provider_arn
 }
