@@ -11,7 +11,7 @@ module "otel_irsa" {
   oidc_providers = {
     main = {
       provider_arn               = var.oidc_provider_arn
-      namespace_service_accounts = ["otel-system:otel-collector-cluster"]
+      namespace_service_accounts = ["kube-system:otel-collector-cluster"]
     }
   }
 }
@@ -22,7 +22,7 @@ resource "kubectl_manifest" "sa-cluster" {
     kind: ServiceAccount
     metadata:
       name: otel-collector-cluster
-      namespace: otel-system
+      namespace: kube-system
       annotations:
         eks.amazonaws.com/role-arn: ${module.otel_irsa.iam_role_arn}
     automountServiceAccountToken: true
@@ -118,6 +118,43 @@ resource "kubectl_manifest" "sa-clusterrolebinding" {
     subjects:
       - kind: ServiceAccount
         name: otel-collector-cluster
-        namespace: otel-system
+        namespace: kube-system
+  YAML
+}
+
+
+resource "kubectl_manifest" "sa-role" {
+  yaml_body = <<-YAML
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: Role
+    metadata:
+      name: otel-collector
+      namespace: kube-system
+    rules:
+    - apiGroups: [""]
+      resources: ["configmaps"]
+      resourceNames: ["aws-auth"]
+      verbs: ["get"]
+YAML
+}
+resource "kubectl_manifest" "sa-rolebinding" {
+  depends_on = [
+    kubectl_manifest.sa-cluster,
+    kubectl_manifest.sa-cluster
+  ]
+  yaml_body = <<-YAML
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: RoleBinding
+    metadata:
+      name: otel-collector
+      namespace: kube-system
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: otel-collector
+    subjects:
+      - kind: ServiceAccount
+        name: otel-collector-cluster
+        namespace: kube-system
   YAML
 }

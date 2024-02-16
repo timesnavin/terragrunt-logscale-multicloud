@@ -1,0 +1,85 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: kube-system-kafka-topics
+  namespace: flux-releases-region
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: raw
+      version: "2.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: bedag
+        namespace: flux-repos
+      interval: 5m
+  releaseName: kube-system-kafka-topics
+  targetNamespace: region-kafka
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  dependsOn:
+    - name: strimzi-operator
+      namespace: flux-releases-region
+  values:
+    templates:
+      - |
+        apiVersion: kafka.strimzi.io/v1beta2
+        kind: KafkaTopic
+        metadata:
+          labels:
+            strimzi.io/cluster: regional
+          name: otel-events
+        spec:
+          config:
+            cleanup.policy: delete
+            min.insync.replicas: 2
+            retention.bytes: -1
+            retention.ms: 3600000
+          partitions: 12
+          replicas: 3
+          topicName: otel-events
+      - |
+        apiVersion: kafka.strimzi.io/v1beta2
+        kind: KafkaUser
+        metadata:
+          labels:
+            strimzi.io/cluster: regional
+          name: kube-system
+          namespace: region-kafka
+        spec:
+          authentication:
+            type: scram-sha-512
+          authorization:
+            acls:
+            - operations:
+              - Describe
+              resource:
+                type: cluster
+            - host: '*'
+              operations:
+              - Delete
+              - Describe
+              - DescribeConfigs
+              - Read
+              - Write
+              resource:
+                name: otel
+                patternType: prefix
+                type: topic
+            type: simple
+          template:
+            secret:
+              metadata:
+                annotations:
+                  reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+                  reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: kube-system
+                  reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+                  reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: kube-system

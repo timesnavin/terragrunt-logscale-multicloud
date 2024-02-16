@@ -1,3 +1,3 @@
 locals {
-  namespace = "otel-system"
+  namespace = "kube-system"
 }

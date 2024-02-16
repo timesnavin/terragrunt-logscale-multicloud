@@ -16,7 +16,7 @@ spec:
         namespace: flux-repos
       interval: 5m
   releaseName: otel-node-pod
-  targetNamespace: otel-system
+  targetNamespace: kube-system
   install:
     remediation:
       retries: 3
@@ -197,116 +197,126 @@ spec:
                     regex: '^.*\/(?P<namespace>[^_]+)_(?P<pod_name>[^_]+)_(?P<uid>[a-f0-9\-]+)\/(?P<container_name>[^\._]+)\/(?P<run_id>\d+)\.log$'
                     parse_from: attributes["log.file.path"]
 
-                  ## The following actions are being performed:
-                  ## - renaming attributes
-                  ## - moving stream from body to attribtues
-                  ## - using body.log as body
-                  ## - create fluent.tag attribute in order to route in metadata pods
-                  ## Input Body (JSON): {
-                  ##   "log": "2001-02-03 04:05:06 loggerlog 1 first line\n",
-                  ##   "stream": "stdout",
-                  ## }
-                  ## Output Body (String): "2001-02-03 04:05:06 loggerlog 1 first line\n"
-                  ## Input Attributes:
-                  ## - log.file.path: '/var/log/pods/default_logger-multiline-4nvg4_aed49747-b541-4a07-8663-f7e1febc47d5/loggercontainer/0.log'
-                  ## - container_name: "loggercontainer",
-                  ## - namespace: "default",
-                  ## - pod_name: "logger-multiline-4nvg4",
-                  ## - run_id: "0",
-                  ## - uid: "aed49747-b541-4a07-8663-f7e1febc47d5"
-                  ## Output Attributes:
-                  ## - k8s.container.name: "loggercontainer"
-                  ## - k8s.namespace.name: "default"
-                  ## - k8s.pod.name: "logger-multiline-4nvg4"
-                  ## - k8s.pod.uid: "aed49747-b541-4a07-8663-f7e1febc47d5"
-                  ## - run_id: "0"
-                  ## - stream: "stdout"
-                  ## - fluent.tag: "containers.loggercontainer"
+                  # ## The following actions are being performed:
+                  # ## - renaming attributes
+                  # ## - moving stream from body to attribtues
+                  # ## - using body.log as body
+                  # ## - create fluent.tag attribute in order to route in metadata pods
+                  # ## Input Body (JSON): {
+                  # ##   "log": "2001-02-03 04:05:06 loggerlog 1 first line\n",
+                  # ##   "stream": "stdout",
+                  # ## }
+                  # ## Output Body (String): "2001-02-03 04:05:06 loggerlog 1 first line\n"
+                  # ## Input Attributes:
+                  # ## - log.file.path: '/var/log/pods/default_logger-multiline-4nvg4_aed49747-b541-4a07-8663-f7e1febc47d5/loggercontainer/0.log'
+                  # ## - container_name: "loggercontainer",
+                  # ## - namespace: "default",
+                  # ## - pod_name: "logger-multiline-4nvg4",
+                  # ## - run_id: "0",
+                  # ## - uid: "aed49747-b541-4a07-8663-f7e1febc47d5"
+                  # ## Output Attributes:
+                  # ## - k8s.container.name: "loggercontainer"
+                  # ## - k8s.namespace.name: "default"
+                  # ## - k8s.pod.name: "logger-multiline-4nvg4"
+                  # ## - k8s.pod.uid: "aed49747-b541-4a07-8663-f7e1febc47d5"
+                  # ## - run_id: "0"
+                  # ## - stream: "stdout"
+                  # ## - fluent.tag: "containers.loggercontainer"
                   - id: move-attributes
                     type: move
                     from: body.stream
                     to: attributes["stream"]
                   - type: move
                     from: attributes.container_name
-                    to: attributes["k8s.container.name"]
+                    to: resource["k8s.container.name"]
                   - type: move
                     from: attributes.namespace
-                    to: attributes["k8s.namespace.name"]
+                    to: resource["k8s.namespace.name"]
                   - type: move
                     from: attributes.pod_name
-                    to: attributes["k8s.pod.name"]
+                    to: resource["k8s.pod.name"]
                   - type: move
                     from: attributes.run_id
-                    to: attributes["run_id"]
+                    to: resource["run_id"]
                   - type: move
                     from: attributes.uid
-                    to: attributes["k8s.pod.uid"]
-                  - type: add
-                    field: attributes["fluent.tag"]
-                    value: EXPR("containers." + attributes["k8s.container.name"])
-                  ## Use remove operator when available in opentelemetry collector:
-                  ## https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/9524
-                  - type: move
-                    from: attributes["log.file.path"]
-                    to: body["log.file.path"]
+                    to: resource["k8s.pod.uid"]
+                  # - type: add
+                  #   field: attributes["fluent.tag"]
+                  #   value: EXPR("containers." + attributes["k8s.container.name"])
+                  # ## Use remove operator when available in opentelemetry collector:
+                  # ## https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/9524
+                  # - type: move
+                  #   from: attributes["log.file.path"]
+                  #   to: attributes["log.file.path"]
 
-                  - id: get-log-format
-                    type: router
-                    routes:
-                      - output: log-format-json
-                        expr: 'body.log matches "^{.*}$"'
-                    default: final
-                  # The entire body is json
-                  - id: log-format-json
-                    type: json_parser
-                    parse_from: body.log
-                    parse_to: body
-                    output: remove-log-body
-                  - id: remove-log-body
-                    type: remove
-                    field: body.log
-                  - id: get-log-format-final
-                    type: noop
+                  # - id: get-log-format
+                  #   type: router
+                  #   routes:
+                  #     - output: log-format-json
+                  #       expr: 'body.log matches "^{.*}$"'
+                  #   default: final
+                  # # The entire body is json
+                  # - id: log-format-json
+                  #   type: json_parser
+                  #   parse_from: body.log
+                  #   parse_to: body
+                  #   output: remove-log-body
+                  # - id: remove-log-body
+                  #   type: remove
+                  #   field: body.log
+                  # - id: get-log-format-final
+                  #   type: noop
 
 
-                  - id: get-body-message-format
-                    type: router
-                    routes:
-                      - output: body-message-format-kv-cs
-                        expr: 'body.message matches "((?:[^=, ]+=[^,]+, )+[^=]+=.+)$"'
-                    default: final
+                  # - id: get-body-message-format
+                  #   type: router
+                  #   routes:
+                  #     - output: body-message-format-kv-cs
+                  #       expr: 'body.message matches "((?:[^=, ]+=[^,]+, )+[^=]+=.+)$"'
+                  #     - output: body-message-format-kv-ss
+                  #       expr: |
+                  #         body.message matches "([^= ]+=(?:['\"][^'\"]+['\"]|[^ ]+|))"
+                  #   default: final
 
-                  # message trailer is semi structure data
-                  # in form of kv pairs with a , seperator
-                  - id: body-message-format-kv-cs
-                    type: regex_parser
-                    parse_from: body.message
-                    parse_to: body.oteltmp.message
-                    regex: '(?mU)(?:(?P<header>.*) ?)(?P<data>(?:[^=, ]+=[^,]+, )+[^=]+=.+)$'
-                  - type: key_value_parser
-                    parse_from: body.oteltmp.message.data
-                    parse_to: body
-                    pair_delimiter: ","
-                  - type: remove
-                    field: body.oteltmp.message.data
-                  - type: remove
-                    field: body.oteltmp.message.header
-                  - type: move
-                    from: body.oteltmp.message
-                    to: body.message
-                    if: 'body.oteltmp.message.header matches "^..."'
+                  # # message trailer is semi structure data
+                  # # in form of kv pairs with a , seperator
+                  # - id: body-message-format-kv-cs
+                  #   type: add
+                  #   field: body.attributes.log.message.format
+                  #   value: msg+kvcs
+                  # - type: regex_parser
+                  #   parse_from: body.message
+                  #   parse_to: body.oteltmp.message
+                  #   regex: '(?mU)(?:(?P<header>.*) ?)(?P<data>(?:[^=, ]+=[^,]+, )+[^=]+=.+)$'
+                  # - type: key_value_parser
+                  #   parse_from: body.oteltmp.message.data
+                  #   parse_to: body
+                  #   pair_delimiter: ","
+                  # - type: remove
+                  #   field: body.oteltmp.message.data
+                  # - type: remove
+                  #   field: body.oteltmp.message.header
+                  #   output: final
 
-                  # # the message tail is kv inside of csv
-                  # - id: log-format-kv-cs
-                  #   type: regex_parser
-                  #   parse_from: body.
-                  #   regex: '^Host=(?P<host>[^,]+), Type=(?P<type>.*)$'
-                  # - id: move-body-log
-                  #   type: move
-                  #   from: body.log
-                  #   to: body
-                  - id: final
-                    type: noop
+                  # - id: body-message-format-kv-ss
+                  #   type: add
+                  #   field: body.attributes.log.message.format
+                  #   value: msg+kvss
+                  # - type: regex_parser
+                  #   parse_from: body.message
+                  #   parse_to: body.oteltmp.message
+                  #   regex: |
+                  #         (?P<data>[^= ]+=(?:['\"][^'\"]+['\"]|[^ ]+|))
+                  # - type: key_value_parser
+                  #   parse_from: body.oteltmp.message.data
+                  #   parse_to: body
+                  # # - type: remove
+                  # #   field: body.oteltmp.message.data
+                  # #   output: final
+
+                  # - id: final
+                  #   type: noop
             processors:
               memory_limiter:
                 check_interval: 1s
@@ -314,17 +324,28 @@ spec:
                 spike_limit_percentage: 15
               batch:
                 send_batch_size: 1000
-                timeout: 5s
+                timeout: 15s
               resourcedetection:
                 detectors:
                 - env
                 - eks
-                # - system
-                # - env
+                - ec2
+                - system
+                eks:
+                  resource_attributes:
+                    k8s.cluster.name:
+                      enabled: true
+
                 system:
-                  hostname_sources: ["os"]
-                timeout: 2s
-                override: false
+                  resource_attributes:
+                    host.name:
+                      enabled: true
+                    host.id:
+                      enabled: false
+                    os.type:
+                      enabled: true
+                timeout: 3s
+                override: true
               k8sattributes:
                 passthrough: false
                 filter:
@@ -332,7 +353,6 @@ spec:
                 extract:
                   metadata:
                     - k8s.pod.name
-                    - k8s.pod.uid
                     - k8s.deployment.name
                     - k8s.namespace.name
                     - k8s.node.name
@@ -341,15 +361,19 @@ spec:
                     - tag_name: app.label.component
                       key: app.kubernetes.io/component
                       from: pod
+                    - tag_name: app.label.instance
+                      key: app.kubernetes.io/instance
+                      from: pod
+                    - tag_name: app.label.managed-by
+                      key: app.kubernetes.io/managed-by
+                      from: pod
+                    - tag_name: app.label.name
+                      key: app.kubernetes.io/name
+                      from: pod
                 pod_association:
                   - sources:
                       - from: resource_attribute
-                        name: k8s.pod.ip
-                  - sources:
-                      - from: resource_attribute
                         name: k8s.pod.uid
-                  - sources:
-                      - from: connection
             extensions:
               health_check:
                 endpoint: 0.0.0.0:13133
@@ -367,7 +391,7 @@ spec:
                   receivers:
                   - filelog/containers
                   processors:
-                  - resourcedetection
                   - k8sattributes
+                  - resourcedetection
                   - batch
                   exporters: [otlphttp]

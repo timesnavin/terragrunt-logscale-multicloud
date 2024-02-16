@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: otel-system-partition
+  name: kube-system-partition
   namespace: flux-releases-region
 spec:
   interval: 10m
@@ -16,7 +16,7 @@ spec:
         namespace: flux-repos
       interval: 5m
   releaseName: otel-partition
-  targetNamespace: otel-system
+  targetNamespace: kube-system
   install:
     remediation:
       retries: 3

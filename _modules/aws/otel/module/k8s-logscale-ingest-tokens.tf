@@ -95,7 +95,7 @@ data "kubernetes_secret" "otel-metrics-token" {
 resource "kubernetes_secret" "infra-kubernetes-ingest-token" {
   metadata {
     name      = "infra-kubernetes-ingest-token"
-    namespace = "otel-system"
+    namespace = "kube-system"
   }
 
   data = {
@@ -108,7 +108,7 @@ resource "kubernetes_secret" "infra-kubernetes-ingest-token" {
 resource "kubernetes_secret" "apps-kubernetes-ingest-token" {
   metadata {
     name      = "apps-kubernetes-ingest-token"
-    namespace = "otel-system"
+    namespace = "kube-system"
   }
 
   data = {
@@ -120,7 +120,7 @@ resource "kubernetes_secret" "apps-kubernetes-ingest-token" {
 resource "kubernetes_secret" "metrics-kubernetes-ingest-token" {
   metadata {
     name      = "metrics-kubernetes-ingest-token"
-    namespace = "otel-system"
+    namespace = "kube-system"
   }
 
   data = {
