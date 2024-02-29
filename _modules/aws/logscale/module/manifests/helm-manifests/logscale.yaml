@@ -39,7 +39,7 @@ spec:
 
     humio:
       image:
-        tag: 1.125.0
+        tag: 1.127.0
       trustManagerConfigMap: cluster-trust-bundle
       extraENV:
         - name: HUMIO_MAX_DIRECT_MEMORY_SIZE_MB
