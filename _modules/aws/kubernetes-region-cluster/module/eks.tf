@@ -10,7 +10,7 @@ data "aws_ami" "eks_default_arm" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.2.1"
+  version = "20.4.0"
 
   cluster_name                   = var.name
   cluster_version                = var.cluster_version
