@@ -8,7 +8,7 @@ resource "helm_release" "flux2" {
   name             = "flux2"
   namespace        = "flux-system"
   create_namespace = false
-  version          = "2.12.3"
+  version          = "2.12.4"
   values = [<<YAML
 logLevel: debug
 cli:
