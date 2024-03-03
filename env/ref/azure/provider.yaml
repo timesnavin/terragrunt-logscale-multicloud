@@ -1,0 +1,12 @@
+type: az
+az:
+  environment: public
+  subscription: 0301d732-e214-4f9c-9607-27403a4a0e40
+  tenant: 64beadea-6bf2-4a7b-8690-4252ada44235
+  resourceGroup: ref-us-logscale
+  region: eastus
+  name: ref-us-logscale
+
+  tags:
+    Owner: ryan.faircloth
+    Project: selfcloud
