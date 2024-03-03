@@ -14,3 +14,7 @@ saml2aws login --force ; saml2aws exec $SHELL
 gcloud auth login
 gcloud auth application-default login
 ```
+
+# Azure
+
+az feature register --name EncryptionAtHost  --namespace Microsoft.Compute

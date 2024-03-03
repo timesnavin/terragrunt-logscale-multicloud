@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib-ls
-        namespace: flux-repos
+        namespace: flux-system
       interval: 5m
   releaseName: logscale
   install:
@@ -146,7 +146,7 @@ spec:
           requests:
             storage: "468Gi"
         # storageClassName: "gp3"
-        # storageClassName: "cluster-block-base-ext4"
+        # storageClassName: "regional-block-base-ext4"
         storageClassName: "instancestore-nvme-ext4"
 
       frontEndDataVolumePersistentVolumeClaimSpecTemplate:
@@ -154,7 +154,7 @@ spec:
         resources:
           requests:
             storage: "10Gi"
-        storageClassName: "cluster-block-base-ext4"
+        storageClassName: "regional-block-base-ext4"
       priorityClass: partition-high
 
       ingress:

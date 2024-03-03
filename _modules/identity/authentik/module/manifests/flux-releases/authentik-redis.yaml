@@ -13,7 +13,7 @@
 #       sourceRef:
 #         kind: HelmRepository
 #         name: ot-operators
-#         namespace: flux-releases-region
+#         namespace: region-flux-releases
 #       interval: 5m
 #   releaseName: identity-redis
 #   targetNamespace: identity
@@ -33,7 +33,7 @@
 #           kind: Deployment
 #   dependsOn:
 #     - name: redis-operator
-#       namespace: flux-releases-region
+#       namespace: region-flux-releases
 #   values:
 #     redisReplication:
 #       clusterSize: 3

@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bedag
-        namespace: flux-repos
+        namespace: flux-system
       interval: 5m
   releaseName: otel-node
   targetNamespace: otel-system
@@ -27,7 +27,7 @@ spec:
     enable: false
   dependsOn:
     - name: otel-operator
-      namespace: flux-releases-region
+      namespace: region-flux-releases
   values:
     templates:
       - |

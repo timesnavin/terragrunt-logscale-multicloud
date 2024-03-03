@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: bedag
-        namespace: flux-repos
+        namespace: flux-system
       interval: 5m
   releaseName: authentik-db
   targetNamespace: identity
@@ -33,7 +33,7 @@ spec:
           kind: Deployment
   dependsOn:
     - name: zalando
-      namespace: flux-releases-region
+      namespace: region-flux-releases
   values:
     resources:
       - kind: "postgresql"

@@ -20,7 +20,7 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-
+  common = yamldecode(file(find_in_parent_folders("common.yaml")))
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
   region    = yamldecode(file(find_in_parent_folders("region.yaml")))
 
@@ -35,7 +35,7 @@ dependency "azs" {
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
 inputs = {
-  name = "${local.partition.name}-${local.region.name}"
+  name = "${local.common.name}-${local.partition.name}"
 
   azs                          = dependency.azs.outputs.az_names
   cidr                         = dependency.azs.outputs.cidr

@@ -2,7 +2,7 @@ cloud:
   tags:
     owner: ryanfaircloth
     project: logsrlife
-    partition: ref
+    partition: nxt
 kubernetes:
   labels:
     owner: ryanfaircloth

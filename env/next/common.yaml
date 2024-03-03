@@ -1,0 +1,10 @@
+name: logsrlife
+cloud:
+  tags:
+    owner: ryanfaircloth
+    project: logsrlife
+    partition: ref
+kubernetes:
+  labels:
+    owner: ryanfaircloth
+    project: logsrlife

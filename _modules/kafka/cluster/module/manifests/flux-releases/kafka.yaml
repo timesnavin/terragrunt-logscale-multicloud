@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib
-        namespace: flux-repos
+        namespace: flux-system
       interval: 5m
   releaseName: kafka
   install:
@@ -47,7 +47,7 @@ spec:
           size: 1500Gi
           deleteClaim: true
           # Must be SSD or NVME like storage IOPs is the primary node constraint
-          class: cluster-block-base-ext4
+          class: regional-block-base-ext4
 
       controller:
         enabled: true
@@ -67,7 +67,7 @@ spec:
           size: 64Gi
           deleteClaim: true
           # Must be SSD or NVME like storage IOPs is the primary node constraint
-          class: cluster-block-base-ext4
+          class: regional-block-base-ext4
     cruiseControl:
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
@@ -207,7 +207,7 @@ spec:
         size: 5Gi
         deleteClaim: true
         # Must be SSD or NVME like storage IOPs is the  mary node constraint
-        class: cluster-block-base-ext4
+        class: regional-block-base-ext4
 
       autoscaling:
         enabled: false

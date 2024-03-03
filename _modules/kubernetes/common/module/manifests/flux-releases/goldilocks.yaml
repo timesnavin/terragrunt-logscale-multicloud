@@ -1,0 +1,98 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: goldilocks
+  namespace: region-flux-releases
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: goldilocks
+      version: "8.0.1"
+      sourceRef:
+        kind: HelmRepository
+        name: fairwinds
+        namespace: flux-system
+      interval: 5m
+  releaseName: goldilocks
+  targetNamespace: goldilocks
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths: ["/spec/replicas"]
+        target:
+          kind: Deployment
+  values:
+    installCRDs: true
+    vpa:
+      enabled: true
+      updater:
+        enabled: true
+      admissionController:
+        enabled: false
+    controller:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - controller
+                  - key: app.kubernetes.io/instance
+                    operator: In
+                    values:
+                      - goldilocks
+              topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+    dashboard:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/component
+                    operator: In
+                    values:
+                      - controller
+                  - key: app.kubernetes.io/instance
+                    operator: In
+                    values:
+                      - goldilocks
+              topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+      topologySpreadConstraints:
+        - maxSkew: 2
+          minDomains: 2
+          whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: controller
+              app.kubernetes.io/instance: goldilocks
+          matchLabelKeys:
+            - pod-template-hash
