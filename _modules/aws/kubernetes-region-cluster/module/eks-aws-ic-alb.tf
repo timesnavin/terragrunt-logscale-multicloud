@@ -1,6 +1,6 @@
 module "alb_ing_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.35.0"
+  version = "5.37.1"
 
 
   role_name_prefix = "alb_ic"
