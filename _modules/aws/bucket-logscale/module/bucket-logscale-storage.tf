@@ -1,7 +1,7 @@
 
 module "s3_logscale_storage" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "4.1.0"
+  version = "4.1.1"
 
   bucket_prefix = "${var.partition_name}-logscale-storage"
   acl           = "private"
