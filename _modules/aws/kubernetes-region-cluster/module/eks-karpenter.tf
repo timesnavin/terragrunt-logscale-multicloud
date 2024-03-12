@@ -1,7 +1,7 @@
 
 module "karpenter" {
   source  = "terraform-aws-modules/eks/aws//modules/karpenter"
-  version = "20.8.2"
+  version = "20.8.3"
 
   cluster_name      = module.eks.cluster_name
   cluster_ip_family = "ipv6"
