@@ -11,7 +11,11 @@ variable "location" {
   description = "(optional) describe your variable"
 }
 
-variable "subnet_id" {
+variable "aks_subnet_id" {
+  type        = string
+  description = "(optional) describe your variable"
+}
+variable "pods_subnet_id" {
   type        = string
   description = "(optional) describe your variable"
 }

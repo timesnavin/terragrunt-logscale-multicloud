@@ -32,5 +32,6 @@ inputs = {
   resourceGroupLocation = local.provider.az.region
 
   location = local.region.name
-  subnet_id = dependency.vnet.outputs.aks_subnet_id
+  aks_subnet_id = dependency.vnet.outputs.aks_subnet_id
+  pods_subnet_id= dependency.vnet.outputs.pods_subnet_id
 }

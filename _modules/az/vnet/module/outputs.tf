@@ -17,6 +17,9 @@ locals {
 output "aks_subnet_id" {
   value = azurerm_subnet.aks.id
 }
+output "pods_subnet_id" {
+  value = azurerm_subnet.pods.id
+}
 # output "public_subnet_ipv6_prefixes" {
 #   value = local.public_prefixes
 # }

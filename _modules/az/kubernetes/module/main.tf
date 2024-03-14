@@ -8,14 +8,14 @@ locals {
       name           = substr("worker${i}${random_id.prefix.hex}", 0, 8)
       vm_size        = "Standard_D2s_v3"
       node_count     = 1
-      vnet_subnet_id = var.subnet_id
+      vnet_subnet_id = var.pods_subnet_id
     }
   }
 }
 
 module "aks" {
-  source = "git::https://github.com/logscale-contrib/terraform-azurerm-aks.git?ref=future"
-  # version = "7.5.0"
+  source  = "Azure/aks/azurerm"
+  version = "7.5.0"
 
   resource_group_name = var.resourceGroup
   prefix              = "logscale-${var.location}"
@@ -26,13 +26,15 @@ module "aks" {
   rbac_aad_managed                  = true
   role_based_access_control_enabled = true
 
-  network_plugin  = "azure"
-  ebpf_data_plane = "cillium"
+  network_plugin = "azure"
+  //network_plugin_mode = "overlay"
+  ebpf_data_plane = "cilium"
 
   net_profile_service_cidr   = "10.254.0.0/16"
   net_profile_dns_service_ip = "10.254.0.2"
 
-  vnet_subnet_id = var.subnet_id
+  vnet_subnet_id = var.aks_subnet_id
+  pod_subnet_id  = var.pods_subnet_id
 
   node_pools      = local.nodes
   os_disk_size_gb = 60
