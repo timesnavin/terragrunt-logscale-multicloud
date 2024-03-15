@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: kafka-strimzi-cluster
-      version: "3.1.0"
+      version: "4.0.0-next.16"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib
@@ -26,7 +26,48 @@ spec:
     enable: false
   values:
     fullnameOverride: ${kafka_name}
+    metadataMode: enabled
+    nodePools:
+      enabled: true
+      kafka:
+        replicas: 4
+        resources:
+          # We usually recommend not to specify default resources and to leave this as a conscious
+          # choice for the user. This also increases chances charts run on environments with little
+          # resources, such as Minikube. If you do want to specify resources, uncomment the following
+          # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+          limits:
+            cpu: 1
+            memory: 2000Mi
+          requests:
+            cpu: 100m
+            memory: 1500Mi
+        storage:
+          type: persistent-claim
+          size: 1500Gi
+          deleteClaim: true
+          # Must be SSD or NVME like storage IOPs is the primary node constraint
+          class: cluster-block-base-ext4
 
+      controller:
+        enabled: true
+        resources:
+          # We usually recommend not to specify default resources and to leave this as a conscious
+          # choice for the user. This also increases chances charts run on environments with little
+          # resources, such as Minikube. If you do want to specify resources, uncomment the following
+          # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+          limits:
+            cpu: 1
+            memory: 8Gi
+          requests:
+            cpu: 100m
+            memory: 4Gi
+        storage:
+          type: persistent-claim
+          size: 64Gi
+          deleteClaim: true
+          # Must be SSD or NVME like storage IOPs is the primary node constraint
+          class: cluster-block-base-ext4
     cruiseControl:
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
@@ -35,10 +76,10 @@ spec:
         # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
         limits:
           cpu: 4
-          memory: 512Mi
+          memory: 2Gi
         requests:
           cpu: 100m
-          memory: 256Mi
+          memory: 512Mi
 
       autoscaling:
         enabled: false
@@ -56,7 +97,6 @@ spec:
                     operator: In
                     values:
                       - linux
-
 
     topicOperator:
       resources:
@@ -99,7 +139,6 @@ spec:
         # targetMemoryUtilizationPercentage: 80
 
     kafka:
-      replicas: 4
       authorization:
         enabled: true
       listeners:
@@ -113,23 +152,6 @@ spec:
               issuerRef:
                 name: cluster-ca-issuer
             # secretName: kafka-tls
-      resources:
-        # We usually recommend not to specify default resources and to leave this as a conscious
-        # choice for the user. This also increases chances charts run on environments with little
-        # resources, such as Minikube. If you do want to specify resources, uncomment the following
-        # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-        limits:
-          cpu: 1
-          memory: 2000Mi
-        requests:
-          cpu: 100m
-          memory: 1500Mi
-      storage:
-        type: persistent-claim
-        size: 150Gi
-        deleteClaim: true
-        # Must be SSD or NVME like storage IOPs is the primary node constraint
-        class: cluster-block-base-ext4
 
       autoscaling:
         enabled: false
