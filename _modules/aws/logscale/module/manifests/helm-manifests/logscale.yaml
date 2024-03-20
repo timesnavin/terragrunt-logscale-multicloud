@@ -92,10 +92,10 @@ spec:
       #In general for these node requests and limits should match
       resources:
         requests:
-          memory: 12Gi
-          cpu: 1
+          memory: 16Gi
+          cpu: 2
         limits:
-          memory: 24Gi
+          memory: 32Gi
           cpu: 4
       affinity:
         nodeAffinity:
@@ -109,9 +109,7 @@ spec:
                     operator: "In"
                     values: ["linux"]
                   - key: "karpenter.k8s.aws/instance-local-nvme"
-                    operator: Gt
-                    values:
-                      - "190"
+                    operator: Exists
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
@@ -122,11 +120,6 @@ spec:
                       - "logscale"
                       - "logscale-ingest-only"
                       - "logscale-http-only"
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - "zookeeper"
-                      - "kafka"
               topologyKey: "kubernetes.io/hostname"
       topologySpreadConstraints:
         - maxSkew: 2
@@ -147,7 +140,7 @@ spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: "190Gi"
+            storage: "468Gi"
         # storageClassName: "gp3"
         # storageClassName: "cluster-block-base-ext4"
         storageClassName: "instancestore-nvme-ext4"
@@ -183,10 +176,10 @@ spec:
           resources:
             requests:
               cpu: "1"
-              memory: 8Gi
+              memory: 16Gi
             limits:
               cpu: "2"
-              memory: 12Gi
+              memory: 21Gi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -226,10 +219,10 @@ spec:
           resources:
             requests:
               cpu: "1"
-              memory: 8Gi
+              memory: 16Gi
             limits:
               cpu: "2"
-              memory: 12Gi
+              memory: 32Gi
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
