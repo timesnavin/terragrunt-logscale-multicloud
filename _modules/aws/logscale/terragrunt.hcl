@@ -45,6 +45,9 @@ dependency "sso" {
     issuer              = "temp"
   }
 }
+dependency "bucket-logs" {
+  config_path = "${get_terragrunt_dir()}/../../../${local.tenant.platform}/${local.tenant.region}/bucket-logs/"
+}
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
@@ -69,8 +72,11 @@ inputs = {
   saml_signing_certificate = dependency.sso.outputs.signing_certificate
   saml_issuer              = dependency.sso.outputs.issuer
 
-  LogScaleRoot    = try(local.tenant.logscale.root, "akaadmin")
-  kafka_name      = local.kafka_name
-  kafka_namespace = local.kafka_namespace
-  kafka_prefix_increment = try(local.tenant.logscale.kafka.prefixIncrement,"0")
+  LogScaleRoot           = try(local.tenant.logscale.root, "akaadmin")
+  kafka_name             = local.kafka_name
+  kafka_namespace        = local.kafka_namespace
+  kafka_prefix_increment = try(local.tenant.logscale.kafka.prefixIncrement, "0")
+
+  regional_logs_bucket_arn = dependency.bucket-logs.outputs.log_s3_bucket_arn
+  regional_sns_topic_arn   = dependency.bucket-logs.outputs.log_sns_topic_arn
 }

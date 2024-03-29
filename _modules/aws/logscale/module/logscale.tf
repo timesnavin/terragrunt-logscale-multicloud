@@ -25,6 +25,7 @@ resource "kubectl_manifest" "logscale" {
       saml_signing_certificate = base64encode(var.saml_signing_certificate)
       saml_url                 = var.saml_url
       rootUser                 = var.LogScaleRoot
+      ingest_role_arn          = module.ingest-role.iam_role_arn
 
   })
 }

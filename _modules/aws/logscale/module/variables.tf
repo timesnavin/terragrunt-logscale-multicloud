@@ -83,3 +83,12 @@ variable "kafka_prefix_increment" {
   type        = string
   description = "(optional) describe your variable"
 }
+
+variable "regional_logs_bucket_arn" {
+  type        = string
+  description = "(optional) describe your variable"
+}
+variable "regional_sns_topic_arn" {
+  type        = string
+  description = "(optional) describe your variable"
+}
