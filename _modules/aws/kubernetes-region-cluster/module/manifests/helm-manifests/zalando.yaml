@@ -18,9 +18,11 @@ spec:
   releaseName: zalando
   targetNamespace: postgres-operator
   install:
+    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
+    crds: CreateReplace
     remediation:
       retries: 3
   test:
@@ -33,13 +35,15 @@ spec:
           kind: Deployment
 
   values:
+    enableJsonLogging: true
     configAwsOrGcp:
       aws_region: ${region}
-    enableJsonLogging: true
     replicas: 2
     configKubernetes:
-      #   enable_finalizers: true
+      enable_finalizers: true
       enable_pod_antiaffinity: true
+      persistent_volume_claim_retention_policy:
+        when_deleted: "delete"
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
