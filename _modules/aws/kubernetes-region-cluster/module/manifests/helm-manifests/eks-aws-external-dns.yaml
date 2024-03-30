@@ -36,7 +36,7 @@ spec:
       creat: true
       name: external-dns-sa
       annotations:
-        eks.amazonaws.com/role-arn: ${iam_role_arn}
+        eks.amazonaws.com/role-arn: "${iam_role_arn}"
 
     resources:
       requests:
