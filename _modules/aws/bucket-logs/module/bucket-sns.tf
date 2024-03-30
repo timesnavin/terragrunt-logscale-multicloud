@@ -1,14 +1,16 @@
 module "AWSLogs" {
   source  = "terraform-aws-modules/sns/aws"
-  version = "~> 3.0"
+  version = "6.0.1"
 
-  name_prefix = "${var.partition_name}-log-bucket-AWSLogs"
+  name = "${var.partition_name}-log-bucket-AWSLogs"
+  use_name_prefix = true
 }
 module "S3Logs" {
   source  = "terraform-aws-modules/sns/aws"
-  version = "~> 3.0"
+  version = "6.0.1"
 
-  name_prefix = "${var.partition_name}-log-bucket-S3Logs"
+  name = "${var.partition_name}-log-bucket-S3Logs"
+  use_name_prefix = true
 }
 module "all_notifications" {
   source  = "terraform-aws-modules/s3-bucket/aws//modules/notification"
