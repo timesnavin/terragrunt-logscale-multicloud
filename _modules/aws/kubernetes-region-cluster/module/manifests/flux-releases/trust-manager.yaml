@@ -36,7 +36,8 @@ spec:
     - name: karpenter-node-pools
     - name: prometheus-operator-crds
   values:
-    installCRDs: true
+    crds:
+      enabled: true
     replicaCount: 2
     global:
       priorityClassName: "system-cluster-critical"
