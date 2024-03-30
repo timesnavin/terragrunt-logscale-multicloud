@@ -66,7 +66,7 @@ resource "random_string" "random" {
 
 module "iam_ses_user" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-user"
-  version = "5.37.1"
+  version = "5.37.2"
 
   name = "${var.email_user_name_prefix}-send-mail-${random_string.random.result}"
 

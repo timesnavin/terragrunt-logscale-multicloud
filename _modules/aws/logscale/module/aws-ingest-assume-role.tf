@@ -36,7 +36,7 @@ module "ingest-role-actor" {
 
 module "iam_iam-assume_ingest-actor" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.37.1"
+  version = "5.37.2"
 
   name_prefix = "${local.namespace}_${var.service_account}-assume-ingest-base"
   # path        = var.iam_policy_path
@@ -62,7 +62,7 @@ module "iam_iam-assume_ingest-actor" {
 
 module "iam_iam-policy-s3log" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.37.1"
+  version = "5.37.2"
 
   name_prefix = "${local.namespace}_${var.service_account}-ingest-s3"
   # path        = var.iam_policy_path
