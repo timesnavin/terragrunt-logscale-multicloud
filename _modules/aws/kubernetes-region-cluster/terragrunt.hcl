@@ -44,7 +44,7 @@ inputs = {
   vpc_id  = dependency.vpc.outputs.vpc_id
   subnets = dependency.vpc.outputs.private_subnets
 
-  cluster_version = "1.28"
+  cluster_version = "1.29"
 
   kms_key_administrators = local.platform.aws.kms.additional_key_owners
   access_entries         = local.region.kubernetes.access_entries
