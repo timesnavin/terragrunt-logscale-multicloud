@@ -43,7 +43,7 @@ spec:
       trustManagerConfigMap: cluster-trust-bundle
       extraENV:
         - name: HUMIO_OPTS
-          value: -XX:+UseTransparentHugePages -XX:+UseNUMA
+          value: -XX:+UseNUMA
         - name: INGEST_FEED_AWS_ROLE_ARN
           value: "${ingest_role_arn}"
         - name: HUMIO_MAX_DIRECT_MEMORY_SIZE_MB
