@@ -48,7 +48,7 @@ spec:
                 storageClass: "network"
             spec:
               nodeClassRef:
-                name: al2
+                name: al2-v2
               requirements:
                 - key: "kubernetes.io/os"
                   operator: In
@@ -91,7 +91,7 @@ spec:
           template:
             spec:
               nodeClassRef:
-                name: al2-storage
+                name: al2-storage-v3
               requirements:
                 - key: "kubernetes.io/arch"
                   operator: In

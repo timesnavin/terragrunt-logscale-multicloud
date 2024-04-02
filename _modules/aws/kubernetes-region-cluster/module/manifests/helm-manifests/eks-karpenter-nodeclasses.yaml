@@ -33,20 +33,7 @@ spec:
         apiVersion: karpenter.k8s.aws/v1beta1
         kind: EC2NodeClass
         metadata:
-          name: al2
-        spec:
-          amiFamily: AL2
-          role: ${node_iam_role_name}
-          subnetSelectorTerms: ${jsonencode(subnet_selector)}
-          securityGroupSelectorTerms:
-          - id: ${node_security_group_id}
-          tags:
-            karpenter.sh/discovery: ${cluster_name}
-      - |
-        apiVersion: karpenter.k8s.aws/v1beta1
-        kind: EC2NodeClass
-        metadata:
-          name: al2-storage
+          name: al2-v2
         spec:
           amiFamily: AL2
           role: ${node_iam_role_name}
@@ -56,4 +43,27 @@ spec:
           tags:
             karpenter.sh/discovery: ${cluster_name}
           userData: |
+              madvise > /sys/kernel/mm/transparent_hugepage/enabled
+              echo advise > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+              echo defer > /sys/kernel/mm/transparent_hugepage/defrag
+              echo 1 > /sys/kernel/mm/transparent_hugepage/khugepaged/defrag
+
+      - |
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        metadata:
+          name: al2-storage-v3
+        spec:
+          amiFamily: AL2
+          role: ${node_iam_role_name}
+          subnetSelectorTerms: ${jsonencode(subnet_selector)}
+          securityGroupSelectorTerms:
+          - id: ${node_security_group_id}
+          tags:
+            karpenter.sh/discovery: ${cluster_name}
+          userData: |
+              madvise > /sys/kernel/mm/transparent_hugepage/enabled
+              echo advise > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+              echo defer > /sys/kernel/mm/transparent_hugepage/defrag
+              echo 1 > /sys/kernel/mm/transparent_hugepage/khugepaged/defrag
               yum install nvme-cli -y

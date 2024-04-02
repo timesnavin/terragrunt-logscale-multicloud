@@ -1,0 +1,51 @@
+# nsenter --target 1 --all
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nodedebug
+  namespace: kube-system
+  resourceVersion: "72456313"
+  uid: 01fd2d69-0873-45a4-9199-29ebbc1046c7
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nodedebug
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nodedebug
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+      containers:
+        - name: nodedebug
+          command: ["/bin/bash", "-c", "--"]
+          args: ["while true; do sleep 30; done;"]
+          image: ubuntu
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 100m
+              memory: 32Mi
+          securityContext:
+            privileged: true
+      dnsPolicy: ClusterFirst
+      hostPID: true
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - operator: Exists
+  updateStrategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
