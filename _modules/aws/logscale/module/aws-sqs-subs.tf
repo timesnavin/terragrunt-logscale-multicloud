@@ -26,6 +26,21 @@ module "sqs_awslogs" {
         values   = [var.regional_sns_topic_arn]
       }]
     }
+    logscale = {
+      sid = "logscale"
+      actions = [
+        "sqs:ReceiveMessage",
+        "sqs:GetQueueAttributes",
+        "sqs:DeleteMessage",
+        "sqs:ChangeMessageVisibility"
+      ]
+      principals = [
+        {
+          type        = "AWS"
+          identifiers = [module.ingest-role-actor.iam_role_arn]
+        }
+      ]
+    }
   }
 
 }
