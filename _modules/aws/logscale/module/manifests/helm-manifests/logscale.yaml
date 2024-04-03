@@ -43,7 +43,7 @@ spec:
       trustManagerConfigMap: cluster-trust-bundle
       extraENV:
         - name: HUMIO_OPTS
-          value: -XX:+UseNUMA
+          value: -XX:+UseNUMA -XX:+UseTransparentHugePages
         - name: INGEST_FEED_AWS_ROLE_ARN
           value: "${ingest_role_arn}"
         - name: HUMIO_MAX_DIRECT_MEMORY_SIZE_MB
@@ -100,7 +100,7 @@ spec:
           cpu: 2
         limits:
           memory: 32Gi
-          cpu: 4
+          cpu: 12
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

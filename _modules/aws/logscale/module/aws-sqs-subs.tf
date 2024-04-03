@@ -3,7 +3,7 @@ module "sqs_awslogs" {
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.1.1"
 
-  name            = "weka-awslogs"
+  name            = "${var.tenant}-awslogs"
   use_name_prefix = true
 
   create_queue_policy = true
@@ -23,14 +23,11 @@ module "sqs_awslogs" {
       conditions = [{
         test     = "ArnEquals"
         variable = "aws:SourceArn"
-        values   = ["arn:aws:sns:us-east-1:042445652404:ref-log-bucket-AWSLogs20240326123145360500000003"]
+        values   = [var.regional_sns_topic_arn]
       }]
     }
   }
 
-  tags = {
-    Environment = "dev"
-  }
 }
 
 resource "aws_sns_topic_subscription" "aws_logs" {
@@ -45,7 +42,7 @@ module "sqs_s3logs" {
   source  = "terraform-aws-modules/sqs/aws"
   version = "4.1.1"
 
-  name            = "weka-s3logs"
+  name            = "${var.tenant}-s3logs"
   use_name_prefix = true
 
   create_queue_policy = true
@@ -84,9 +81,6 @@ module "sqs_s3logs" {
     }
   }
 
-  tags = {
-    Environment = "dev"
-  }
 }
 
 resource "aws_sns_topic_subscription" "aws_s3logs" {
