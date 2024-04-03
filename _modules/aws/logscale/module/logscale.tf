@@ -11,7 +11,7 @@ resource "kubectl_manifest" "logscale" {
       kafka_namespace          = var.kafka_namespace
       tenant                   = var.tenant
       kafka_name               = var.kafka_name
-      kafka_prefix             = "g001"
+      kafka_prefix             = "${format("g%03s", counters_monotonic.kafka_prefix.value)}"
       bucket_prefix            = "${local.namespace}/"
       bucket_storage           = var.logscale_storage_bucket_id
       bucket_export            = var.logscale_export_bucket_id
