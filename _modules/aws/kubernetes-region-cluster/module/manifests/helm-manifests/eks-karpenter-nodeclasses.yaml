@@ -33,7 +33,7 @@ spec:
         apiVersion: karpenter.k8s.aws/v1beta1
         kind: EC2NodeClass
         metadata:
-          name: al2-v2
+          name: al2-v4
         spec:
           amiFamily: AL2
           role: ${node_iam_role_name}
@@ -43,16 +43,27 @@ spec:
           tags:
             karpenter.sh/discovery: ${cluster_name}
           userData: |
+              # THP Settings
               madvise > /sys/kernel/mm/transparent_hugepage/enabled
               echo advise > /sys/kernel/mm/transparent_hugepage/shmem_enabled
               echo defer > /sys/kernel/mm/transparent_hugepage/defrag
               echo 1 > /sys/kernel/mm/transparent_hugepage/khugepaged/defrag
+              # TCP Tunning
+              # max 9375000000 is 3x 1s transfer on 25Gbs link
+              echo # TCP Tuning for 25GBs >/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.rmem_max=134217728 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_rmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.wmem_max=134217728 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_wmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_congestion_control=bbr >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.default_qdisc=fq >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              sysctl --system
 
       - |
         apiVersion: karpenter.k8s.aws/v1beta1
         kind: EC2NodeClass
         metadata:
-          name: al2-storage-v3
+          name: al2-storage-v4
         spec:
           amiFamily: AL2
           role: ${node_iam_role_name}
@@ -62,8 +73,19 @@ spec:
           tags:
             karpenter.sh/discovery: ${cluster_name}
           userData: |
+              # THP Settings
               madvise > /sys/kernel/mm/transparent_hugepage/enabled
               echo advise > /sys/kernel/mm/transparent_hugepage/shmem_enabled
               echo defer > /sys/kernel/mm/transparent_hugepage/defrag
               echo 1 > /sys/kernel/mm/transparent_hugepage/khugepaged/defrag
+              # TCP Tunning
+              # max 9375000000 is 3x 1s transfer on 25Gbs link
+              echo # TCP Tuning for 25GBs >/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.rmem_max=134217728 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_rmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.wmem_max=134217728 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_wmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_congestion_control=bbr >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.default_qdisc=fq >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              sysctl --system
               yum install nvme-cli -y
