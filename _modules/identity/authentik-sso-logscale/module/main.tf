@@ -1,6 +1,6 @@
 # Create an application with a provider attached and policies applied
 locals {
-  fqdn      = "${var.tenant}-${var.app_name}.${var.domain_name}"
+  fqdn      = "${var.app_name}.${var.tenant}.${var.domain_name}"
   namespace = "${var.tenant}-${var.app_name}"
 }
 

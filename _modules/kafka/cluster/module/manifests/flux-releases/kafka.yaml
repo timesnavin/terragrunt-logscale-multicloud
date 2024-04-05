@@ -206,7 +206,7 @@ spec:
         type: persistent-claim
         size: 5Gi
         deleteClaim: true
-        # Must be SSD or NVME like storage IOPs is the primary node constraint
+        # Must be SSD or NVME like storage IOPs is the  mary node constraint
         class: cluster-block-base-ext4
 
       autoscaling:
