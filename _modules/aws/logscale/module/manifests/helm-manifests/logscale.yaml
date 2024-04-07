@@ -176,7 +176,7 @@ spec:
       nodepools:
         ingest:
           priorityClass: partition-medium
-          nodeCount: 1
+          nodeCount: 2
           resources:
             requests:
               cpu: "1"
@@ -219,7 +219,7 @@ spec:
                       - logscale-ingest-only
         ui:
           priorityClass: partition-low
-          nodeCount: 1
+          nodeCount: 2
           resources:
             requests:
               cpu: "1"
