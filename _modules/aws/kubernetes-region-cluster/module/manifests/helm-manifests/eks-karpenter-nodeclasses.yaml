@@ -57,6 +57,10 @@ spec:
               echo net.ipv4.tcp_wmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
               echo net.ipv4.tcp_congestion_control=bbr >>/etc/sysctl.d/10-tcp-socket-buffers.conf
               echo net.core.default_qdisc=fq >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.optmem_max=65536 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.somaxconn=1024 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.netdev_max_backlog=65536 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo fs.file-max=unlimited >>/etc/sysctl.d/99-limits.conf
               sysctl --system
 
       - |
@@ -87,5 +91,10 @@ spec:
               echo net.ipv4.tcp_wmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
               echo net.ipv4.tcp_congestion_control=bbr >>/etc/sysctl.d/10-tcp-socket-buffers.conf
               echo net.core.default_qdisc=fq >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.optmem_max = 65536 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.somaxconn=1024 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.netdev_max_backlog=65536 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              # Max open files
+              echo fs.file-max=unlimited >>/etc/sysctl.d/99-limits.conf
               sysctl --system
               yum install nvme-cli -y
