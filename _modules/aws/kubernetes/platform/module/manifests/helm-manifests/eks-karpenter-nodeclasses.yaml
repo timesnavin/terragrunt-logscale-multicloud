@@ -1,0 +1,100 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: karpenter-node-classes
+  namespace: region-flux-releases
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: raw
+      version: "2.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: bedag
+        namespace: flux-system
+      interval: 5m
+  releaseName: karpenter-node-classes
+  targetNamespace: karpenter
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  dependsOn:
+    - name: karpenter
+  values:
+    templates:
+      - |
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        metadata:
+          name: al2-v4
+        spec:
+          amiFamily: AL2
+          role: ${node_iam_role_name}
+          subnetSelectorTerms: ${jsonencode(subnet_selector)}
+          securityGroupSelectorTerms:
+          - id: ${node_security_group_id}
+          tags:
+            karpenter.sh/discovery: ${cluster_name}
+          userData: |
+              # THP Settings
+              madvise > /sys/kernel/mm/transparent_hugepage/enabled
+              echo advise > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+              echo defer > /sys/kernel/mm/transparent_hugepage/defrag
+              echo 1 > /sys/kernel/mm/transparent_hugepage/khugepaged/defrag
+              # TCP Tunning
+              # max 9375000000 is 3x 1s transfer on 25Gbs link
+              echo # TCP Tuning for 25GBs >/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.rmem_max=134217728 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_rmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.wmem_max=134217728 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_wmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_congestion_control=bbr >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.default_qdisc=fq >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.optmem_max=65536 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.somaxconn=1024 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.netdev_max_backlog=65536 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo fs.file-max=unlimited >>/etc/sysctl.d/99-limits.conf
+              sysctl --system
+
+      - |
+        apiVersion: karpenter.k8s.aws/v1beta1
+        kind: EC2NodeClass
+        metadata:
+          name: al2-storage-v4
+        spec:
+          amiFamily: AL2
+          role: ${node_iam_role_name}
+          subnetSelectorTerms: ${jsonencode(subnet_selector)}
+          securityGroupSelectorTerms:
+          - id: ${node_security_group_id}
+          tags:
+            karpenter.sh/discovery: ${cluster_name}
+          userData: |
+              # THP Settings
+              madvise > /sys/kernel/mm/transparent_hugepage/enabled
+              echo advise > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+              echo defer > /sys/kernel/mm/transparent_hugepage/defrag
+              echo 1 > /sys/kernel/mm/transparent_hugepage/khugepaged/defrag
+              # TCP Tunning
+              # max 9375000000 is 3x 1s transfer on 25Gbs link
+              echo # TCP Tuning for 25GBs >/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.rmem_max=134217728 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_rmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.wmem_max=134217728 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_wmem="4096 87380 67108864" >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.ipv4.tcp_congestion_control=bbr >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.default_qdisc=fq >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.optmem_max = 65536 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.somaxconn=1024 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              echo net.core.netdev_max_backlog=65536 >>/etc/sysctl.d/10-tcp-socket-buffers.conf
+              # Max open files
+              echo fs.file-max=unlimited >>/etc/sysctl.d/99-limits.conf
+              sysctl --system
+              yum install nvme-cli -y

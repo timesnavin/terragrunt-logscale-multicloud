@@ -45,6 +45,7 @@ generate "provider_aws_eks_helm" {
     name = var.provider_aws_eks_cluster_name
   }
   provider "kubernetes" {
+
     host                   = data.aws_eks_cluster.this.endpoint
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 
@@ -56,6 +57,20 @@ generate "provider_aws_eks_helm" {
     }
   }
 
+  provider "helm" {
+
+    kubernetes {
+    host                   = data.aws_eks_cluster.this.endpoint
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
+
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      # This requires the awscli to be installed locally where Terraform is executed
+      args = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.this.name, "--region", var.provider_aws_region]
+    }
+    }
+  }
 
   provider "kubectl" {
     load_config_file       = false
@@ -141,6 +156,6 @@ inputs = {
   provider_aws_eks_cluster_name = "${local.partition.name}-${local.region.name}"
 
   partition_aws_region           = local.partition.shared.provider.region
-  partition_aws_eks_cluster_name = "${local.partition.name}-${local.partition.shared.provider.region}"
+  partition_aws_eks_cluster_name = "${local.common.name}-${local.partition.name}"
 
 }

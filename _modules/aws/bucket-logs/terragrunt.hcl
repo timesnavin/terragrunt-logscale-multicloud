@@ -19,13 +19,12 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
-
 }
 
-
+dependency "vpc" {
+  config_path = "${get_terragrunt_dir()}/../vpc/"
+}
 
 inputs = {
-
-  partition_name = local.partition.name
+  name    = dependency.vpc.outputs.name
 }

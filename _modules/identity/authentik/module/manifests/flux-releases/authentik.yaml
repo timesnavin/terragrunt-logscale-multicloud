@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: authentik
-        namespace: flux-repos
+        namespace: flux-system
       interval: 5m
   releaseName: authentik
   targetNamespace: identity
@@ -45,7 +45,6 @@ spec:
 
   values:
     global:
-
       envFrom:
         - secretRef:
             name: authentik-bootstrap
@@ -63,9 +62,9 @@ spec:
             key: email
             name: authentik-bootstrap
       topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
-        whenUnsatisfiable: DoNotSchedule
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: DoNotSchedule
 
     authentik:
       # This sends anonymous usage-data, stack traces on errors and

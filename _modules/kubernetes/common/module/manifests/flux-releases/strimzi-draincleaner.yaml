@@ -1,0 +1,75 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: strimzi-drain-cleaner
+  namespace: region-flux-releases
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: strimzi-drain-cleaner
+      version: "1.1.0"
+      sourceRef:
+        kind: HelmRepository
+        name: strimzi
+        namespace: flux-system
+      interval: 5m
+  releaseName: strimzi-drain-cleaner
+  targetNamespace: strimzi-operator
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths: ["/spec/replicas"]
+        target:
+          kind: Deployment
+  dependsOn:
+    - name: strimzi
+    - name: cert-manager
+  values:
+    watchAnyNamespace: true
+    replicaCount: 2
+    affinity:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 64Gi
+        limits:
+          cpu: 1
+          memory: 128Gi
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: name
+                  operator: In
+                  values:
+                    - strimzi-cluster-operator
+            topologyKey: kubernetes.io/hostname
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/os
+                  operator: In
+                  values:
+                    - linux
+
+    topologySpreadConstraints:
+      - maxSkew: 2
+        minDomains: 2
+        whenUnsatisfiable: DoNotSchedule
+        topologyKey: topology.kubernetes.io/zone
+        labelSelector:
+          matchLabels:
+            name: strimzi-cluster-operator
+        matchLabelKeys:
+          - pod-template-hash
