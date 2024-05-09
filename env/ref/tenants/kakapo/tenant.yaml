@@ -1,0 +1,5 @@
+name: kakapo
+platform: aws
+region: us-east-1
+logscale:
+  root: sohil.abdulla@crowdstrike.com
