@@ -39,7 +39,7 @@ spec:
 
     humio:
       image:
-        tag: 1.132.0
+        tag: 1.137.0
       trustManagerConfigMap: cluster-trust-bundle
       extraENV:
         - name: HUMIO_OPTS
