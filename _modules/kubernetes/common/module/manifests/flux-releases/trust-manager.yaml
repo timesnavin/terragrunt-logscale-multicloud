@@ -33,7 +33,6 @@ spec:
           kind: Deployment
   dependsOn:
     - name: cert-manager
-    - name: karpenter-node-pools
     - name: prometheus-operator-crds
   values:
     crds:

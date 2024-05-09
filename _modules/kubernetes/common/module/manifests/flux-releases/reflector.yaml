@@ -32,7 +32,6 @@ spec:
         target:
           kind: Deployment
   dependsOn:
-    - name: karpenter-node-pools
     - name: prometheus-operator-crds
   values:
     affinity:

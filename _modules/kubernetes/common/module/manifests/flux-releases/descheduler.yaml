@@ -31,8 +31,6 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  dependsOn:
-    - name: karpenter-node-pools
   values:
     kind: Deployment
 
