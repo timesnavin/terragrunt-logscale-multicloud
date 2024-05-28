@@ -60,7 +60,7 @@ jobs:
           tf_version: ${{ env.tf_version }}
           tg_version: ${{ env.tg_version }}
           tg_dir: ${{ env.working_dir }}
-          tg_command: 'run-all init --upgrade'      
+          tg_command: 'run-all init -upgrade'      
       - name: Plan
         uses: gruntwork-io/terragrunt-action@v2
         with:
@@ -90,7 +90,7 @@ jobs:
         tf_version: ${{ env.tf_version }}
         tg_version: ${{ env.tg_version }}
         tg_dir: ${{ env.working_dir }}
-        tg_command: 'run-all init --upgrade'      
+        tg_command: 'run-all init -upgrade'      
 
     - name: Apply
       uses: gruntwork-io/terragrunt-action@v2
