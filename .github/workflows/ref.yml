@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
 
       - name: Check terragrunt HCL
         uses: gruntwork-io/terragrunt-action@v2
@@ -51,7 +51,7 @@ jobs:
           tf_version: ${{ env.tf_version }}
           tg_version: ${{ env.tg_version }}
           tg_dir: ${{ env.working_dir }}
-          tg_command: 'plan'          
+          tg_command: 'run-all plan'          
 
   deploy:
     name: Deploy
