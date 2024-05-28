@@ -78,3 +78,10 @@ jobs:
         audience: sts.amazonaws.com
         role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
         aws-region: ${{ env.AWS_REGION }}
+    - name: Apply
+      uses: gruntwork-io/terragrunt-action@v2
+      with:
+        tf_version: ${{ env.tf_version }}
+        tg_version: ${{ env.tg_version }}
+        tg_dir: ${{ env.working_dir }}
+        tg_command: 'run-all apply'       
