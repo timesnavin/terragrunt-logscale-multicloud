@@ -13,6 +13,7 @@ env:
   tf_version: '1.8.4'
   tg_version: '0.58.11'
   working_dir: 'env/ref'
+  TF_PLUGIN_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
 
 permissions:
   contents: read
@@ -45,6 +46,15 @@ jobs:
           audience: sts.amazonaws.com
           role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_REGION }}
+      - name: Create Terraform Plugin Cache Dir
+        run: mkdir -p $TF_PLUGIN_CACHE_DIR
+  
+      - name: Terraform Plugin Cache
+        uses: actions/cache@v4.0.1
+        with:
+          path: ${{ env.TF_PLUGIN_CACHE_DIR }}
+          key: ${{ runner.os }}-terraform-plugin-cache-${{ hashFiles('**/.terraform.lock.hcl') }}
+
       - name: Plan
         uses: gruntwork-io/terragrunt-action@v2
         with:
