@@ -10,8 +10,8 @@ env:
   AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
   AWS_ROLE_TO_ASSUME: arn:aws:iam::042445652404:role/github-terragrunt-logscale-multicloud
   CLOUD_ENV: ref
-  tf_version: '1.8.4'
-  tg_version: '0.58.11'
+  tf_version: '1.5.7'
+  tg_version: '0.55.1'
   working_dir: 'env/ref'
   TF_PLUGIN_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
 
