@@ -8,7 +8,7 @@ on:
 
 env:
   AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-  AWS_ROLE_TO_ASSUME: arn:aws:iam::042445652404:role/github-actions-multicloud
+  AWS_ROLE_TO_ASSUME: arn:aws:iam::042445652404:role/github-terragrunt-logscale-multicloud
   CLOUD_ENV: ref
   
 permissions:
