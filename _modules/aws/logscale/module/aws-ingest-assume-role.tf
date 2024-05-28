@@ -1,6 +1,6 @@
 module "ingest-role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "5.39.0"
+  version = "5.39.1"
 
   create_role       = true
   role_name_prefix  = "${local.namespace}_${var.service_account}_ingest"
@@ -16,7 +16,7 @@ module "ingest-role" {
 
 module "ingest-role-actor" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "5.39.0"
+  version = "5.39.1"
 
   create_role       = true
   role_name_prefix  = "${local.namespace}_${var.service_account}_actor"
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "custom_trust_policy" {
 }
 module "iam_iam-assume_ingest-actor" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.39.0"
+  version = "5.39.1"
 
   name_prefix = "${local.namespace}_${var.service_account}-assume-ingest-base"
   # path        = var.iam_policy_path
@@ -83,7 +83,7 @@ module "iam_iam-assume_ingest-actor" {
 
 module "iam_iam-policy-s3log" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.39.0"
+  version = "5.39.1"
 
   name_prefix = "${local.namespace}_${var.service_account}-ingest-s3"
   # path        = var.iam_policy_path
