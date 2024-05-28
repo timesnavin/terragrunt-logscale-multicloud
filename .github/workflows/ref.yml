@@ -13,7 +13,7 @@ env:
   tf_version: '1.5.7'
   tg_version: '0.55.1'
   working_dir: 'env/ref'
-  TF_PLUGIN_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
+  # TF_PLUGIN_CACHE_DIR: ${{ github.workspace }}/.terraform.d/plugin-cache
 
 permissions:
   contents: read
