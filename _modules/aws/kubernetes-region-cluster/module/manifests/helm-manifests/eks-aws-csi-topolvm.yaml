@@ -234,7 +234,7 @@ spec:
 
           imagePullPolicy: IfNotPresent
           env:
-            - name: platform
+            - name: PLATFORM
               value: aws
             - name: VG_NAME
               value: default
