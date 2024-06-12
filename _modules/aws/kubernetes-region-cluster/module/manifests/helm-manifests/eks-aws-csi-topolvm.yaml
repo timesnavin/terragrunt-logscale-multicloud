@@ -87,6 +87,18 @@ spec:
           volume-group: default
           default: true
           spare-gb: 10
+        - name: raid0
+          volume-group: default
+          default: false
+          spare-gb: 10
+          lvcreate-options:
+            - "--type=raid0"
+        - name: raid10
+          volume-group: default
+          default: false
+          spare-gb: 10
+          lvcreate-options:
+            - "--type=raid10"
     node:
       lvmdEmbedded: true
       priorityClassName: system-node-critical
@@ -347,6 +359,144 @@ spec:
           allowVolumeExpansion: true
           additionalParameters:
             "topolvm.io/device-class": "default"
+          # mount options
+          mountOptions: []
+          allowedTopologies:
+            - matchLabelExpressions:
+                - key: karpenter.k8s.aws/instance-local-nvme
+                  operator: Exists
+      - name: instancestore-nvme-btrfs-r0
+        storageClass:
+          # Supported filesystems are: ext4, xfs, and btrfs.
+          fsType: btrfs
+          # reclaimPolicy
+          reclaimPolicy: Delete
+          # Additional annotations
+          annotations: {}
+          # Default storage class for dynamic volume provisioning
+          # ref: https://kubernetes.io/docs/concepts/storage/dynamic-provisioning
+          isDefaultClass: false
+          # volumeBindingMode can be either WaitForFirstConsumer or Immediate. WaitForFirstConsumer is recommended because TopoLVM cannot schedule pods wisely if volumeBindingMode is Immediate.
+          volumeBindingMode: WaitForFirstConsumer
+          # enables CSI drivers to expand volumes. This feature is available for Kubernetes 1.16 and later releases.
+          allowVolumeExpansion: true
+          additionalParameters:
+            "topolvm.io/device-class": "raid0"
+          # mount options
+          mountOptions: []
+          allowedTopologies:
+            - matchLabelExpressions:
+                - key: karpenter.k8s.aws/instance-local-nvme
+                  operator: Exists
+      - name: instancestore-nvme-ext4-r0
+        storageClass:
+          # Supported filesystems are: ext4, xfs, and btrfs.
+          fsType: ext4
+          # reclaimPolicy
+          reclaimPolicy: Delete
+          # Additional annotations
+          annotations: {}
+          # Default storage class for dynamic volume provisioning
+          # ref: https://kubernetes.io/docs/concepts/storage/dynamic-provisioning
+          isDefaultClass: false
+          # volumeBindingMode can be either WaitForFirstConsumer or Immediate. WaitForFirstConsumer is recommended because TopoLVM cannot schedule pods wisely if volumeBindingMode is Immediate.
+          volumeBindingMode: WaitForFirstConsumer
+          # enables CSI drivers to expand volumes. This feature is available for Kubernetes 1.16 and later releases.
+          allowVolumeExpansion: true
+          additionalParameters:
+            "topolvm.io/device-class": "raid0"
+          # mount options
+          mountOptions: []
+          allowedTopologies:
+            - matchLabelExpressions:
+                - key: karpenter.k8s.aws/instance-local-nvme
+                  operator: Exists
+      - name: instancestore-nvme-xfs-r0
+        storageClass:
+          # Supported filesystems are: ext4, xfs, and btrfs.
+          fsType: xfs
+          # reclaimPolicy
+          reclaimPolicy: Delete
+          # Additional annotations
+          annotations: {}
+          # Default storage class for dynamic volume provisioning
+          # ref: https://kubernetes.io/docs/concepts/storage/dynamic-provisioning
+          isDefaultClass: false
+          # volumeBindingMode can be either WaitForFirstConsumer or Immediate. WaitForFirstConsumer is recommended because TopoLVM cannot schedule pods wisely if volumeBindingMode is Immediate.
+          volumeBindingMode: WaitForFirstConsumer
+          # enables CSI drivers to expand volumes. This feature is available for Kubernetes 1.16 and later releases.
+          allowVolumeExpansion: true
+          additionalParameters:
+            "topolvm.io/device-class": "raid0"
+          # mount options
+          mountOptions: []
+          allowedTopologies:
+            - matchLabelExpressions:
+                - key: karpenter.k8s.aws/instance-local-nvme
+                  operator: Exists
+      - name: instancestore-nvme-btrfs-r10
+        storageClass:
+          # Supported filesystems are: ext4, xfs, and btrfs.
+          fsType: btrfs
+          # reclaimPolicy
+          reclaimPolicy: Delete
+          # Additional annotations
+          annotations: {}
+          # Default storage class for dynamic volume provisioning
+          # ref: https://kubernetes.io/docs/concepts/storage/dynamic-provisioning
+          isDefaultClass: false
+          # volumeBindingMode can be either WaitForFirstConsumer or Immediate. WaitForFirstConsumer is recommended because TopoLVM cannot schedule pods wisely if volumeBindingMode is Immediate.
+          volumeBindingMode: WaitForFirstConsumer
+          # enables CSI drivers to expand volumes. This feature is available for Kubernetes 1.16 and later releases.
+          allowVolumeExpansion: true
+          additionalParameters:
+            "topolvm.io/device-class": "raid10"
+          # mount options
+          mountOptions: []
+          allowedTopologies:
+            - matchLabelExpressions:
+                - key: karpenter.k8s.aws/instance-local-nvme
+                  operator: Exists
+      - name: instancestore-nvme-ext4-r10
+        storageClass:
+          # Supported filesystems are: ext4, xfs, and btrfs.
+          fsType: ext4
+          # reclaimPolicy
+          reclaimPolicy: Delete
+          # Additional annotations
+          annotations: {}
+          # Default storage class for dynamic volume provisioning
+          # ref: https://kubernetes.io/docs/concepts/storage/dynamic-provisioning
+          isDefaultClass: false
+          # volumeBindingMode can be either WaitForFirstConsumer or Immediate. WaitForFirstConsumer is recommended because TopoLVM cannot schedule pods wisely if volumeBindingMode is Immediate.
+          volumeBindingMode: WaitForFirstConsumer
+          # enables CSI drivers to expand volumes. This feature is available for Kubernetes 1.16 and later releases.
+          allowVolumeExpansion: true
+          additionalParameters:
+            "topolvm.io/device-class": "raid10"
+          # mount options
+          mountOptions: []
+          allowedTopologies:
+            - matchLabelExpressions:
+                - key: karpenter.k8s.aws/instance-local-nvme
+                  operator: Exists
+      - name: instancestore-nvme-xfs-r10
+        storageClass:
+          # Supported filesystems are: ext4, xfs, and btrfs.
+          fsType: xfs
+          # reclaimPolicy
+          reclaimPolicy: Delete
+          # Additional annotations
+          annotations: {}
+          # Default storage class for dynamic volume provisioning
+          # ref: https://kubernetes.io/docs/concepts/storage/dynamic-provisioning
+          isDefaultClass: false
+          # volumeBindingMode can be either WaitForFirstConsumer or Immediate. WaitForFirstConsumer is recommended because TopoLVM cannot schedule pods wisely if volumeBindingMode is Immediate.
+          volumeBindingMode: WaitForFirstConsumer
+          # enables CSI drivers to expand volumes. This feature is available for Kubernetes 1.16 and later releases.
+          allowVolumeExpansion: true
+          additionalParameters:
+            "topolvm.io/device-class": "raid10"
           # mount options
           mountOptions: []
           allowedTopologies:
