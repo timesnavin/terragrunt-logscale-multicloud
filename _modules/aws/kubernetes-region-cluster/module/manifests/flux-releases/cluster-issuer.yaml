@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: cluster-issuer
-  namespace: flux-releases-region
+  namespace: cert-manager
 spec:
   interval: 10m
   timeout: 5m
@@ -25,8 +25,6 @@ spec:
       retries: 3
   test:
     enable: false
-  dependsOn:
-    - name: cert-manager
   values:
     resources:
       - apiVersion: cert-manager.io/v1

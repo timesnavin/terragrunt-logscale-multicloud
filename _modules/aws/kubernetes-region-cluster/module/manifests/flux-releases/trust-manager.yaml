@@ -2,14 +2,14 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: trust-manager
-  namespace: flux-releases-region
+  namespace: cert-manager
 spec:
   interval: 10m
   timeout: 5m
   chart:
     spec:
       chart: trust-manager
-      version: "v0.11.0"
+      version: "v0.12.0"
       sourceRef:
         kind: HelmRepository
         name: jetstack
@@ -26,15 +26,11 @@ spec:
   test:
     enable: false
   driftDetection:
-    mode: enabled
+    mode: disabled
     ignore:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  dependsOn:
-    - name: cert-manager
-    - name: karpenter-node-pools
-    - name: prometheus-operator-crds
   values:
     crds:
       enabled: true
@@ -48,8 +44,8 @@ spec:
         cpu: 15m
         memory: 105M
       limits:
-        cpu: 950411m
-        memory: 2037G
+        cpu: 1
+        memory: 512M
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:

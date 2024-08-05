@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: otel-cluster
+  name: otel-node
   namespace: otel-system
 spec:
   interval: 10m
@@ -15,7 +15,7 @@ spec:
         name: bedag
         namespace: flux-repos
       interval: 5m
-  releaseName: otel-cluster
+  releaseName: otel-node
   targetNamespace: otel-system
   install:
     remediation:
@@ -34,7 +34,7 @@ spec:
         apiVersion: opentelemetry.io/v1alpha1
         kind: OpenTelemetryCollector
         metadata:
-          name: otel-cluster-events
+          name: otel-cluster-node
         spec:
           serviceAccount: otel-collector-cluster
           # image: otel/opentelemetry-collector-contrib:0.56.0

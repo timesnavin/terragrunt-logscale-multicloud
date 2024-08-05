@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: kafka-strimzi-cluster
-      version: "4.0.2"
+      version: "4.3.9"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib
@@ -42,6 +42,37 @@ spec:
           requests:
             cpu: 100m
             memory: 1500Mi
+        template:
+          pod:
+            affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchExpressions:
+                        - key: strimzi.io/pool-name
+                          operator: In
+                          values:
+                            - kafka
+                    topologyKey: kubernetes.io/hostname
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: kubernetes.io/os
+                          operator: In
+                          values:
+                            - linux
+
+            topologySpreadConstraints:
+              - maxSkew: 2
+                whenUnsatisfiable: ScheduleAnyway
+                topologyKey: topology.kubernetes.io/zone
+                labelSelector:
+                  matchLabels:
+                    strimzi.io/pool-name: kafka
+                matchLabelKeys:
+                  - pod-template-hash
+
         storage:
           type: persistent-claim
           size: 1500Gi
@@ -68,6 +99,36 @@ spec:
           deleteClaim: true
           # Must be SSD or NVME like storage IOPs is the primary node constraint
           class: cluster-block-base-ext4
+        template:
+          pod:
+            affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchExpressions:
+                        - key: strimzi.io/pool-name
+                          operator: In
+                          values:
+                            - controller
+                    topologyKey: kubernetes.io/hostname
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: kubernetes.io/os
+                          operator: In
+                          values:
+                            - linux
+
+            topologySpreadConstraints:
+              - maxSkew: 2
+                whenUnsatisfiable: ScheduleAnyway
+                topologyKey: topology.kubernetes.io/zone
+                labelSelector:
+                  matchLabels:
+                    strimzi.io/pool-name: controller
+                matchLabelKeys:
+                  - pod-template-hash
     cruiseControl:
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
@@ -159,35 +220,6 @@ spec:
         maxReplicas: 100
         targetCPUUtilizationPercentage: 80
         # targetMemoryUtilizationPercentage: 80
-
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - kafka
-              topologyKey: kubernetes.io/hostname
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/os
-                    operator: In
-                    values:
-                      - linux
-
-      topologySpreadConstraints:
-        - maxSkew: 2
-          whenUnsatisfiable: ScheduleAnyway
-          topologyKey: topology.kubernetes.io/zone
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: kafka
-          matchLabelKeys:
-            - pod-template-hash
 
     zookeeper:
       replicas: 3

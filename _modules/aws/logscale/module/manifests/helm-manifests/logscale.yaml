@@ -195,6 +195,8 @@ spec:
                       - key: "kubernetes.io/os"
                         operator: "In"
                         values: ["linux"]
+                      - key: "karpenter.k8s.aws/instance-local-nvme"
+                        operator: DoesNotExist
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:
@@ -238,6 +240,8 @@ spec:
                       - key: "kubernetes.io/os"
                         operator: "In"
                         values: ["linux"]
+                      - key: "karpenter.k8s.aws/instance-local-nvme"
+                        operator: DoesNotExist
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:

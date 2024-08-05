@@ -127,9 +127,9 @@ spec:
                   value: "true"
                   effect: NoExecute
               # taints:
-              #   - key: topolvm.io/local
-              #     value: "true"
-              #     effect: PreferNoSchedule
+                # - key: topolvm.io/local
+                #   value: "true"
+                #   effect: PreferNoSchedule
               kubelet:
                 podsPerCore: 20
                 maxPods: 100

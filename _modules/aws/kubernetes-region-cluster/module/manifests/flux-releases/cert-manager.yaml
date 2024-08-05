@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: cert-manager
-  namespace: flux-releases-region
+  namespace: cert-manager
 spec:
   interval: 10m
   timeout: 5m
@@ -31,8 +31,6 @@ spec:
       - paths: ["/spec/replicas"]
         target:
           kind: Deployment
-  dependsOn:
-    - name: prometheus-operator-crds
   values:
     installCRDs: true
     global:

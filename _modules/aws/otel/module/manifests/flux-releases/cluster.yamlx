@@ -1,8 +1,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: otel-node
-  namespace: otel-system
+  name: otel-cluster
+  namespace: flux-releases-region
 spec:
   interval: 10m
   timeout: 5m
@@ -15,7 +15,7 @@ spec:
         name: bedag
         namespace: flux-repos
       interval: 5m
-  releaseName: otel-node
+  releaseName: otel-cluster
   targetNamespace: otel-system
   install:
     remediation:

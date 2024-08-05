@@ -1,0 +1,5 @@
+name: kiwi
+platform: aws
+region: us-west-2
+logscale:
+  root: nicholas.bellante@crowdstrike.com
