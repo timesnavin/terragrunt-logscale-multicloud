@@ -1,5 +1,5 @@
 locals {
-  cidr    = "10.0.0.0/16"
+  cidr    = "2001:db8::/32"
   subnets = cidrsubnets(local.cidr, 1, 1)
 
   azCount          = 3

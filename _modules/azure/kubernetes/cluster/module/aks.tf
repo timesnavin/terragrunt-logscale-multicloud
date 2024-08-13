@@ -22,8 +22,9 @@ module "aks" {
   rbac_aad_azure_rbac_enabled       = true
   role_based_access_control_enabled = true
 
-  network_plugin  = "azure"
-  ebpf_data_plane = "cilium"
+  network_plugin  = "kubenet"  #switched from "azure" to "Kubenet" for BYOCNI
+  network_policy = "calico"   #Required for Cilum
+  #ebpf_data_plane = "cilium"
 
   net_profile_service_cidr   = "10.254.0.0/16"
   net_profile_dns_service_ip = "10.254.0.2"

@@ -1,7 +1,7 @@
 output "az_names" {
   value = random_shuffle.az.result
 }
-output "public_subnet_ipv4_prefixes" {
+output "public_subnet_ipv6_prefixes" {
   value = azurerm_subnet.public[*].address_prefixes
 }
 

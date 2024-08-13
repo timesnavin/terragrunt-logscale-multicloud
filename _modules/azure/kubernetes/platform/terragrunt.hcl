@@ -28,3 +28,10 @@ dependencies {
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
+
+
+inputs = {
+  kubeconfig_path       = dependency.aks.outputs.kubeconfig
+  cluster_name          = dependency.aks.outputs.cluster_name
+  instance_profile_name = ""  # Not applicable for Azure; set to empty or remove
+}

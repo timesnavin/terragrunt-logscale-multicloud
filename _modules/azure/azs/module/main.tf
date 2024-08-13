@@ -12,7 +12,7 @@ resource "random_shuffle" "az" {
 }
 
 
-# Create public subnets
+# Create public IPV6 subnets
 resource "azurerm_subnet" "public" {
   count                = length(local.public_prefixes)
   name                 = "publicSubnet${count.index + 1}"
@@ -34,7 +34,7 @@ resource "azurerm_subnet" "public" {
   depends_on = [random_shuffle.az]
 }
 
-# Create private subnets
+# Create private IPV6 subnets
 resource "azurerm_subnet" "private" {
   count                = length(local.private_prefixes)
   name                 = "privateSubnet${count.index + 1}"
