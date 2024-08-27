@@ -23,14 +23,14 @@ module "aks" {
   role_based_access_control_enabled = true
 
   network_plugin  = "kubenet"  #switched from "azure" to "Kubenet" for BYOCNI
-  network_policy = "calico"   #Required for Cilum
+  network_policy = "calico"   #Required for Cilum - use default cilium
   #ebpf_data_plane = "cilium"
 
   net_profile_service_cidr   = "10.254.0.0/16"
   net_profile_dns_service_ip = "10.254.0.2"
 
   vnet_subnet_id = var.aks_subnet_id
-  pod_subnet_id  = var.pods_subnet_id
+  #pod_subnet_id  = var.pods_subnet_id #Commented out as Cilium and Calico are creating conflict. With network_plugin as kubenet and policy as 'calico' it is recommended to not to specify the pod CIDR and let Cilium handle this
 
   agents_availability_zones = ["1", "2", "3"]
   automatic_channel_upgrade = "patch"
@@ -54,7 +54,7 @@ module "aks" {
       max_count           = 3
       max_pods            = 100
       vnet_subnet_id      = var.aks_subnet_id
-      pod_subnet_id       = var.pods_subnet_id
+ #     pod_subnet_id       = var.pods_subnet_id
       node_taints = [
         "CriticalAddonsOnly=true:PreferNoSchedule"
       ]
@@ -63,5 +63,6 @@ module "aks" {
     }
   }
   os_disk_size_gb = 60
+
 
 }

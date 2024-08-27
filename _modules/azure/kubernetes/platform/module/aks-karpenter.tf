@@ -1,57 +1,67 @@
-/*
-provider "helm" {
-  kubernetes {
-    config_path = var.kubeconfig_path
+# Step 1: Run configure-values.sh to generate karpenter-values.yaml
+/*resource "null_resource" "configure_values" {
+  provisioner "local-exec" {
+    command = <<EOT
+      curl -L https://github.com/Azure/karpenter-provider-azure/releases/download/v0.1.0/configure-values.sh -o configure-values.sh
+      chmod +x configure-values.sh
+     ./configure-values.sh \
+        --cluster-name ${module.aks.cluster_name} \
+        --resource-group ${module.aks.resource_group_name} \
+        --location ${module.aks.location} \
+        --subscription-id ${var.azure_subscription_id} \
+        --client-id ${var.azure_client_id} \
+        --client-secret ${var.azure_client_secret} \
+        --tenant-id ${var.azure_tenant_id}
+    EOT
+
+    environment = {
+      KUBECONFIG = module.aks.kubeconfig_path
+    }
+
+    triggers = {
+      always_run = "${timestamp()}"
+    }
+  }*/
+###################################
+
+resource "null_resource" "configure_values" {
+  provisioner "local-exec" {
+    command = <<EOT
+      curl -L https://github.com/Azure/karpenter-provider-azure/releases/download/v0.1.0/configure-values.sh -o ./configure-values.sh
+      chmod +x ./configure-values.sh
+      ./configure-values.sh \
+        --cluster-name ${dependency.cluster.outputs.cluster_name} \
+        --resource-group ${dependency.cluster.outputs.resource_group_name} \
+        --location ${dependency.cluster.outputs.location}
+    EOT
+
+    environment = {
+      KUBECONFIG = module.aks.kubeconfig_path
+    }
+
+    triggers = {
+      always_run = "${timestamp()}"
+    }
   }
+
+  #depends_on = [module.aks]
+  depends_on = [ dependency.cluster ]
 }
 
-resource "helm_release" "karpenter" {
-  name       = "karpenter"
-  namespace  = "karpenter"
-  repository = "https://charts.karpenter.sh/"
-  chart      = "karpenter"
-  version    = "0.6.3"  # Use the latest version compatible with your setup
+resource "null_resource" "install_karpenter" {
+  provisioner "local-exec" {
+    command = <<EOT
+      helm upgrade --install karpenter oci://mcr.microsoft.com/aks/karpenter/karpenter \
+        --namespace karpenter \
+        --create-namespace \
+        --values ./karpenter-values.yaml
+    EOT
 
-  set {
-    name  = "serviceAccount.create"
-    value = "true"
+    environment = {
+      KUBECONFIG = dependency.cluster.outputs.kubeconfig_path
+    }
   }
 
-  set {
-    name  = "controller.clusterName"
-    value = var.cluster_name
-  }
-
-  set {
-    name  = "controller.clusterEndpoint"
-    value = data.azurerm_kubernetes_cluster.cluster.fqdn
-  }
-
-  set {
-    name  = "controller.aws.defaultInstanceProfile"
-    value = var.instance_profile_name
-  }
-
-  set {
-    name  = "settings.aws.interruptionQueueName"
-    value = "karpenter-interruption-queue"
-  }
-
-  set {
-    name  = "settings.aws.enableInterruptionHandling"
-    value = "true"
-  }
+  depends_on = [null_resource.configure_values]
 }
 
-variable "kubeconfig_path" {
-  type = string
-}
-
-variable "cluster_name" {
-  type = string
-}
-
-variable "instance_profile_name" {
-  type = string
-}
-*/

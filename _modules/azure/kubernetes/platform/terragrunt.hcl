@@ -17,6 +17,7 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
+
 dependencies {
   paths = [
     "${get_terragrunt_dir()}/../flux2/"
@@ -28,10 +29,26 @@ dependencies {
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
-
+dependency "aks" {
+  config_path = "/Users/nchaudhary/Dev/terragrunt-logscale-multicloud/_modules/azure/kubernetes/cluster"
+}
 
 inputs = {
-  kubeconfig_path       = dependency.aks.outputs.kubeconfig
-  cluster_name          = dependency.aks.outputs.cluster_name
-  instance_profile_name = ""  # Not applicable for Azure; set to empty or remove
+  
+  cluster_name        = dependency.aks.outputs.cluster_name
+  resource_group_name = dependency.aks.outputs.resource_group_name
+  location            = dependency.aks.outputs.location
+  azure_subscription_id = var.azure_subscription_id
+  azure_tenant_id     = var.azure_tenant_id
+  azure_client_id     = var.azure_client_id
+  azure_client_secret = var.azure_client_secret
+
+  name = dependency.vnet.outputs.name
+  projectRoot = dirname(find_in_parent_folders())
+  resourceGroup         = local.provider.az.resourceGroup
+  resourceGroupLocation = local.provider.az.region
+
+  location = local.region.name
+  aks_subnet_id = dependency.vnet.outputs.aks_subnet_id
+  pods_subnet_id= dependency.vnet.outputs.pods_subnet_id 
 }

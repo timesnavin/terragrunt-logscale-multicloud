@@ -3,6 +3,9 @@ terraform {
 
 
   required_providers {
+    time = {
+      source = "hashicorp/time"
+    }
     helm = {
       source  = "hashicorp/helm"
       version = "2.13.0"

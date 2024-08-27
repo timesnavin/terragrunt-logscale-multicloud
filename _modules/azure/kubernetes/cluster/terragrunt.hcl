@@ -23,7 +23,6 @@ locals {
   provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
 }
 
-
 dependency "vnet" {
   config_path = "${get_terragrunt_dir()}/../../vnet/"
 }

@@ -8,7 +8,8 @@
 locals {
   #k8shost = regex("https://(.*)", module.aks.cluster_endpoint)[0]
   #k8shost=flatten(data.kubernetes_endpoints_v1.api_endpoints.subset[*].address[*].ip)[0]
-  k8shost = regex("https://(.*)", data.azurerm_kubernetes_cluster.cluster.fqdn)
+  #k8shost = regex("https://(.*)", tostring(data.azurerm_kubernetes_cluster.cluster.fqdn))
+  k8shost = data.azurerm_kubernetes_cluster.cluster.fqdn
 }
 resource "helm_release" "cilium" {
   depends_on = [

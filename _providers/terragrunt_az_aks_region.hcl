@@ -13,6 +13,15 @@ locals {
 }
 
 
+/*locals {
+  common = yamldecode(file("$(get_terragrunt_dir()}/../common.yaml"))
+  partition = yamldecode(file("$(get_terragrunt_dir()}/../partition.yaml"))
+  provider = yamldecode(file("$(get_terragrunt_dir()}/../provider.yaml"))
+  region = yamldecode(file("$(get_terragrunt_dir()}/../region.yaml"))
+}*/
+
+
+
 generate "provider_az" {
   path      = "provider_az.tf"
   if_exists = "overwrite_terragrunt"
@@ -28,10 +37,7 @@ generate "provider_az" {
       type = string
     }
 
-    provider "azurerm" {
-      features {}
 
-    }
 EOF
 }
 
@@ -54,30 +60,7 @@ generate "provider_az_aks_helm" {
       resource_group_name = var.provider_az_aks_resource_group_name
     }
 
-    provider "kubernetes" {
 
-      host                   = data.azurerm_kubernetes_cluster.default.kube_admin_config.0.host
-      client_certificate     = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_certificate)
-      client_key             = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_key)
-      cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.cluster_ca_certificate)
-    }
-
-    provider "helm" {
-
-      kubernetes {
-        host                   = data.azurerm_kubernetes_cluster.default.kube_admin_config.0.host
-        client_certificate     = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_certificate)
-        client_key             = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_key)
-        cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.cluster_ca_certificate)
-      }
-    }
-
-    provider "kubectl" {
-      host                   = data.azurerm_kubernetes_cluster.default.kube_admin_config.0.host
-      client_certificate     = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_certificate)
-      client_key             = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_key)
-      cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.cluster_ca_certificate)
-    }
 EOF
 }
 
@@ -85,7 +68,4 @@ inputs = {
   provider_az_environment     = local.provider.az.environment
   provider_az_subscription_id = local.provider.az.subscription
   provider_az_tenant_id       = local.provider.az.tenant
-
-  provider_az_aks_cluster_name     = "${local.common.name}-${local.partition.name}-${local.provider.az.region}"
-  provider_az_aks_resource_group_name =  local.provider.az.resourceGroup
 }
