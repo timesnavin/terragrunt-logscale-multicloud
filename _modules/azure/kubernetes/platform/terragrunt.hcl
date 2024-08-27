@@ -17,6 +17,10 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
+locals {
+  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
+  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+}
 
 dependencies {
   paths = [
@@ -29,7 +33,7 @@ dependencies {
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
-dependency "aks" {
+/*dependency "aks" {
   config_path = "/Users/nchaudhary/Dev/terragrunt-logscale-multicloud/_modules/azure/kubernetes/cluster"
 }
 
@@ -51,4 +55,4 @@ inputs = {
   location = local.region.name
   aks_subnet_id = dependency.vnet.outputs.aks_subnet_id
   pods_subnet_id= dependency.vnet.outputs.pods_subnet_id 
-}
+}*/

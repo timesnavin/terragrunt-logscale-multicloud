@@ -18,21 +18,8 @@ terraform {
 # ---------------------------------------------------------------------------------------------------------------------
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
-locals {
-  region   = yamldecode(file(find_in_parent_folders("region.yaml")))
-  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-}
+
 
 dependency "vnet" {
   config_path = "${get_terragrunt_dir()}/../../vnet/"
-}
-inputs = {
-  name = dependency.vnet.outputs.name
-  projectRoot = dirname(find_in_parent_folders())
-  resourceGroup         = local.provider.az.resourceGroup
-  resourceGroupLocation = local.provider.az.region
-
-  location = local.region.name
-  aks_subnet_id = dependency.vnet.outputs.aks_subnet_id
-  pods_subnet_id= dependency.vnet.outputs.pods_subnet_id
 }

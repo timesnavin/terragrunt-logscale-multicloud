@@ -33,6 +33,9 @@ include "module" {
 # ---------------------------------------------------------------------------------------------------------------------
 # We don't need to override any of the common parameters for this environment, so we don't specify any inputs.
 # ---------------------------------------------------------------------------------------------------------------------
+/*include "root" {
+  path = find_in_parent_folders()
+}*/
 include "root" {
   path = find_in_parent_folders()
 }
@@ -45,7 +48,7 @@ include "root" {
 }*/
 
 include "module" {
-  path   = "${dirname(find_in_parent_folders())}/_modules/azure/kubernetes/platform/terragrunt.hcl"
+  path   = "${dirname(find_in_parent_folders())}/_modules/azure/kubernetes/cluster/terragrunt.hcl"
   expose = true
 }
 dependencies {
