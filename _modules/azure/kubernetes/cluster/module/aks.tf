@@ -23,7 +23,7 @@ module "aks" {
   role_based_access_control_enabled = true
 
   network_plugin  = "kubenet"  #switched from "azure" to "Kubenet" for BYOCNI
-  network_policy = "calico"   #Required for Cilum - use default cilium
+  network_policy = "calico"   #Required for Cilum - use default cilium. Calico is not currently supported by Karpenter for Azure
   #ebpf_data_plane = "cilium"
 
   net_profile_service_cidr   = "10.254.0.0/16"
@@ -63,6 +63,6 @@ module "aks" {
     }
   }
   os_disk_size_gb = 60
-
-
+##
+  identity_type = "SystemAssigned"
 }

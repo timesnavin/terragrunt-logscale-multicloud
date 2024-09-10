@@ -7,8 +7,10 @@
 
 locals {
   common = yamldecode(file(find_in_parent_folders("common.yaml")))
+  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
   provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
   region = yamldecode(file(find_in_parent_folders("region.yaml")))
+  
 }
 
 

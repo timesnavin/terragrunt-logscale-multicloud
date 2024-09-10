@@ -28,15 +28,63 @@ dependencies {
     ]
 }
 
+
+
 # ---------------------------------------------------------------------------------------------------------------------
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module. This defines the parameters that are common across all
 # environments.
 # ---------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*dependency "cluster" {
+  config_path = "${dirname(find_in_parent_folders())}/_modules/azure/kubernetes/cluster/module/aks.tf"
+}*/
+
+/*inputs = {
+  cluster_name = dependency.aks.outputs.cluster_name
+  provider_az_aks_cluster_name        = dependency.cluster.outputs.cluster_name
+  provider_az_aks_resource_group_name = dependency.cluster.outputs.resource_group_name
+  provider_az_aks_resource_group_name = dependency.cluster.outputs.resource_group_name
+  location            = dependency.cluster.outputs.location
+  kubeconfig_path       = dependency.cluster.outputs.kube_admin_config
+  instance_profile = ""  # Not applicable for Azure; set to empty or remove
+#  azure_subscription_id = var.azure_subscription_id
+#  tenant_id           = var.tenant_id  
+}*/
+/*
+inputs = {
+/*  cluster_name = dependency.cluster.outputs.cluster_name
+  instance_profile = ""  # Not applicable for Azure; set to empty or remove
+  kubeconfig_path       = dependency.cluster.outputs.kubeconfig_path
+ */
+ /*cluster_name = dependency.cluster.outputs.cluster_name
+ instance_profile = ""
+ kubeconfig_path  = dependency.cluster.outputs.kubeconfig_path
+ resource_group_name  = dependency.cluster.outputs.resource_group_name
+ location = dependency.cluster.outputs.location
+}
+# ---------------------------------------------------------------------------------------------------------------------
+# MODULE PARAMETERS
+# These are the variables we have to pass in to use the module. This defines the parameters that are common across all
+# environments.
+# ---------------------------------------------------------------------------------------------------------------------
+
 /*dependency "aks" {
   config_path = "/Users/nchaudhary/Dev/terragrunt-logscale-multicloud/_modules/azure/kubernetes/cluster"
 }
-
+/*
 inputs = {
   
   cluster_name        = dependency.aks.outputs.cluster_name

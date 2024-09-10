@@ -37,6 +37,11 @@ generate "provider_az" {
       type = string
     }
 
+     provider "azurerm" {
+      features {}
+
+    }   
+
 
 EOF
 }
@@ -68,4 +73,7 @@ inputs = {
   provider_az_environment     = local.provider.az.environment
   provider_az_subscription_id = local.provider.az.subscription
   provider_az_tenant_id       = local.provider.az.tenant
+
+  provider_az_aks_cluster_name     = "${local.common.name}-${local.partition.name}-${local.provider.az.region}"
+  provider_az_aks_resource_group_name =  local.provider.az.resourceGroup
 }

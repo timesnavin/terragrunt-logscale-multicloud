@@ -1,52 +1,46 @@
-# Step 1: Run configure-values.sh to generate karpenter-values.yaml
-/*resource "null_resource" "configure_values" {
+locals {
+
+}
+
+resource "null_resource" "write_kubeconfig" {
   provisioner "local-exec" {
     command = <<EOT
-      curl -L https://github.com/Azure/karpenter-provider-azure/releases/download/v0.1.0/configure-values.sh -o configure-values.sh
-      chmod +x configure-values.sh
-     ./configure-values.sh \
-        --cluster-name ${module.aks.cluster_name} \
-        --resource-group ${module.aks.resource_group_name} \
-        --location ${module.aks.location} \
-        --subscription-id ${var.azure_subscription_id} \
-        --client-id ${var.azure_client_id} \
-        --client-secret ${var.azure_client_secret} \
-        --tenant-id ${var.azure_tenant_id}
+      echo '${var.kubeconfig_path}' > /tmp/kubeconfig
     EOT
+  }
 
-    environment = {
-      KUBECONFIG = module.aks.kubeconfig_path
-    }
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+}
 
-    triggers = {
-      always_run = "${timestamp()}"
-    }
-  }*/
-###################################
 
+# Karpenter installation
 resource "null_resource" "configure_values" {
   provisioner "local-exec" {
     command = <<EOT
-      curl -L https://github.com/Azure/karpenter-provider-azure/releases/download/v0.1.0/configure-values.sh -o ./configure-values.sh
-      chmod +x ./configure-values.sh
       ./configure-values.sh \
-        --cluster-name ${dependency.cluster.outputs.cluster_name} \
-        --resource-group ${dependency.cluster.outputs.resource_group_name} \
-        --location ${dependency.cluster.outputs.location}
+        ${var.cluster_name} \
+        ${var.resource_group_name} \
+        ${var.karpenter_service_account_name} \
+        ${var.karpenter_user_assigned_identity_name}
     EOT
 
     environment = {
-      KUBECONFIG = module.aks.kubeconfig_path
-    }
-
-    triggers = {
-      always_run = "${timestamp()}"
+      #KUBECONFIG = var.kubeconfig_path
+      KUBECONFIG = "/tmp/kubeconfig"
+      AZURE_SUBSCRIPTION_ID = var.provider_az_subscription_id
+      VNET_SUBNET_ID = ""
     }
   }
 
-  #depends_on = [module.aks]
-  depends_on = [ dependency.cluster ]
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 }
+
+
+
 
 resource "null_resource" "install_karpenter" {
   provisioner "local-exec" {
@@ -58,10 +52,12 @@ resource "null_resource" "install_karpenter" {
     EOT
 
     environment = {
-      KUBECONFIG = dependency.cluster.outputs.kubeconfig_path
+      KUBECONFIG = "/tmp/kubeconfig"
     }
   }
 
-  depends_on = [null_resource.configure_values]
+  depends_on = [
+    null_resource.configure_values,
+    null_resource.write_kubeconfig
+  ]
 }
-
