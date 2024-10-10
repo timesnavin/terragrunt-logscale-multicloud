@@ -13,7 +13,7 @@ module "aks" {
   resource_group_name = var.resourceGroup
   cluster_name        = var.name
   prefix              = var.name
-  kubernetes_version  = "1.29"
+  kubernetes_version  = "1.30"
   sku_tier            = "Standard"
 
   log_analytics_workspace_enabled   = false
@@ -22,9 +22,11 @@ module "aks" {
   rbac_aad_azure_rbac_enabled       = true
   role_based_access_control_enabled = true
 
-  network_plugin  = "kubenet"  #switched from "azure" to "Kubenet" for BYOCNI
-  network_policy = "calico"   #Required for Cilum - use default cilium. Calico is not currently supported by Karpenter for Azure
-  #ebpf_data_plane = "cilium"
+  network_plugin  = "azure"  #switched from "azure" to "Kubenet" for BYOCNI # Setting value to none so that Cilium (BYOCNI) can be installed later by helm once cluster has been created 
+  network_policy = "cilium"   #Required for Cilum - use default cilium. Calico is not currently supported by Karpenter for Azure # Not applicable with Cilium insalled using helm charts later
+  #ebpf_data_plane = "cilium" # Not applicable with Cilium insalled using helm charts later
+  #network_plugin_mode = "overlay" # Not applicable with Cilium insalled using helm charts later
+  
 
   net_profile_service_cidr   = "10.254.0.0/16"
   net_profile_dns_service_ip = "10.254.0.2"
@@ -65,4 +67,6 @@ module "aks" {
   os_disk_size_gb = 60
 ##
   identity_type = "SystemAssigned"
+  
+  
 }

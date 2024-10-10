@@ -23,6 +23,9 @@ include "module" {
   path   = "${dirname(find_in_parent_folders())}/_modules/kubernetes/flux2/terragrunt.hcl"
   expose = true
 }
+dependency "cluster" {
+  config_path = "../cluster/"  # Reference the env folder where the cluster state is stored
+}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # We don't need to override any of the common parameters for this environment, so we don't specify any inputs.

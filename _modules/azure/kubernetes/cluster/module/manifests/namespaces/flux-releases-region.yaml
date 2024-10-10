@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: region-flux-releases
+  labels:
+    scope: region

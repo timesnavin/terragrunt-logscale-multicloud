@@ -69,11 +69,19 @@ resource "azurerm_role_assignment" "karpenter_vm_contributor" {
 }
 
 # Assign Azure Kubernetes Service RBAC Cluster Admin Role to User
+#resource "azurerm_role_assignment" "aks_rbac_cluster_admin" {
+#  principal_id         = azurerm_user_assigned_identity.karpenter_identity.principal_id
+#  role_definition_name = "Azure Kubernetes Service RBAC Cluster Admin"
+#  scope                = "/subscriptions/${var.provider_az_subscription_id}/resourceGroups/${var.resourceGroup}/providers/Microsoft.ContainerService/managedClusters/${var.name}"
+#}
 resource "azurerm_role_assignment" "aks_rbac_cluster_admin" {
   principal_id         = azurerm_user_assigned_identity.karpenter_identity.principal_id
   role_definition_name = "Azure Kubernetes Service RBAC Cluster Admin"
   scope                = "/subscriptions/${var.provider_az_subscription_id}/resourceGroups/${var.resourceGroup}/providers/Microsoft.ContainerService/managedClusters/${var.name}"
+
+  depends_on = [module.aks]  # Ensure the AKS cluster is created first
 }
+
 
 # ClusterRoleBinding for secrets access (grant service account access to Kubernetes secrets in kube-system)
 resource "kubernetes_cluster_role_binding" "karpenter_secrets_access" {
@@ -117,76 +125,3 @@ resource "kubernetes_cluster_role_binding" "karpenter_kube_system_secrets_access
 
   depends_on = [kubernetes_service_account.karpenter]
 }
-
-
-/*#Service account creation
-
-resource "kubernetes_service_account" "karpenter" {
-  metadata {
-    name      = var.karpenter_service_account_name
-    namespace = kubernetes_namespace.karpenter.metadata[0].name
-  }
-
-  depends_on = [kubernetes_namespace.karpenter]
-  lifecycle {
-    ignore_changes = [metadata]
-  }
-}
-
-resource "kubernetes_role_binding" "karpenter" {
-  metadata {
-    name      = "karpenter-binding"
-    namespace = kubernetes_namespace.karpenter.metadata[0].name
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "karpenter-controller"
-  }
-
-  subject {
-    kind      = "ServiceAccount"
-    name      = kubernetes_service_account.karpenter.metadata[0].name
-    namespace = kubernetes_namespace.karpenter.metadata[0].name
-  }
-
-  depends_on = [kubernetes_namespace.karpenter]
-}
-
-# User Assigned Managed Identity (UAMI) Creation
-
-resource "azurerm_user_assigned_identity" "karpenter_identity" {
-  resource_group_name = var.resourceGroup
-  location            = var.location
-
-  name = var.karpenter_user_assigned_identity_name
-}
-
-output "karpenter_identity_client_id" {
-  value = azurerm_user_assigned_identity.karpenter_identity.client_id
-}
-
-output "karpenter_identity_principal_id" {
-  value = azurerm_user_assigned_identity.karpenter_identity.principal_id
-}
-
-output "karpenter_identity_id" {
-  value = azurerm_user_assigned_identity.karpenter_identity.id
-}
-
-# Assign permissions to UAMI
-
-resource "azurerm_role_assignment" "karpenter_vm_contributor" {
-  principal_id         = azurerm_user_assigned_identity.karpenter_identity.principal_id
-  role_definition_name = "Virtual Machine Contributor"
-  scope                = "/subscriptions/${var.provider_az_subscription_id}"
-}
-
-########Namespace Creation for Karpenter
-resource "kubernetes_namespace" "karpenter" {
-  metadata {
-    name = "karpenter"
-  }
-}*/
-

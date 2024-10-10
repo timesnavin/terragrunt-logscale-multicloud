@@ -7,5 +7,5 @@ resource "kubectl_manifest" "storageclasses" {
     kubectl_manifest.ebs,
     kubectl_manifest.efs
   ]
-  yaml_body = templatefile("./manifests/helm-manifests/aks-storage-csi.yaml", {})
+  yaml_body = templatefile("./manifests/helm-manifests/aks-storage.yaml", {})
 }

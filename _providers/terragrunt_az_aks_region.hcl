@@ -69,6 +69,38 @@ generate "provider_az_aks_helm" {
 EOF
 }
 
+generate "provider_k8s" {
+  path      = "provider_k8s.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<-EOF
+
+    provider "kubernetes" {
+      host                   = data.azurerm_kubernetes_cluster.default.kube_admin_config.0.host
+      client_certificate     = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_certificate)
+      client_key             = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_key)
+      cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.cluster_ca_certificate)
+    }
+
+EOF
+}
+
+generate "provider_helm" {
+  path      = "provider_helm.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<-EOF
+
+    provider "helm" {
+      kubernetes {
+        host                   = data.azurerm_kubernetes_cluster.default.kube_admin_config.0.host
+        client_certificate     = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_certificate)
+        client_key             = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.client_key)
+        cluster_ca_certificate = base64decode(data.azurerm_kubernetes_cluster.default.kube_admin_config.0.cluster_ca_certificate)
+      }
+    }
+
+  EOF
+}
+
 inputs = {
   provider_az_environment     = local.provider.az.environment
   provider_az_subscription_id = local.provider.az.subscription

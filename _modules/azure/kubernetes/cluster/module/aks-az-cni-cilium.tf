@@ -1,31 +1,23 @@
-# data "kubernetes_endpoints_v1" "api_endpoints" {
-#   metadata {
-#     name      = "kubernetes"
-#     namespace = "default"
-#   }
-# }
 
 locals {
-  #k8shost = regex("https://(.*)", module.aks.cluster_endpoint)[0]
-  #k8shost=flatten(data.kubernetes_endpoints_v1.api_endpoints.subset[*].address[*].ip)[0]
-  #k8shost = regex("https://(.*)", tostring(data.azurerm_kubernetes_cluster.cluster.fqdn))
-  k8shost = data.azurerm_kubernetes_cluster.cluster.fqdn
+  # Use the FQDN of the AKS cluster
+  k8shost = data.azurerm_kubernetes_cluster.default.fqdn
 }
+
+# Helm Release for Cilium on AKS
 resource "helm_release" "cilium" {
   depends_on = [
-    module.aks.aks_managed_node_groups,
-    module.aks.access_entries,
-    module.aks.access_policy_associations,
-    module.aks.cloudwatch_log_group_arn
+    module.aks
   ]
+  name       = "cilium"
   repository = "https://helm.cilium.io/"
   chart      = "cilium"
-  name       = "cilium"
   namespace  = "kube-system"
   version    = "1.15.7"
+
   values = [<<YAML
 cni:
-  chainingMode: aws-cni
+  chainingMode: azure  # Change from kubenet to azure for better AKS compatibility
   exclusive: false
 routingMode: native
 enableIPv4Masquerade: false
@@ -36,7 +28,6 @@ ipv6:
   enabled: true
 kubeProxyReplacement: true
 loadBalancer:
-  # acceleration: native
   mode: dsr
 k8sServicePort: 443
 k8sServiceHost: ${local.k8shost}
@@ -49,7 +40,6 @@ hubble:
   ui:
     enabled: true
 nodeinit:
-
   enabled: true
   startup:
     preScript: |
@@ -63,4 +53,10 @@ nodeinit:
       #
 YAML
   ]
+}
+
+# Kubernetes Cluster Data Source
+data "azurerm_kubernetes_cluster" "default" {
+  name                = module.aks.aks_name
+  resource_group_name = var.resourceGroup
 }
