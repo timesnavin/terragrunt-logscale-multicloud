@@ -19,7 +19,7 @@ resource "null_resource" "write_kubeconfig" {
 resource "null_resource" "configure_values" {
   provisioner "local-exec" {
     command = <<EOT
-      ./configure-values.sh \
+    ./configure-values.sh\
         ${var.cluster_name} \
         ${var.resource_group_name} \
         ${var.karpenter_service_account_name} \
@@ -60,4 +60,11 @@ resource "null_resource" "install_karpenter" {
     null_resource.configure_values,
     null_resource.write_kubeconfig
   ]
+}
+###############################New Addition
+
+
+resource "time_sleep" "karpenter" {
+  depends_on       = [null_resource.install_karpenter]
+  destroy_duration = "90s"
 }

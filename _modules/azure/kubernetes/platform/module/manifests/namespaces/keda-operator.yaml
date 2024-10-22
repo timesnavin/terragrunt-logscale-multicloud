@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v1beta2
 kind: Namespace
 metadata:
   name: keda-operator

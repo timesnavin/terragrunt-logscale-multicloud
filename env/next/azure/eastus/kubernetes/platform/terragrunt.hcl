@@ -17,9 +17,18 @@ include "module" {
   path   = "${dirname(find_in_parent_folders())}/_modules/azure/kubernetes/platform/terragrunt.hcl"
   expose = true
 }
+
+
+
 dependency "cluster" {
   config_path = "../cluster/"  # Reference the env folder where the cluster state is stored
 }
+/*
+dependency "flux2" {
+  config_path = "../flux2/"
+}
+*/
+
 
 inputs = {
   cluster_name        = dependency.cluster.outputs.cluster_name
@@ -30,4 +39,3 @@ inputs = {
   karpenter_service_account_name      = "karpenter-sa"  # Define the actual service account name
   karpenter_user_assigned_identity_name = "karpenter-identity"  # Define the actual identity name  
 }
-

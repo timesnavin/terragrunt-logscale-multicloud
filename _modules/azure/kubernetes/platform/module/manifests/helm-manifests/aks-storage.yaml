@@ -1,21 +1,21 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: azure-storage-csi
+  name: azure-storage-classes
   namespace: region-flux-releases
 spec:
   interval: 10m
   timeout: 10m
   chart:
     spec:
-      chart: azure-storage-csi
-      version: "1.0.0"
+      chart: azure-storage-classes
+      #version: "2.0.0"
       sourceRef:
         kind: HelmRepository
         name: bedag
         namespace: flux-system
       interval: 5m
-  releaseName: azure-storage-csi
+  releaseName: azure-storage-classes
   targetNamespace: kube-system
   install:
     remediation:
@@ -35,14 +35,14 @@ spec:
       - apiVersion: storage.k8s.io/v1
         kind: StorageClass
         metadata:
-          name: regional-disk-base-ext4
+          name: managed-premium
           annotations:
             storageclass.kubernetes.io/is-default-class: "true"
-        parameters:
-          fsType: ext4
-          kind: managed
-          storageaccounttype: Premium_LRS
         provisioner: disk.csi.azure.com
         reclaimPolicy: Delete
         allowVolumeExpansion: true
         volumeBindingMode: WaitForFirstConsumer
+        parameters:
+          skuName: Premium_LRS
+          cachingmode: ReadOnly
+          kind: managed-premium
