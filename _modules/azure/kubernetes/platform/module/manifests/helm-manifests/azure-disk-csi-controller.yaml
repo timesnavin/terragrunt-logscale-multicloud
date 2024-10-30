@@ -1,0 +1,56 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: azure-disk-csi-driver
+  namespace: region-flux-releases
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: ./charts/azuredisk-csi-driver
+      sourceRef:
+        kind: GitRepository
+        name: azure-disk-csi-driver
+        namespace: flux-system
+      interval: 5m
+  releaseName: azure-disk-csi-driver
+  targetNamespace: kube-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths: ["/spec/replicas"]
+        target:
+          kind: Deployment
+  values:
+    controller:
+      serviceAccount:
+        annotations:
+          azure.workload.identity/client-id: ${disk_csi_driver_identity_client_id}
+
+      # Specifies whether Leader Election resources should be created
+      # Required when running as a Deployment
+      # NOTE: Leader election can't be activated if DryRun enabled
+      resources:
+        requests:
+          cpu: 500m
+          memory: 256Mi
+        limits:
+          cpu: 1
+          memory: 512Mi
+      priorityClassName: "system-cluster-critical"
+
+node:
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - key: agentpool
+          operator: Exists

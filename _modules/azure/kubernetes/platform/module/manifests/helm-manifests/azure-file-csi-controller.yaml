@@ -1,0 +1,93 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: azure-file-csi-driver
+  namespace: region-flux-releases
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: ./charts/azuredisk-csi-driver
+      version: "1.31.0"
+      sourceRef:
+        kind: GitRepository
+        name: azurefile-csi-driver
+        namespace: flux-system
+      interval: 5m
+  releaseName: azure-file-csi-driver
+  targetNamespace: kube-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths: ["/spec/replicas"]
+        target:
+          kind: Deployment
+  values:
+    controller:
+      serviceAccount:
+        annotations:
+          azure.workload.identity/client-id: ${disk_file_driver_identity_client_id}
+
+      # Specifies whether Leader Election resources should be created
+      # Required when running as a Deployment
+      # NOTE: Leader election can't be activated if DryRun enabled
+      resources:
+        requests:
+          cpu: 500m
+          memory: 256Mi
+        limits:
+          cpu: 1
+          memory: 512Mi
+      priorityClassName: "system-cluster-critical"
+
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - azurefile-csi-driver
+              topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+      topologySpreadConstraints:
+        - maxSkew: 2
+          minDomains: 2
+          whenUnsatisfiable: DoNotSchedule
+          topologyKey: topology.kubernetes.io/zone
+          labelSelector:
+            matchLabels:
+              app: azurefile-csi-driver
+          matchLabelKeys:
+            - pod-template-hash
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - key: ebs.csi.aws.com/agent-not-ready
+          operator: Exists
+        - key: efs.csi.aws.com/agent-not-ready
+          operator: Exists
+          
+node:
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - key: agentpool
+          operator: Exists

@@ -1,0 +1,111 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: karpenter-node-pools
+  namespace: region-flux-releases
+spec:
+  interval: 10m
+  timeout: 5m
+  chart:
+    spec:
+      chart: raw
+      version: "2.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: bedag
+        namespace: flux-system
+      interval: 5m
+  releaseName: karpenter-node-pools
+  targetNamespace: karpenter
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  test:
+    enable: false
+  driftDetection:
+    mode: warn
+    ignore:
+      - paths: ["/spec/replicas"]
+        target:
+          kind: Deployment
+  dependsOn:
+    - name: karpenter-node-templates
+  values:
+    templates:
+      - |
+        apiVersion: karpenter.sh/v1alpha5
+        kind: Provisioner
+        metadata:
+          name: general
+        spec:
+          template:
+            metadata:
+              # Labels are arbitrary key-values that are applied to all nodes
+              labels:
+                storageClass: "network"
+            spec:
+              providerRef:
+                name: default
+              requirements:
+                - key: "kubernetes.io/os"
+                  operator: In
+                  values: ["linux"]
+                -key: "node.kubernetes.io/instance-type"
+                  operator: In
+                  value: 
+                    - "Standard_D2s_v3""
+                    - "Standard_D4s_v3""
+              taints:  
+                - key: "node.kubernetes.io/not-ready"
+                  effect: NoExecute
+                  
+              kubeletConfiguration:
+                podsPerCore: 20
+                maxPods: 100
+          limits:
+            cpu: 1000
+          disruption:
+            consolidation:
+              enabled:true 
+          weight: 100
+      - |
+        apiVersion: karpenter.sh/v1alpha5
+        kind: Provisioner
+        metadata:
+          name: storage
+        spec:
+          providerRef:
+                name: storage
+
+          requirements:
+                - key: "kubernetes.io/arch"
+                  operator: In
+                  values: ["amd64"]
+                - key: "kubernetes.io/os"
+                  operator: In
+                  values: ["linux"]
+                - key: "node.kubernetes.io/instance-type"
+                  operator: In
+                  values:
+                  - "Standard_D8s_v3"
+                  - "Standard_D16s_v3""
+          labels:
+            storageClass: local
+          taints:
+                - key: "node.kubernetes.io/not-ready"
+                  effect: NoExecute
+              # taints:
+              #   - key: topolvm.io/local
+              #     value: "true"
+              #     effect: PreferNoSchedule
+              kubeletConfiguration:
+                podsPerCore: 20
+                maxPods: 100
+          limits:
+            cpu: 1000
+          disruption:
+            consolidationPolicy: WhenUnderutilized
+          weight: 20
