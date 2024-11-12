@@ -3,6 +3,7 @@ name: nxt
 dns:
   parent_domain: logsr.life
   ttl: 300
+  
 shared:
   provider:
     name: aws
@@ -10,3 +11,9 @@ shared:
 gcp:
   project_id: cs-logscale-ps
   region: us-central1
+
+azure:
+  location: eastus
+  tags:
+    environment: nxt
+    project: logscale-azure

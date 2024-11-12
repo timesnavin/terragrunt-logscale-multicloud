@@ -8,8 +8,8 @@
 locals {
   common = yamldecode(file(find_in_parent_folders("common.yaml")))
   partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
-  provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
-  region = yamldecode(file(find_in_parent_folders("region.yaml")))
+ # provider = yamldecode(file(find_in_parent_folders("provider.yaml")))
+ # region = yamldecode(file(find_in_parent_folders("region.yaml")))
   
 }
 
@@ -34,10 +34,4 @@ generate "provider_az" {
 
     }
 EOF
-}
-
-inputs = {
-  provider_az_environment     = local.provider.az.environment
-  provider_az_subscription_id = local.provider.az.subscription
-  provider_az_tenant_id       = local.provider.az.tenant
 }

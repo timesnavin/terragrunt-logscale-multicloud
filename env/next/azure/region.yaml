@@ -1,0 +1,5 @@
+name: eastus
+az_exclude_names:
+  - us-east-1e
+kubernetes:
+  version: 1.28

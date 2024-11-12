@@ -1,4 +1,4 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: kafka
@@ -9,11 +9,11 @@ spec:
   chart:
     spec:
       chart: kafka-strimzi-cluster
-      version: "4.0.0-next.18"
+      version: "5.1.0"
       sourceRef:
         kind: HelmRepository
         name: logscale-contrib
-        namespace: flux-system
+        namespace: flux-repos
       interval: 5m
   releaseName: kafka
   install:
@@ -26,9 +26,7 @@ spec:
     enable: false
   values:
     fullnameOverride: ${kafka_name}
-    metadataMode: enabled
     nodePools:
-      enabled: true
       kafka:
         replicas: 4
         resources:
@@ -37,20 +35,75 @@ spec:
           # resources, such as Minikube. If you do want to specify resources, uncomment the following
           # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
           limits:
-            cpu: 1
-            memory: 2000Mi
+            cpu: 4
+            memory: 12Gi
           requests:
-            cpu: 100m
-            memory: 1500Mi
+            cpu: 4
+            memory: 12Gi
+        template:
+          pod:
+            affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchExpressions:
+                        - key: strimzi.io/pool-name
+                          operator: In
+                          values:
+                            - kafka
+                    topologyKey: kubernetes.io/hostname
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: kubernetes.io/os
+                          operator: In
+                          values:
+                            - linux
+                        - key: karpenter.k8s.aws/instance-local-nvme
+                          operator: DoesNotExist
+
+            topologySpreadConstraints:
+              - maxSkew: 2
+                whenUnsatisfiable: ScheduleAnyway
+                topologyKey: topology.kubernetes.io/zone
+                labelSelector:
+                  matchLabels:
+                    strimzi.io/pool-name: kafka
+                matchLabelKeys:
+                  - pod-template-hash
+
         storage:
-          type: persistent-claim
-          size: 1500Gi
-          deleteClaim: true
-          # Must be SSD or NVME like storage IOPs is the primary node constraint
-          class: regional-block-base-ext4
+          type: jbod
+          volumes:
+            - id: 0
+              type: persistent-claim
+              size: 1Ti
+              deleteClaim: false
+              class: cluster-block-base-ext4
+              kraftMetadata: shared
+            - id: 1
+              type: persistent-claim
+              size: 1Ti
+              deleteClaim: false
+              class: cluster-block-base-ext4
+            - id: 2
+              type: persistent-claim
+              size: 1Ti
+              deleteClaim: false
+              class: cluster-block-base-ext4
+            - id: 3
+              type: persistent-claim
+              size: 1Ti
+              deleteClaim: false
+              class: cluster-block-base-ext4
+          # type: persistent-claim
+          # size: 1500Gi
+          # deleteClaim: false
+          # # Must be SSD or NVME like storage IOPs is the primary node constraint
+          # class: cluster-block-base-ext4
 
       controller:
-        enabled: true
         resources:
           # We usually recommend not to specify default resources and to leave this as a conscious
           # choice for the user. This also increases chances charts run on environments with little
@@ -67,7 +120,38 @@ spec:
           size: 64Gi
           deleteClaim: true
           # Must be SSD or NVME like storage IOPs is the primary node constraint
-          class: regional-block-base-ext4
+          class: cluster-block-base-ext4
+        template:
+          pod:
+            affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchExpressions:
+                        - key: strimzi.io/pool-name
+                          operator: In
+                          values:
+                            - controller
+                    topologyKey: kubernetes.io/hostname
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                    - matchExpressions:
+                        - key: kubernetes.io/os
+                          operator: In
+                          values:
+                            - linux
+                        - key: karpenter.k8s.aws/instance-local-nvme
+                          operator: DoesNotExist
+            topologySpreadConstraints:
+              - maxSkew: 2
+                whenUnsatisfiable: ScheduleAnyway
+                topologyKey: topology.kubernetes.io/zone
+                labelSelector:
+                  matchLabels:
+                    strimzi.io/pool-name: controller
+                matchLabelKeys:
+                  - pod-template-hash
     cruiseControl:
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
@@ -139,6 +223,33 @@ spec:
         # targetMemoryUtilizationPercentage: 80
 
     kafka:
+      config:
+        num.recovery.threads.per.data.dir: 4
+        min.insync.replicas: 4
+        default.replication.factor: 3
+        offsets.topic.replication.factor: 3
+        transaction.state.log.min.isr: 2
+        transaction.state.log.replication.factor: 3
+        # For storage where storage is thin provisioned enable
+        # log.preallocate: true
+        # background threads include replication for very high throughput increase based on available CPU cores and usage default is 10
+        background.threads: 20
+        # num.io.threads increase based on available CPU cores and usage default is 8
+        num.io.threads: 4
+        # num.network.threads increase based on available CPU cores and usage default is 3
+        num.network.threads: 2
+        # num.replica.fetchers increase based on available CPU cores and usage default is 1
+        # num.replica.fetchers: 10
+
+        # replica.socket.receive.buffer.bytes: 65536 increased for higher replication throughput based on memory
+        # replica.socket.receive.buffer.bytes: 1000000
+
+        # socket.receive.buffer.bytes: 102400 default setting to -1 to use OS default
+        socket.receive.buffer.bytes: -1
+        # socket.request.max.bytes: 104857600 default setting to 100MB probably should not change
+        # socket.send.buffer.bytes: 102400 default setting to -1 to use OS default
+        socket.send.buffer.bytes: -1
+
       authorization:
         enabled: true
       listeners:
@@ -152,95 +263,3 @@ spec:
               issuerRef:
                 name: cluster-ca-issuer
             # secretName: kafka-tls
-
-      autoscaling:
-        enabled: false
-        minReplicas: 1
-        maxReplicas: 100
-        targetCPUUtilizationPercentage: 80
-        # targetMemoryUtilizationPercentage: 80
-
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - kafka
-              topologyKey: kubernetes.io/hostname
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/os
-                    operator: In
-                    values:
-                      - linux
-
-      topologySpreadConstraints:
-        - maxSkew: 2
-          whenUnsatisfiable: ScheduleAnyway
-          topologyKey: topology.kubernetes.io/zone
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: kafka
-          matchLabelKeys:
-            - pod-template-hash
-
-    zookeeper:
-      replicas: 3
-      resources:
-        # We usually recommend not to specify default resources and to leave this as a conscious
-        # choice for the user. This also increases chances charts run on environments with little
-        # resources, such as Minikube. If you do want to specify resources, uncomment the following
-        # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-        limits:
-          cpu: 1
-          memory: 2000Mi
-        requests:
-          cpu: 500m
-          memory: 1500Mi
-      storage:
-        type: persistent-claim
-        size: 5Gi
-        deleteClaim: true
-        # Must be SSD or NVME like storage IOPs is the  mary node constraint
-        class: regional-block-base-ext4
-
-      autoscaling:
-        enabled: false
-        minReplicas: 1
-        maxReplicas: 100
-        targetCPUUtilizationPercentage: 80
-        # targetMemoryUtilizationPercentage: 80
-
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchExpressions:
-                  - key: app.kubernetes.io/name
-                    operator: In
-                    values:
-                      - zookeeper
-              topologyKey: kubernetes.io/hostname
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/os
-                    operator: In
-                    values:
-                      - linux
-
-      topologySpreadConstraints:
-        - maxSkew: 2
-          whenUnsatisfiable: ScheduleAnyway
-          topologyKey: topology.kubernetes.io/zone
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: zookeeper
-          matchLabelKeys:
-            - pod-template-hash

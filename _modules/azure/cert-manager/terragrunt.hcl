@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source ="${dirname(find_in_parent_folders())}/_modules/azure/bucket-logs/module/"
+  source ="${dirname(find_in_parent_folders())}/_modules/azure/cert-manager/module/"
 }
 
 
@@ -19,13 +19,4 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
-}
- 
-dependencies {
-  paths = [
-    "${get_terragrunt_dir()}/../vnet/",
-    "${get_terragrunt_dir()}/../kubernetes/flux2/",
-    "${get_terragrunt_dir()}/../kubernetes/platform/",
-    "${get_terragrunt_dir()}/../kubernetes/common/",
-    ]
 }

@@ -17,6 +17,25 @@ generate "provider_az" {
   if_exists = "overwrite_terragrunt"
   contents  = <<-EOF
 
+    variable "provider_az_environment" {
+      type = string
+    }
+    variable "provider_az_subscription_id" {
+      type = string
+    }
+    variable "provider_az_tenant_id" {
+      type = string
+    }
+
+    variable "provider_az_region" {
+      type = string
+    }
+
+     provider "azurerm" {
+      features {}
+      subscription_id = "0301d732-e214-4f9c-9607-27403a4a0e40"
+
+    }   
 
 
 EOF

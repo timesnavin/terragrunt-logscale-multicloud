@@ -11,7 +11,7 @@
 # deployed version.
 
 terraform {
-  source ="${dirname(find_in_parent_folders())}/_modules/azure/bucket-logs/module/"
+  source = "${dirname(find_in_parent_folders())}/_modules/aws/route53/zone-sub/module/"
 }
 
 
@@ -19,13 +19,21 @@ terraform {
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
 locals {
+  partition = yamldecode(file(find_in_parent_folders("partition.yaml")))
+  sub       = "${get_terragrunt_dir()}/../"
+  domain    = basename(dirname(local.sub))
 }
- 
-dependencies {
-  paths = [
-    "${get_terragrunt_dir()}/../vnet/",
-    "${get_terragrunt_dir()}/../kubernetes/flux2/",
-    "${get_terragrunt_dir()}/../kubernetes/platform/",
-    "${get_terragrunt_dir()}/../kubernetes/common/",
-    ]
+
+dependency "parent_zone" {
+  config_path = "${get_terragrunt_dir()}/../../dns/"
+  mock_outputs = {
+    zone_name = "example.com"
+    zone_id   = "A123456789"
+  }
+}
+
+inputs = {
+  parent_domain  = dependency.parent_zone.outputs.zone_name
+  parent_zone_id = dependency.parent_zone.outputs.zone_id
+  child_domain   = local.domain
 }
