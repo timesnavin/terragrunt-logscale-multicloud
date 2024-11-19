@@ -35,3 +35,11 @@ variable "karpenter_user_assigned_identity_name" {
   description = "The name of the Karpenter user-assigned identity"
   type        = string
 }
+
+
+variable "azure_dns_zone_name" {
+  description = "Name of Azure DNS zone"
+  type        = string
+  default = "logsr.life"
+}
+
