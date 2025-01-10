@@ -43,3 +43,19 @@ variable "azure_dns_zone_name" {
   default = "logsr.life"
 }
 
+variable "application_gateway_name" {
+  description = "Name of the Application Gateway"
+  type        = string
+  default = "logscale-apigw"
+}
+
+variable "appgw_subnet_prefix" {
+  description = "CIDR block for Application Gateway subnet"
+  type = string
+  default = "10.0.3.0/24"
+}
+
+variable "name" {
+  description = "Azure Virtual Network name from Vnet module"
+  type = string
+}

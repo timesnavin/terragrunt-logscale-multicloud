@@ -5,13 +5,14 @@ metadata:
   namespace: "${namespace}"
   annotations:
   kubernetes.io/ingress.class: azure/application-gateway
+  cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
  tls:
   - hosts:
     - "${domain_name}"
     secretName: myapp-tls-secret
  rules:
-  - hosts: "${domain_name}"
+  - host: "${domain_name}"
     http:
       paths:
         - path: /

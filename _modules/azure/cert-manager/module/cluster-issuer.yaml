@@ -2,14 +2,13 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-prod
-  namespace: region-flux-releases
 spec:
   acme:
-    email: ${email}
+    email: "{{ email }}"
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-prod-account-key
     solvers:
-      -http01:
-        ingress:
-          class: "ingress_class"
+      - http01:
+          ingress:
+            class: "{{ ingress_class }}"

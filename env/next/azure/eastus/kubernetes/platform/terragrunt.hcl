@@ -23,14 +23,15 @@ include "module" {
 dependency "cluster" {
   config_path = "../cluster/"  # Reference the env folder where the cluster state is stored
 }
-/*
-dependency "flux2" {
-  config_path = "../flux2/"
+
+dependency "vnet" {
+  config_path = "../../vnet/"
 }
-*/
+
 
 
 inputs = {
+  name                = dependency.vnet.outputs.name
   cluster_name        = dependency.cluster.outputs.cluster_name
   resource_group_name = dependency.cluster.outputs.resource_group_name
   location            = dependency.cluster.outputs.location
