@@ -22,8 +22,6 @@ spec:
       retries: 3
   upgrade:
     disableWaitForJobs: true
-    # remediation:
-    #   retries: 3
   test:
     enable: false
   driftDetection:
@@ -34,7 +32,7 @@ spec:
           kind: Deployment
   values:
     platform:
-      provider: aws
+      provider: azure
     fullnameOverride: logscale
 
     humio:
@@ -44,8 +42,8 @@ spec:
       extraENV:
         - name: HUMIO_OPTS
           value: -XX:+UseNUMA -XX:+UseTransparentHugePages
-        - name: INGEST_FEED_AWS_ROLE_ARN
-          value: "${ingest_role_arn}"
+        - name: AZURE_CLIENT_ID
+          value: "${managed_identity_client_id}"
         - name: HUMIO_MAX_DIRECT_MEMORY_SIZE_MB
           value: "1024"
         - name: MAX_SERIES_LIMIT
@@ -70,10 +68,12 @@ spec:
           sasl.mechanism=SCRAM-SHA-512
           sasl.jaas.config=$${env:KAFKA_JAAS}
       buckets:
-        prefix: ${bucket_prefix}
-        storage: ${bucket_storage}
-        region: ${region}
-        type: aws
+        type: azure
+        storageAccount: ${storage_account_name}
+        container: ${container_storage}
+        prefix: ${container_prefix}
+        exportContainer: ${container_export}
+        archiveContainer: ${container_archive}
       fqdnInputs: ${fqdn_ingest}
       fqdn: ${fqdn}
       license: ${logscale_license}
@@ -82,7 +82,8 @@ spec:
       serviceAccount:
         name: ${logscale_sa_name}
         annotations:
-          eks.amazonaws.com/role-arn: ${logscale_sa_arn}
+          azure.workload.identity/client-id: ${managed_identity_client_id}
+          azure.workload.identity/tenant-id: ${tenant_id}
       auth:
         rootUser: ${rootUser}
         method: saml
@@ -93,7 +94,6 @@ spec:
           idpCertificate: ${saml_signing_certificate}
 
       nodeCount: 2
-      #In general for these node requests and limits should match
       resources:
         requests:
           memory: 16Gi
@@ -112,8 +112,9 @@ spec:
                   - key: "kubernetes.io/os"
                     operator: "In"
                     values: ["linux"]
-                  - key: "karpenter.k8s.aws/instance-local-nvme"
-                    operator: Exists
+                  - key: "kubernetes.azure.com/storageprofile"
+                    operator: "In"
+                    values: ["managed"]
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
@@ -136,42 +137,37 @@ spec:
                 operator: In
                 values:
                   - logscale
-      tolerations:
-        - key: topolvm.io/local
-          operator: "Equal"
-          value: "true"
+
       dataVolumePersistentVolumeClaimSpecTemplate:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: "468Gi"
-        # storageClassName: "gp3"
-        # storageClassName: "regional-block-base-ext4"
-        storageClassName: "instancestore-nvme-ext4"
+        storageClassName: "managed-premium"
 
       frontEndDataVolumePersistentVolumeClaimSpecTemplate:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: "10Gi"
-        storageClassName: "regional-block-base-ext4"
+        storageClassName: "managed-premium"
       priorityClass: partition-high
 
       ingress:
         ui:
-          className: alb-partition
+          className: azure-application-gateway
           enabled: true
           tls: true
           annotations:
-            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-            alb.ingress.kubernetes.io/ssl-redirect: "443"
+            appgw.ingress.kubernetes.io/ssl-redirect: "true"
+            appgw.ingress.kubernetes.io/backend-protocol: "https"
         inputs:
-          className: alb-partition
+          className: azure-application-gateway
           enabled: true
           tls: true
           annotations:
-            alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
-            alb.ingress.kubernetes.io/ssl-redirect: "443"
+            appgw.ingress.kubernetes.io/ssl-redirect: "true"
+            appgw.ingress.kubernetes.io/backend-protocol: "https"
 
       nodepools:
         ingest:

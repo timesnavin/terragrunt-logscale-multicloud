@@ -1,0 +1,5 @@
+name: test
+platform: azure
+region: eastus
+logscale:
+  root: navin.chaudhary@crowdstrike.com

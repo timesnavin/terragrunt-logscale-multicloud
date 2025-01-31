@@ -3,6 +3,9 @@ kind: HelmRelease
 metadata:
   name: ${tenant}-logscale
   namespace: ${kafka_namespace}
+  annotations:
+    azure.workload.identity/use: "true"
+    azure.workload.identity/service-account: "${kafka_service_account}"
 spec:
   interval: 10m
   timeout: 5m
@@ -41,7 +44,25 @@ spec:
         secretTemplate:
           metadata:
             annotations:
+              # Original reflection annotations
               reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
               reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
               reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "${logscale_namespace}"
               reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "${logscale_namespace}"
+              # Azure KeyVault integration (if using)
+              azure.keyvault.enabled: "true"
+              azure.keyvault.secret-name: "${tenant}-kafka-credentials"
+              azure.keyvault.vault-name: "${keyvault_name}"
+        # Optional: Azure-specific network policies
+        networkPolicies:
+          enabled: true
+          allowedNamespaces:
+            - "${logscale_namespace}"
+        # Optional: Azure Monitor integration
+        monitoring:
+          enabled: true
+          azureMonitor:
+            enabled: true
+            metricLabels:
+              tenant: "${tenant}"
+              component: "kafka"

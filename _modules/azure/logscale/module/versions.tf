@@ -7,9 +7,9 @@ terraform {
       source  = "ryanfaircloth/dns-validation"
       version = "0.2.1"
     }
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.44.0"
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "3.113.0"
     }
     helm = {
       source  = "hashicorp/helm"

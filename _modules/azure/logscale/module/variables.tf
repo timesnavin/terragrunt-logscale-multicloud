@@ -1,94 +1,111 @@
+# _modules/azure/logscale/module/variables.tf
 
-
-# variable "iam_role_path" {
-
-# }
-# variable "iam_policy_path" {
-#   default = "/"
-# }
-variable "region" {
+# Basic configuration variables
+variable "tenant" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "Name of the tenant"
 }
 
-variable "oidc_provider_arn" {
+variable "resource_group_name" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "Name of the resource group"
 }
 
-variable "logscale_storage_bucket_id" {
+variable "location" {
   type        = string
-  description = "(optional) describe your variable"
-}
-variable "logscale_export_bucket_id" {
-  type        = string
-  description = "(optional) describe your variable"
-}
-variable "logscale_archive_bucket_id" {
-  type        = string
-  description = "(optional) describe your variable"
-}
-
-variable "service_account" {
-  default = "logscale-sa"
-}
-
-variable "logscale_license" {
-  type        = string
-  description = "(optional) describe your variable"
-}
-
-variable "force_destroy" {
-  default = true
+  description = "Azure region location"
 }
 
 variable "domain_name" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "Domain name for FQDN construction"
 }
 
-
-variable "tenant" {
-
-}
-
-variable "saml_url" {
+# Kubernetes configuration
+variable "kubernetes_version" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "Kubernetes version"
 }
 
-variable "saml_signing_certificate" {
-  type        = string
-  description = "(optional) describe your variable"
-}
-variable "saml_issuer" {
-  type        = string
-  description = "(optional) describe your variable"
-}
-
+# LogScale configuration
 variable "LogScaleRoot" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "LogScale root user"
+}
+
+# Kafka configuration
+variable "kafka_namespace" {
+  type        = string
+  description = "Kafka namespace"
 }
 
 variable "kafka_name" {
   type        = string
-  description = "(optional) describe your variable"
-}
-variable "kafka_namespace" {
-  type        = string
-  description = "(optional) describe your variable"
-}
-variable "kafka_prefix_increment" {
-  type        = string
-  description = "(optional) describe your variable"
+  description = "Kafka cluster name"
 }
 
-variable "regional_logs_bucket_arn" {
+variable "kafka_prefix" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "Kafka topic prefix"
 }
-variable "regional_sns_topic_arn" {
+
+# Service account
+variable "service_account" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "Name of the service account"
+}
+
+# Authentication and authorization
+variable "logscale_license" {
+  type        = string
+  description = "LogScale license key"
+  sensitive   = true
+}
+
+variable "saml_issuer" {
+  type        = string
+  description = "SAML issuer URL"
+}
+
+variable "saml_signing_certificate" {
+  type        = string
+  description = "SAML signing certificate"
+  sensitive   = true
+}
+
+variable "saml_url" {
+  type        = string
+  description = "SAML URL"
+}
+
+# Tags
+variable "tags" {
+  type        = map(string)
+  description = "Resource tags"
+  default     = {}
+}
+
+# Storage configuration
+variable "storage_account_name" {
+  type        = string
+  description = "Storage account name"
+  default     = ""
+}
+
+variable "container_storage" {
+  type        = string
+  description = "Storage container name"
+  default     = ""
+}
+
+variable "container_export" {
+  type        = string
+  description = "Export container name"
+  default     = ""
+}
+
+variable "container_archive" {
+  type        = string
+  description = "Archive container name"
+  default     = ""
 }
